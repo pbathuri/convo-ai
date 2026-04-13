@@ -47,11 +47,24 @@ def inject_global_css() -> None:
     st.markdown(
         """
 <style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Nunito:wght@500;600;700;800&display=swap');
+html, body, [data-testid="stAppViewContainer"], .stApp, .stMarkdown, [data-testid="stHeader"] {
+    font-family: "DM Sans", "Nunito", system-ui, sans-serif !important;
+}
 [data-testid="stSidebar"] { display: none !important; }
+[data-testid="stDecoration"] { display: none !important; }
+header[data-testid="stHeader"] { background: transparent !important; }
+.block-container {
+    padding-top: 1.25rem !important;
+    padding-bottom: 2rem !important;
+}
 @media screen and (max-width: 768px) {
     .block-container { padding: 1rem !important; }
     .stButton button { font-size: 0.9rem !important; }
 }
+button, [role="button"] { transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.15s ease !important; }
+.stButton > button:hover { filter: brightness(1.06); }
+.stButton > button:active { transform: scale(0.98); }
 </style>
 """,
         unsafe_allow_html=True,

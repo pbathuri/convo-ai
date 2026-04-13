@@ -70,10 +70,11 @@ PREV_SCREEN: dict[str, str] = {
 }
 
 GLOBAL_DUO_CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Nunito:wght@500;600;700;800&display=swap');
 html, body, [data-testid="stAppViewContainer"], .stApp {
-    font-family: "Nunito", "DIN Round Pro", sans-serif !important;
+    font-family: "DM Sans", "Nunito", "DIN Round Pro", system-ui, sans-serif !important;
 }
+[data-testid="stDecoration"] { display: none !important; }
 @media screen and (max-width: 768px) {
     .block-container { padding: 1rem !important; max-width: 100% !important; }
 }
@@ -82,9 +83,9 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
 LIGHT_SCREEN_CSS = """
 <style>
 .onb-light .block-container {
-    background-color: #FFFFFF !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f3faf6 55%, #eef6f0 100%) !important;
     padding-top: 2rem !important;
-    max-width: 900px !important;
+    max-width: 920px !important;
 }
 .onb-light [data-testid="stSidebar"] { display: none !important; }
 </style>
@@ -92,9 +93,12 @@ LIGHT_SCREEN_CSS = """
 
 LANDING_CSS = """
 <style>
-.landing-wrap { background: #FFFFFF; min-height: 85vh; padding: 24px 16px 120px; position: relative; }
-.landing-logo-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; }
-.landing-logo-row h1 { color: #58CC02; font-size: 32px; font-weight: 800; margin: 0; }
+.landing-wrap { background: transparent; min-height: 85vh; padding: 24px 16px 120px; position: relative; }
+.landing-logo-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 12px; }
+.landing-logo-row h1 {
+    color: #58CC02; font-size: clamp(28px, 4vw, 36px); font-weight: 800; margin: 0;
+    letter-spacing: -0.03em; text-shadow: 0 2px 24px rgba(88, 204, 2, 0.25);
+}
 .landing-hero { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 40px; margin: 32px 0; }
 .landing-illus { position: relative; width: 280px; height: 280px; display: flex; align-items: center; justify-content: center; }
 .landing-illus .float-emoji {
@@ -109,8 +113,8 @@ LANDING_CSS = """
     50% { transform: translateY(-8px); }
 }
 .landing-copy { max-width: 400px; text-align: left; }
-.landing-copy .tag { font-size: 24px; font-weight: 700; color: #3C3C3C; margin-bottom: 8px; }
-.landing-copy .sub { font-size: 16px; color: #777777; margin-bottom: 24px; }
+.landing-copy .tag { font-size: clamp(20px, 3vw, 26px); font-weight: 700; color: #2a2a2a; margin-bottom: 10px; line-height: 1.3; }
+.landing-copy .sub { font-size: 16px; color: #5c5c5c; margin-bottom: 28px; line-height: 1.55; max-width: 36ch; }
 div[data-testid="stHorizontalBlock"]:has(.get-started-wrap) button {
     background: #58CC02 !important; color: white !important; border-radius: 12px !important;
     border: none !important; border-bottom: 4px solid #46A302 !important;
@@ -131,8 +135,10 @@ div[data-testid="stHorizontalBlock"]:has(.login-wrap) button:hover {
     background: #DDF4FF !important;
 }
 .marquee-wrap {
-    position: fixed; bottom: 0; left: 0; right: 0; background: #FAFAFA;
-    border-top: 1px solid #E5E5E5; padding: 12px 0; overflow: hidden; z-index: 999;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(0deg, rgba(255,255,255,0.97) 0%, rgba(248,252,249,0.92) 100%);
+    border-top: 1px solid rgba(88, 204, 2, 0.15); padding: 14px 0; overflow: hidden; z-index: 999;
+    box-shadow: 0 -8px 32px rgba(19, 31, 36, 0.06);
 }
 .marquee-track {
     display: flex; gap: 12px; width: max-content;
@@ -143,8 +149,11 @@ div[data-testid="stHorizontalBlock"]:has(.login-wrap) button:hover {
     100% { transform: translateX(-50%); }
 }
 .domain-chip {
-    background: #F0F0F0; border-radius: 20px; padding: 8px 16px; font-size: 14px;
+    background: linear-gradient(180deg, #f6f6f6 0%, #ebebeb 100%);
+    border-radius: 999px; padding: 8px 16px; font-size: 13px;
     color: #3C3C3C; white-space: nowrap; font-weight: 600;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 </style>
 """
@@ -152,11 +161,11 @@ div[data-testid="stHorizontalBlock"]:has(.login-wrap) button:hover {
 DARK_LAYOUT_CSS = """
 <style>
 body, .stApp, [data-testid="stAppViewContainer"] {
-    background-color: #131F24 !important;
+    background: linear-gradient(165deg, #0c1418 0%, #131f24 50%, #15262e 100%) fixed !important;
 }
 [data-testid="stSidebar"] { display: none !important; }
 .block-container {
-    background-color: #131F24 !important;
+    background: transparent !important;
     padding: 0 16px 2rem !important;
     max-width: 100% !important;
 }
@@ -166,17 +175,26 @@ body, .stApp, [data-testid="stAppViewContainer"] {
 DARK_WIZARD_CSS = """
 <style>
 .onb-progress-top {
-    height: 16px; background: #2B3D45; width: 100vw; margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%);
+    height: 14px; background: rgba(43, 61, 69, 0.85); width: 100vw;
+    margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.35);
 }
-.onb-progress-fill { height: 16px; background: #58CC02; transition: width 0.3s ease; }
+.onb-progress-fill {
+    height: 14px;
+    background: linear-gradient(90deg, #46a302, #58CC02 45%, #8ee06a);
+    transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 0 12px rgba(88, 204, 2, 0.35);
+}
 .onb-back-btn button {
     background: transparent !important; color: #AFAFAF !important; border: none !important;
     font-size: 24px !important; padding: 4px 12px !important;
 }
 .mascot-row { display: flex; align-items: flex-start; gap: 12px; margin: 20px 0 24px; max-width: 520px; }
 .speech-bubble {
-    background: #1C2B33; border: 1.5px solid #3C4A52; border-radius: 12px;
-    color: white; font-size: 16px; padding: 14px 18px; position: relative; flex: 1;
+    background: linear-gradient(165deg, #243945 0%, #1C2B33 100%);
+    border: 1px solid rgba(122, 142, 151, 0.45); border-radius: 14px;
+    color: white; font-size: 16px; padding: 16px 20px; position: relative; flex: 1;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
 }
 .speech-bubble::before {
     content: ''; position: absolute; left: -10px; top: 20px;
@@ -420,7 +438,8 @@ def render_choose_category(mascot: str) -> None:
             border = "2px solid #1CB0F6" if sel else "1px solid #E5E5E5"
             bg = "#EEF9FF" if sel else "#FFFFFF"
             st.markdown(
-                f'<div style="text-align:center;padding:16px;border-radius:16px;border:{border};background:{bg};min-height:200px;">'
+                f'<div style="text-align:center;padding:18px;border-radius:18px;border:{border};background:{bg};min-height:200px;'
+                f'box-shadow:0 8px 28px rgba(19,31,36,0.08);transition:transform 0.2s ease,box-shadow 0.2s ease;">'
                 f'<div style="font-size:80px;line-height:1;">{emoji}</div>'
                 f'<div style="font-size:16px;font-weight:700;color:#3C3C3C;margin-top:8px;">{label}</div></div>',
                 unsafe_allow_html=True,
@@ -467,7 +486,8 @@ def render_choose_domain(mascot: str) -> None:
             bg = "#EEF9FF" if sel else "#FFFFFF"
             with cols[j]:
                 st.markdown(
-                    f'<div style="text-align:center;padding:12px;border-radius:16px;border:{border};background:{bg};min-width:150px;min-height:160px;">'
+                    f'<div style="text-align:center;padding:14px;border-radius:18px;border:{border};background:{bg};min-width:150px;min-height:168px;'
+                    f'box-shadow:0 6px 24px rgba(19,31,36,0.07);">'
                     f'<div style="font-size:48px;">{emoji}</div>'
                     f'<div style="font-size:14px;font-weight:700;color:#3C3C3C;margin-top:8px;">{d}</div>'
                     f'<div style="font-size:12px;color:#777;margin-top:6px;">{k} practitioners</div></div>',

@@ -6,6 +6,7 @@ import numpy as np
 import datetime
 import os
 
+
 def show_score(score):
     st.markdown("### 🤝 Favorability Score")
     st.progress(score)
@@ -46,21 +47,26 @@ def show_emotion_radar(emotion_data: dict):
     angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
     angles += angles[:1]
 
-    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
-    ax.plot(angles, values, linewidth=2, linestyle='solid')
-    ax.fill(angles, values, alpha=0.25)
+    fig, ax = plt.subplots(figsize=(5.5, 5.5), subplot_kw=dict(
+        polar=True), facecolor="#131f24")
+    ax.set_facecolor("#1c2b33")
+    ax.plot(angles, values, linewidth=2.5, linestyle="solid", color="#58cc02")
+    ax.fill(angles, values, alpha=0.22, color="#58cc02")
     ax.set_yticklabels([])
     ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(labels, fontsize=12)
+    ax.set_xticklabels(labels, fontsize=11, color="#e8eef1")
+    ax.tick_params(colors="#7a8e97")
+    ax.grid(color="#3c4a52", linestyle="-", linewidth=0.5)
 
     st.markdown("### 🧠 Emotional Radar")
-    st.pyplot(fig)
+    st.pyplot(fig, clear_figure=True)
 
 
 def show_skill_dashboard(skills_data):
     st.markdown("## 📈 Skill Intelligence Dashboard")
     for skill, values in skills_data.items():
-        if not values: continue
+        if not values:
+            continue
         times = [v[0] for v in values]
         scores = [v[1] for v in values]
         fig, ax = plt.subplots()

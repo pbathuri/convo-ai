@@ -43,66 +43,188 @@ from services.voice_player import speak
 
 CHAT_CSS = """
 <style>
-.chat-app body, .chat-app .stApp, .chat-app [data-testid="stAppViewContainer"] {
-    background-color: #131F24 !important;
+:root {
+    --chat-bg0: #0c1418;
+    --chat-bg1: #131f24;
+    --chat-surface: #1c2b33;
+    --chat-border: rgba(122, 142, 151, 0.35);
+    --chat-mint: #58cc02;
+    --chat-mint-dim: #46a302;
+    --chat-user: #0d5c47;
+    --chat-text: #f0f4f6;
+    --chat-muted: #9eb0b8;
+}
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(165deg, var(--chat-bg0) 0%, var(--chat-bg1) 45%, #152a32 100%) fixed !important;
+    background-color: var(--chat-bg1) !important;
 }
 [data-testid="stSidebar"] { display: none !important; }
 .chat-block-container .block-container {
-    background-color: #131F24 !important;
-    padding-top: 0.5rem !important;
-    max-width: 1400px !important;
+    background: transparent !important;
+    padding-top: 0.25rem !important;
+    max-width: 1280px !important;
 }
 .chat-topbar {
     position: sticky; top: 0; z-index: 100;
-    background: #131F24; border-bottom: 1px solid #3C4A52;
-    padding: 10px 0; margin: 0 -1rem 12px;
+    margin: 0 -1rem 16px; padding: 14px 18px;
+    background: linear-gradient(180deg, rgba(19, 31, 36, 0.92) 0%, rgba(19, 31, 36, 0.78) 100%);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid var(--chat-border);
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
-.chat-top-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.chat-top-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 14px; }
+.chat-brand {
+    font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #7ee787 0%, var(--chat-mint) 50%, #3ddc84 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    -webkit-text-fill-color: transparent;
+}
 .pill-badge {
-    background: #1C2B33; border: 1px solid #3C4A52; border-radius: 20px;
-    padding: 4px 12px; font-size: 14px; color: #E8EEF1;
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(28, 43, 51, 0.85);
+    border: 1px solid var(--chat-border);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 13px; font-weight: 600; color: var(--chat-text);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s ease, border-color 0.2s ease;
 }
-.daily-bar-wrap { margin: 8px 0 16px; }
-.daily-bar-label { display: flex; justify-content: space-between; color: #7A8E97; font-size: 13px; margin-bottom: 6px; }
-.daily-bar-track { height: 12px; background: #2B3D45; border-radius: 6px; overflow: hidden; }
-.daily-bar-fill { height: 12px; background: #58CC02; border-radius: 6px; }
-.chip-row { display: flex; flex-wrap: nowrap; gap: 8px; overflow-x: auto; padding: 8px 0 16px; }
-.chip {
-    flex-shrink: 0; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600;
-    border: 1px solid #3C4A52; cursor: pointer;
+.pill-badge:hover { border-color: rgba(88, 204, 2, 0.45); }
+.daily-bar-wrap {
+    margin: 4px 0 20px;
+    padding: 14px 16px;
+    background: rgba(28, 43, 51, 0.45);
+    border: 1px solid var(--chat-border);
+    border-radius: 14px;
 }
-.chip-off { background: #1C2B33; color: #7A8E97; }
-.chip-on { background: #58CC02; color: white; border-color: #58CC02; }
-.chat-scroll { max-height: 48vh; overflow-y: auto; padding: 8px 0 120px; }
-.msg-row { display: flex; margin-bottom: 12px; align-items: flex-end; gap: 8px; }
+.daily-bar-label { display: flex; justify-content: space-between; color: var(--chat-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+.daily-bar-track {
+    height: 10px; background: rgba(43, 61, 69, 0.9); border-radius: 999px; overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.35);
+}
+.daily-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--chat-mint-dim), var(--chat-mint) 40%, #8ee06a);
+    box-shadow: 0 0 16px rgba(88, 204, 2, 0.35);
+    transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.persona-banner {
+    border-radius: 14px !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.25) !important;
+}
+.chat-scroll {
+    max-height: min(52vh, 520px);
+    overflow-y: auto;
+    padding: 12px 6px 100px 4px;
+    scroll-behavior: smooth;
+}
+.chat-scroll::-webkit-scrollbar { width: 8px; }
+.chat-scroll::-webkit-scrollbar-track { background: rgba(28,43,51,0.35); border-radius: 8px; }
+.chat-scroll::-webkit-scrollbar-thumb { background: rgba(88, 204, 2, 0.35); border-radius: 8px; }
+.chat-scroll::-webkit-scrollbar-thumb:hover { background: rgba(88, 204, 2, 0.55); }
+.chat-empty-state {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    margin: 0.5rem 0 1rem;
+    border: 1px dashed var(--chat-border);
+    border-radius: 16px;
+    background: rgba(28, 43, 51, 0.35);
+    color: var(--chat-muted);
+}
+.chat-empty-state strong { color: var(--chat-text); font-size: 1.05rem; display: block; margin-bottom: 6px; }
+.msg-row { display: flex; margin-bottom: 14px; align-items: flex-end; gap: 10px; }
 .msg-row.user { justify-content: flex-end; }
 .bubble-ai {
-    background: #1C2B33; color: #fff; border-radius: 18px 18px 18px 4px;
-    padding: 12px 16px; max-width: 78%; font-size: 15px; line-height: 1.5;
+    background: linear-gradient(165deg, #243945 0%, var(--chat-surface) 100%);
+    color: var(--chat-text);
+    border-radius: 20px 20px 20px 6px;
+    padding: 14px 18px;
+    max-width: min(78%, 640px);
+    font-size: 15px;
+    line-height: 1.55;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
 }
 .bubble-user {
-    background: #0A5C44; color: #fff; border-radius: 18px 18px 4px 18px;
-    padding: 12px 16px; max-width: 78%; font-size: 15px; line-height: 1.5;
+    background: linear-gradient(165deg, #117a5c 0%, var(--chat-user) 100%);
+    color: #fff;
+    border-radius: 20px 20px 6px 20px;
+    padding: 14px 18px;
+    max-width: min(78%, 640px);
+    font-size: 15px;
+    line-height: 1.55;
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 8px 24px rgba(13, 92, 71, 0.35);
 }
-.typing-dots { color: #7A8E97; padding: 8px 12px; }
-.typing-dots span { animation: chat-pulse 1s ease-in-out infinite; opacity: 0.4; }
-.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes chat-pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
-.chat-input-bar {
-    position: sticky; bottom: 0; background: #1C2B33; border-top: 1px solid #3C4A52;
-    padding: 12px 0; margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem;
+.avatar-glow {
+    filter: drop-shadow(0 2px 8px rgba(88, 204, 2, 0.35));
 }
 .coach-callout {
-    background: rgba(88, 204, 2, 0.15); border: 1px solid #58CC02; border-radius: 12px;
-    padding: 12px; color: #E8EEF1; margin-top: 8px;
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.12) 0%, rgba(28, 176, 246, 0.08) 100%);
+    border: 1px solid rgba(88, 204, 2, 0.45);
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: var(--chat-text);
+    margin-top: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 .toast-xp {
-    position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
-    background: #58CC02; color: white; padding: 10px 24px; border-radius: 24px;
-    font-weight: 700; z-index: 1000; animation: toast-in 0.4s ease;
+    position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--chat-mint) 0%, #3ddc84 100%);
+    color: #0a1f0f;
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 15px;
+    z-index: 1000;
+    animation: toast-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 12px 36px rgba(88, 204, 2, 0.45);
 }
-@keyframes toast-in { from { transform: translateX(-50%) translateY(40px); opacity: 0; } to { opacity: 1; } }
+@keyframes toast-in {
+    from { transform: translateX(-50%) translateY(28px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+div[data-testid="stTextInput"] input, div[data-testid="stTextInput"] textarea {
+    background: #0f1923 !important;
+    color: var(--chat-text) !important;
+    border-radius: 999px !important;
+    border: 1px solid var(--chat-border) !important;
+    padding: 12px 20px !important;
+    font-size: 15px !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+div[data-testid="stTextInput"] input:focus {
+    border-color: rgba(88, 204, 2, 0.55) !important;
+    box-shadow: 0 0 0 3px rgba(88, 204, 2, 0.18) !important;
+}
+.stExpander details {
+    background: rgba(28, 43, 51, 0.5) !important;
+    border: 1px solid var(--chat-border) !important;
+    border-radius: 12px !important;
+}
+.stExpander summary { font-weight: 600 !important; color: var(--chat-muted) !important; }
+div[data-testid="stFileUploader"] section {
+    border-radius: 12px !important;
+    border: 1px dashed var(--chat-border) !important;
+    background: rgba(15, 25, 35, 0.5) !important;
+}
+.chat-block-container button[kind="secondary"] {
+    border-radius: 999px !important;
+    background: rgba(28, 43, 51, 0.75) !important;
+    color: var(--chat-text) !important;
+    border: 1px solid var(--chat-border) !important;
+    font-weight: 600 !important;
+}
+.chat-block-container button[kind="primary"] {
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 6px 20px rgba(88, 204, 2, 0.35) !important;
+}
+.chat-block-container .stToggle label { color: var(--chat-muted) !important; font-weight: 600 !important; }
 </style>
 """
 
@@ -167,13 +289,14 @@ def render_chat(
     model_label = chat_model or "—"
     st.markdown(
         f'<div class="chat-topbar"><div class="chat-top-inner">'
-        f'<div><strong style="color:#58CC02;font-size:18px;">Convo AI</strong> '
+        f'<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;">'
+        f'<span class="chat-brand">Convo AI</span> '
         f'<span class="pill-badge">{domain_emoji} {selected_domain}</span>'
         f'<span class="pill-badge">{prov_label} \u00b7 {model_label}</span></div>'
-        f'<div><span class="pill-badge">\u23f1 {timer_text or "—"}</span></div>'
-        f'<div style="display:flex;gap:8px;">'
+        f'<div><span class="pill-badge" title="Session timer">\u23f1 {timer_text or "—"}</span></div>'
+        f'<div style="display:flex;gap:8px;flex-wrap:wrap;">'
         f'<span class="pill-badge">\U0001f3c6 {st.session_state.xp} XP</span>'
-        f'<span class="pill-badge">\U0001f525 {st.session_state.streak}</span>'
+        f'<span class="pill-badge">\U0001f525 {st.session_state.streak} streak</span>'
         f"</div></div></div>",
         unsafe_allow_html=True,
     )
@@ -189,10 +312,10 @@ def render_chat(
         unsafe_allow_html=True,
     )
 
-    with st.expander("LLM (env: USE_OLLAMA / OPENAI_API_KEY)", expanded=False):
+    with st.expander("Model & API", expanded=False):
         st.caption(
-            f"Active: **{prov_label}** — model **{model_label}**. "
-            "Change via `.env` (see `.env.example`) and restart the app."
+            f"**{prov_label}** · **{model_label}**. Adjust with `USE_OLLAMA`, `OLLAMA_MODEL`, "
+            "`OPENAI_API_KEY` in environment (see `.env.example`)."
         )
 
     with st.expander("\u23f1 Session timer", expanded=False):
@@ -225,9 +348,10 @@ def render_chat(
                 st.rerun()
 
     st.markdown(
-        f'<div class="{visual_config["animation"]}" style="padding:10px 14px;border-radius:12px;'
-        f'background:{visual_config["bg_gradient"]};color:white;font-size:14px;margin-bottom:12px;">'
-        f'<b>{visual_config["persona_label"]}</b> \u2014 {selected_subdomain}</div>',
+        f'<div class="persona-banner {visual_config["animation"]}" style="padding:14px 18px;'
+        f'background:{visual_config["bg_gradient"]};color:white;font-size:14px;margin-bottom:16px;'
+        f'line-height:1.45;"><b style="font-size:15px;">{visual_config["persona_label"]}</b>'
+        f'<span style="opacity:0.9;"> \u2014 {selected_subdomain}</span></div>',
         unsafe_allow_html=True,
     )
 
@@ -244,17 +368,34 @@ def render_chat(
     with main_col:
         reflection = st.session_state.pop("_daily_reflection", None)
         if reflection:
-            st.markdown("### \U0001f31f Daily reflection")
-            st.info(reflection)
+            st.markdown(
+                f'<div class="coach-callout" style="margin-bottom:14px;">'
+                f'<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;'
+                f'color:#7ee787;margin-bottom:8px;">\U0001f31f Daily reflection</div>'
+                f"{html.escape(reflection)}</div>",
+                unsafe_allow_html=True,
+            )
         streak_msg = st.session_state.pop("_streak_msg", None)
         if streak_msg:
-            st.success(streak_msg)
+            st.markdown(
+                f'<div class="coach-callout" style="border-color:rgba(28,176,246,0.5);margin-bottom:14px;">'
+                f"\u2728 {html.escape(streak_msg)}</div>",
+                unsafe_allow_html=True,
+            )
 
         # Chat transcript
         msgs = st.session_state.get("chat_messages") or []
         st.markdown('<div class="chat-scroll">', unsafe_allow_html=True)
-        mascot_small = load_mascot_svg().replace(
-            'width="80"', 'width="24"').replace('height="80"', 'height="24"')
+        if not msgs:
+            st.markdown(
+                '<div class="chat-empty-state"><strong>Your practice space</strong><br/>'
+                "<span>Send a message below to start. The coach adapts to your domain and tracks progress.</span></div>",
+                unsafe_allow_html=True,
+            )
+        mascot_small = load_mascot_svg().replace('width="80"', 'width="26"').replace(
+            'height="80"', 'height="26"')
+        mascot_small = mascot_small.replace(
+            "<svg", '<svg class="avatar-glow"', 1)
         for m in msgs:
             safe = html.escape(m.get("content", "")).replace("\n", "<br/>")
             if m.get("role") == "user":
@@ -313,6 +454,11 @@ def render_chat(
             st.rerun()
 
     with side_col:
+        st.markdown(
+            '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;'
+            'color:#7A8E97;margin:0 0 10px 2px;">Insights</div>',
+            unsafe_allow_html=True,
+        )
         last_em = st.session_state.get("last_emotion_data")
         if last_em:
             show_emotion_radar(last_em)
