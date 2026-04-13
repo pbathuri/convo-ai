@@ -4,6 +4,7 @@ Duolingo-style onboarding wizard for Convo AI (Streamlit).
 
 from __future__ import annotations
 
+import html
 import os
 import time
 from importlib import import_module
@@ -49,6 +50,13 @@ DOMAIN_META: dict[str, tuple[str, str]] = {
     "Sales Talk": ("\U0001f4ca", "19.6K"),
 }
 
+# Hero assets: Unsplash (collaborative learning) + Twemoji SVGs (crisp, CDN-backed).
+_LANDING_HERO_PHOTO = (
+    "https://images.unsplash.com/photo-1523240795612-9a054b0db644"
+    "?w=720&q=86&auto=format&fit=crop"
+)
+_TWEMOJI_SVG_BASE = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg"
+
 SCREEN_PROGRESS_DARK: dict[str, int] = {
     "choose_goal": 30,
     "referral_source": 45,
@@ -69,17 +77,6 @@ PREV_SCREEN: dict[str, str] = {
     "preparing": "choose_path",
 }
 
-GLOBAL_DUO_CSS = """
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Nunito:wght@500;600;700;800&display=swap');
-html, body, [data-testid="stAppViewContainer"], .stApp {
-    font-family: "DM Sans", "Nunito", "DIN Round Pro", system-ui, sans-serif !important;
-}
-[data-testid="stDecoration"] { display: none !important; }
-@media screen and (max-width: 768px) {
-    .block-container { padding: 1rem !important; max-width: 100% !important; }
-}
-"""
-
 LIGHT_SCREEN_CSS = """
 <style>
 .onb-light .block-container {
@@ -94,20 +91,52 @@ LIGHT_SCREEN_CSS = """
 LANDING_CSS = """
 <style>
 .landing-wrap { background: transparent; min-height: 85vh; padding: 24px 16px 120px; position: relative; }
-.landing-logo-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 12px; }
+.landing-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -24% -20% auto -20%;
+    height: 58%;
+    background: radial-gradient(ellipse 85% 75% at 50% 0%, rgba(88, 204, 2, 0.14), transparent 72%);
+    pointer-events: none;
+    z-index: 0;
+}
+.landing-logo-row { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 12px; }
 .landing-logo-row h1 {
     color: #58CC02; font-size: clamp(28px, 4vw, 36px); font-weight: 800; margin: 0;
     letter-spacing: -0.03em; text-shadow: 0 2px 24px rgba(88, 204, 2, 0.25);
 }
-.landing-hero { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 40px; margin: 32px 0; }
-.landing-illus { position: relative; width: 280px; height: 280px; display: flex; align-items: center; justify-content: center; }
-.landing-illus .float-emoji {
- position: absolute; font-size: 28px; animation: bounce-soft 2.5s ease-in-out infinite;
+.landing-hero { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 40px; margin: 32px 0; }
+.landing-illus {
+ position: relative;
+    width: min(300px, 92vw);
+    height: min(300px, 92vw);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.landing-illus .e1 { top: 8%; left: 10%; animation-delay: 0s; }
-.landing-illus .e2 { top: 12%; right: 8%; animation-delay: 0.3s; }
-.landing-illus .e3 { bottom: 18%; left: 6%; animation-delay: 0.6s; }
-.landing-illus .e4 { bottom: 10%; right: 12%; animation-delay: 0.9s; }
+.landing-hero-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 28px;
+    border: 4px solid #fff;
+    box-shadow:
+        0 24px 56px rgba(19, 31, 36, 0.14),
+        0 0 0 1px rgba(88, 204, 2, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+.landing-illus .float-sticker {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    animation: bounce-soft 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+    pointer-events: none;
+}
+.landing-illus .e1 { top: 6%; left: 8%; animation-delay: 0s; }
+.landing-illus .e2 { top: 10%; right: 6%; animation-delay: 0.25s; }
+.landing-illus .e3 { bottom: 14%; left: 4%; animation-delay: 0.5s; }
+.landing-illus .e4 { bottom: 8%; right: 10%; animation-delay: 0.75s; }
 @keyframes bounce-soft {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
@@ -116,20 +145,23 @@ LANDING_CSS = """
 .landing-copy .tag { font-size: clamp(20px, 3vw, 26px); font-weight: 700; color: #2a2a2a; margin-bottom: 10px; line-height: 1.3; }
 .landing-copy .sub { font-size: 16px; color: #5c5c5c; margin-bottom: 28px; line-height: 1.55; max-width: 36ch; }
 div[data-testid="stHorizontalBlock"]:has(.get-started-wrap) button {
-    background: #58CC02 !important; color: white !important; border-radius: 12px !important;
+    background: #58CC02 !important; color: white !important; border-radius: 14px !important;
     border: none !important; border-bottom: 4px solid #46A302 !important;
-    font-weight: 700 !important; font-size: 15px !important; padding: 14px 48px !important;
-    text-transform: uppercase !important; box-shadow: 0 2px 0 #46A302 !important;
+    font-weight: 800 !important; font-size: 15px !important;
+    padding: 16px 28px !important; min-height: 52px !important;
+    text-transform: uppercase !important; letter-spacing: 0.04em !important;
+    box-shadow: 0 2px 0 #46A302 !important;
 }
 div[data-testid="stHorizontalBlock"]:has(.get-started-wrap) button:hover {
     box-shadow: 0 4px 12px rgba(88, 204, 2, 0.35) !important;
  transform: translateY(-1px);
 }
 div[data-testid="stHorizontalBlock"]:has(.login-wrap) button {
-    background: white !important; color: #1CB0F6 !important; border-radius: 12px !important;
+    background: white !important; color: #1CB0F6 !important; border-radius: 14px !important;
     border: 2px solid #1CB0F6 !important;
-    font-weight: 700 !important; font-size: 15px !important; padding: 14px 48px !important;
-    text-transform: uppercase !important;
+    font-weight: 800 !important; font-size: 15px !important;
+    padding: 16px 28px !important; min-height: 52px !important;
+    text-transform: uppercase !important; letter-spacing: 0.04em !important;
 }
 div[data-testid="stHorizontalBlock"]:has(.login-wrap) button:hover {
     background: #DDF4FF !important;
@@ -161,7 +193,10 @@ div[data-testid="stHorizontalBlock"]:has(.login-wrap) button:hover {
 DARK_LAYOUT_CSS = """
 <style>
 body, .stApp, [data-testid="stAppViewContainer"] {
-    background: linear-gradient(165deg, #0c1418 0%, #131f24 50%, #15262e 100%) fixed !important;
+    background:
+        radial-gradient(ellipse 120% 80% at 10% -10%, rgba(88, 204, 2, 0.07), transparent 45%),
+        radial-gradient(ellipse 90% 60% at 100% 20%, rgba(28, 176, 246, 0.06), transparent 42%),
+        linear-gradient(165deg, #0c1418 0%, #131f24 50%, #15262e 100%) fixed !important;
 }
 [data-testid="stSidebar"] { display: none !important; }
 .block-container {
@@ -380,6 +415,8 @@ def render_landing(mascot: str) -> None:
             chips_inner += f'<span class="domain-chip">{em} {lab}</span>'
     chips_html = f'<div class="marquee-wrap"><div class="marquee-track">{chips_inner}</div></div>'
 
+    tw = _TWEMOJI_SVG_BASE
+    photo = html.escape(_LANDING_HERO_PHOTO, quote=True)
     hero = f"""
 <div class="landing-wrap">
   <div class="landing-logo-row">
@@ -388,15 +425,16 @@ def render_landing(mascot: str) -> None:
   </div>
   <div class="landing-hero">
     <div class="landing-illus">
-      <span class="float-emoji e1">\U0001f3af</span>
-      <span class="float-emoji e2">\U0001f9e0</span>
-      <span class="float-emoji e3">\U0001f4ac</span>
-      <span class="float-emoji e4">\U0001f4c8</span>
-      <div style="width:200px;height:200px;">{mascot.replace('width="80"', 'width="200"').replace('height="80"', 'height="200"')}</div>
+      <img class="landing-hero-photo" src="{photo}" alt="" width="720" height="720"
+        loading="eager" decoding="async" fetchpriority="high" />
+      <img class="float-sticker e1" src="{tw}/1f3af.svg" alt="" />
+      <img class="float-sticker e2" src="{tw}/1f9e0.svg" alt="" />
+      <img class="float-sticker e3" src="{tw}/1f4ac.svg" alt="" />
+      <img class="float-sticker e4" src="{tw}/1f4c8.svg" alt="" />
     </div>
     <div class="landing-copy">
       <div class="tag">The smart, effective way to master communication.</div>
-      <div class="sub">Practice real conversations. Get AI coaching. Level up.</div>
+      <div class="sub">Short, focused practice. Instant AI feedback. A flow that feels as snappy as your favorite learning app.</div>
     </div>
   </div>
 </div>
@@ -673,7 +711,7 @@ def render_preparing(mascot: str) -> None:
         unsafe_allow_html=True,
     )
     if "preparing_deadline" not in st.session_state:
-        st.session_state["preparing_deadline"] = time.time() + 2.5
+        st.session_state["preparing_deadline"] = time.time() + 1.35
     deadline = st.session_state["preparing_deadline"]
     if time.time() >= deadline:
         _apply_subdomain_from_path()
@@ -682,14 +720,13 @@ def render_preparing(mascot: str) -> None:
         st.session_state.pop("preparing_deadline", None)
         st.session_state["_onboarding_wired"] = False
         st.rerun()
-    time.sleep(0.25)
+    time.sleep(0.12)
     st.rerun()
 
 
 def render_onboarding() -> None:
     mascot = load_mascot_svg()
     screen = st.session_state.get("screen", "landing")
-    st.markdown(GLOBAL_DUO_CSS, unsafe_allow_html=True)
 
     if screen == "landing":
         render_landing(mascot)

@@ -59,7 +59,10 @@ header[data-testid="stHeader"] { background: transparent !important; }
     padding-bottom: 2rem !important;
 }
 @media screen and (max-width: 768px) {
-    .block-container { padding: 1rem !important; }
+    .block-container {
+        padding: 1rem !important;
+        max-width: 100% !important;
+    }
     .stButton button { font-size: 0.9rem !important; }
 }
 button, [role="button"] { transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.15s ease !important; }
