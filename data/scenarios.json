@@ -1,0 +1,10 @@
+{
+  "Campaign Speech (Milestone 1)": {
+    "domain": "Political Science",
+    "goal": "Deliver a compelling short campaign pitch",
+    "persona": "Journalist",
+    "traits": "inquisitive, sharp, skeptical",
+    "context": "You are pitching your vision to a group of undecided young voters.",
+    "milestone": true
+  }
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Convo AI</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 44rem;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      color: #131F24;
+      line-height: 1.5;
+    }
+
+    a {
+      color: #58CC02;
+      font-weight: 600;
+    }
+
+    code {
+      background: #f0f0f0;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Convo AI</h1>
+  <p>
+    The <strong>full app</strong> is a Streamlit server. Host it on any Docker-capable platform
+    (this repo includes a <code>Dockerfile</code>). <strong>Vercel</strong> only serves this static page;
+    it does not run Streamlit.
+  </p>
+
+  <h2>Deploy the full app (cloud)</h2>
+  <ul>
+    <li><strong>Render</strong> — In the dashboard: New → Blueprint → connect this repo (uses <code>render.yaml</code>).
+      Set secret <code>OPENAI_API_KEY</code>. Health check: <code>/_stcore/health</code>.</li>
+    <li><strong>Railway</strong> — New Project → Deploy from repo; Railway picks <code>Dockerfile</code> /
+      <code>railway.json</code>. Add variable <code>OPENAI_API_KEY</code>.</li>
+    <li><strong>Fly.io</strong> — Install <code>flyctl</code>, run <code>fly launch</code> (adjust <code>app</code> name
+      in <code>fly.toml</code>), <code>fly secrets set OPENAI_API_KEY=sk-...</code>, <code>fly deploy</code>.</li>
+    <li><strong>Google Cloud Run</strong> — <code>gcloud run deploy --source .</code> (or build the Dockerfile). Set
+      <code>OPENAI_API_KEY</code> as an env var.</li>
+  </ul>
+  <p>
+    On the cloud, use <strong>OpenAI</strong> (<code>OPENAI_API_KEY</code>) unless you run a private Ollama instance on
+    the same network.
+    Local-only: <code>USE_OLLAMA=true</code> in <code>.env</code> — see <code>.env.example</code>.
+  </p>
+
+  <h2>Optional redirect</h2>
+  <p>
+    After you have a public Streamlit URL (e.g. <code>https://convo-ai.onrender.com</code>),
+    set <code>window.CONVO_AI_STREAMLIT_URL</code> in the script below so this page forwards visitors.
+  </p>
+  <p><a href="https://github.com/pbathuri/convo-ai-demo">GitHub</a></p>
+
+  <script>
+    window.CONVO_AI_STREAMLIT_URL = "";
+    (function () {
+      var u = typeof window.CONVO_AI_STREAMLIT_URL === "string" && window.CONVO_AI_STREAMLIT_URL.length > 4;
+      if (u) window.location.replace(window.CONVO_AI_STREAMLIT_URL);
+    })();
+  </script>
+</body>
+
+</html>

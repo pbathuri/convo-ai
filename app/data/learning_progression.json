@@ -1,0 +1,202 @@
+{
+  "Political Science": {
+    "icon": "🏛️",
+    "skills": [
+      {
+        "name": "State & Revolution",
+        "status": "unlocked",
+        "xp": 20,
+        "streak": 2
+      },
+      {
+        "name": "Beijing vs Washington Consensus",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      },
+      {
+        "name": "International Political Economy",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0,
+        "milestone": true,
+        "challenge": "Explain foreign policy through ideology"
+      }
+    ]
+  },
+  "Business Communication": {
+    "icon": "💼",
+    "skills": [
+      {
+        "name": "Elevator Pitch",
+        "status": "unlocked",
+        "xp": 10,
+        "streak": 1
+      },
+      {
+        "name": "Negotiation Skills",
+        "status": "unlocked",
+        "xp": 8,
+        "streak": 2
+      },
+      {
+        "name": "Handling Difficult Conversations",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0,
+        "milestone": true,
+        "challenge": "De-escalate a high-stakes conflict call"
+      }
+    ]
+  },
+  "Philosophy": {
+    "icon": "📚",
+    "skills": [
+      {
+        "name": "Existentialism",
+        "status": "unlocked",
+        "xp": 12,
+        "streak": 1
+      },
+      {
+        "name": "Ethics & Morality",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      },
+      {
+        "name": "Socratic Dialogue",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0,
+        "milestone": true,
+        "challenge": "Lead a Socratic-style inquiry"
+      }
+    ]
+  },
+  "Emotional Intelligence": {
+    "icon": "🧠",
+    "skills": [
+      {
+        "name": "Empathy Practice",
+        "status": "unlocked",
+        "xp": 15,
+        "streak": 2
+      },
+      {
+        "name": "Handling Feedback",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      },
+      {
+        "name": "Emotional Self-Awareness",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0,
+        "milestone": true,
+        "challenge": "Respond reflectively to personal critique"
+      }
+    ]
+  },
+  "Debate Simulation": {
+    "icon": "🎤",
+    "skills": [
+      {
+        "name": "Formal Rebuttal",
+        "status": "unlocked",
+        "xp": 5,
+        "streak": 1
+      },
+      {
+        "name": "Argument Structuring",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      },
+      {
+        "name": "Live Panel Simulation",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0,
+        "milestone": true,
+        "challenge": "Argue with 3 personas on AI regulation"
+      }
+    ]
+  },
+  "Satirical Political Commentary": {
+    "icon": "🗞️",
+    "skills": [
+      {
+        "name": "Satirical Persona Building",
+        "status": "unlocked",
+        "xp": 6,
+        "streak": 1
+      },
+      {
+        "name": "Irony in Speech",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      },
+      {
+        "name": "Satirical Newsroom Roleplay",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0,
+        "milestone": true,
+        "challenge": "Write a mock headline for a real event"
+      }
+    ]
+  },
+  "Artificial Intelligence & Society": {
+    "icon": "🤖",
+    "skills": [
+      {
+        "name": "Ethics of AI",
+        "status": "unlocked",
+        "xp": 12,
+        "streak": 1
+      },
+      {
+        "name": "AI in Education & Work",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      },
+      {
+        "name": "Surveillance & Bias",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0,
+        "milestone": true,
+        "challenge": "Debate AI's role in law enforcement"
+      }
+    ]
+  },
+  "Sales Talk": {
+    "icon": "🤑",
+    "skills": [
+      {
+        "name": "Cold Opening Pitch",
+        "status": "unlocked",
+        "xp": 10,
+        "streak": 2
+      },
+      {
+        "name": "Objection Handling",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      },
+      {
+        "name": "Closing the Deal Simulation",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0,
+        "milestone": true,
+        "challenge": "Close a high-stakes B2B deal"
+      }
+    ]
+  }
+}

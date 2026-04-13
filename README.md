@@ -1,18 +1,21 @@
 # Convo AI
 
-Duolingo-style conversation practice: a **Next.js 14** web app (`frontend/`) for onboarding, learn paths, and AI chat, plus a **Streamlit** prototype (`app/`, `components/`, etc.) for simulation and backend-oriented experiments.
+Interactive conversation practice with Duolingo-style progression: domain modules (political science, business communication, debate, philosophy, and more), persona-driven coaching, voice-oriented flows, emotional feedback, XP and skill maps, and session-style practice.
 
-Product spec and UI contract for the Next app live in [CURSOR_PROMPT.md](CURSOR_PROMPT.md).
+This repository contains:
+
+- **`frontend/`** — Next.js 14 app (App Router): landing, onboarding, learn dashboard, chat UI, and mock API routes. Authoritative UI spec: [CURSOR_PROMPT.md](CURSOR_PROMPT.md).
+- **`app/`**, **`components/`**, **`data/`**, etc. — Streamlit-oriented Python prototype and services (when present on your branch).
 
 ## Repository layout
 
 | Path | Stack | Purpose |
 |------|--------|--------|
-| `frontend/` | Next.js 14 (App Router), Tailwind, Framer Motion, Zustand | Production-leaning UI: landing, onboarding, learn dashboard, chat (mock APIs) |
-| `app/`, `components/`, `services/` (if present) | Python / Streamlit | Legacy or parallel Streamlit experience |
-| [CURSOR_PROMPT.md](CURSOR_PROMPT.md) | — | Frozen reference for `frontend/` behavior and structure |
+| `frontend/` | Next.js, Tailwind, Framer Motion, Zustand | Primary web UI and scaffolds for backend integration |
+| `app/`, `components/`, … | Python / Streamlit | Simulation engines, domains, legacy UI |
+| [CURSOR_PROMPT.md](CURSOR_PROMPT.md) | — | Frozen reference for `frontend/` |
 
-## Next.js app (recommended for UI work)
+## Next.js app
 
 ```bash
 cd frontend
@@ -20,34 +23,34 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Production build:
+Open [http://localhost:3000](http://localhost:3000). Production:
 
 ```bash
 npm run build
 npm start
 ```
 
-API routes are scaffolds under `frontend/app/api/` (`/api/chat`, `/api/user`, `/api/skills`). Replace `// SCAFFOLD:` call sites when wiring a real backend.
+API scaffolds: `frontend/app/api/` (`/api/chat`, `/api/user`, `/api/skills`). Look for `// SCAFFOLD:` when wiring a real backend.
 
-## Streamlit app (if present in your branch)
+## Streamlit app
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt # if available
+pip install -r requirements.txt
 streamlit run app/app.py
 ```
 
-Exact entrypoint may vary; check `app/` for `app.py`.
+If your tree uses a different entry file, adjust the path (some layouts use `app/app.py` at repo root).
 
 ## Deploying the Next.js app
 
 ### Vercel (recommended)
 
-1. Import this GitHub repository.
+1. Import [pbathuri/convo-ai](https://github.com/pbathuri/convo-ai) (or your fork).
 2. Set **Root Directory** to `frontend`.
-3. Framework preset: **Next.js** (default). Build: `npm run build`, output handled automatically.
-4. Deploy. Pushes to the connected branch trigger new deployments.
+3. Framework: **Next.js** (default). Install/build/start are auto-detected.
+4. Deploy. Git pushes to the production branch trigger redeploys.
 
 ### Render
 
@@ -55,7 +58,7 @@ Exact entrypoint may vary; check `app/` for `app.py`.
 2. **Root Directory:** `frontend`.
 3. **Build command:** `npm install && npm run build`.
 4. **Start command:** `npm start`.
-5. Use Node18+.
+5. Runtime: **Node 18+**.
 
 ## Contributing
 
