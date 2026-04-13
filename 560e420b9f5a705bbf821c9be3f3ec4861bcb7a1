@@ -1,0 +1,25 @@
+README.md
+  29d3fb2ccea4ae4d 1-66
+.gitignore
+  29d3fb2ccea4ae4d 1-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "560e420b9f5a705bbf821c9be3f3ec4861bcb7a1",
+  "prompts": {
+    "29d3fb2ccea4ae4d": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "59a6d1ca-64de-476b-aaf9-60c0a6ebc5c7",
+        "model": "composer-2"
+      },
+      "human_author": "pbathuri",
+      "messages": [],
+      "total_additions": 96,
+      "total_deletions": 3,
+      "accepted_lines": 93,
+      "overriden_lines": 0
+    }
+  }
+}
