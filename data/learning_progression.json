@@ -1,0 +1,72 @@
+{
+  "Political Science": {
+    "icon": "🗳️",
+    "color": "#4a90e2",
+    "skills": [
+      {
+        "name": "Political Philosophy",
+        "status": "completed",
+        "xp": 60,
+        "streak": 2
+      },
+      {
+        "name": "Global Politics",
+        "status": "unlocked",
+        "xp": 30,
+        "streak": 1
+      },
+      {
+        "name": "Milestone 1",
+        "milestone": true,
+        "status": "milestone"
+      },
+      {
+        "name": "Debate Simulation",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      },
+      {
+        "name": "Satirical Persona",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      }
+    ]
+  },
+  "Business Communication": {
+    "icon": "💼",
+    "color": "#28a745",
+    "skills": [
+      {
+        "name": "Networking",
+        "status": "unlocked",
+        "xp": 15,
+        "streak": 1
+      },
+      {
+        "name": "Persuasion",
+        "status": "unlocked",
+        "xp": 10,
+        "streak": 1
+      },
+      {
+        "name": "Milestone 1",
+        "milestone": true,
+        "status": "milestone"
+      },
+      {
+        "name": "Elevator Pitches",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      },
+      {
+        "name": "Negotiation",
+        "status": "locked",
+        "xp": 0,
+        "streak": 0
+      }
+    ]
+  }
+}

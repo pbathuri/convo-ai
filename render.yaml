@@ -1,0 +1,26 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# New → Blueprint → connect repo → set secrets below in the dashboard.
+
+services:
+  - type: web
+    name: convo-ai
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      # Required for cloud unless you expose Ollama to the public internet (not recommended).
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-3.5-turbo
+      # Set to true only if your service can reach an Ollama instance (same private network).
+      - key: USE_OLLAMA
+        value: "false"
+      - key: OLLAMA_BASE_URL
+        value: http://127.0.0.1:11434
+      - key: OLLAMA_MODEL
+        value: llama3.2
