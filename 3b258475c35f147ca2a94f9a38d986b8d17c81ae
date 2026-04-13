@@ -1,0 +1,25 @@
+components/onboarding.py
+  29d3fb2ccea4ae4d 7,53-59,94-103,108-115,117-134,136-139,148,150-153,160,162-164,196-199,418-419,428-433,437,714,723
+app/app.py
+  29d3fb2ccea4ae4d 62-65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "3b258475c35f147ca2a94f9a38d986b8d17c81ae",
+  "prompts": {
+    "29d3fb2ccea4ae4d": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "59a6d1ca-64de-476b-aaf9-60c0a6ebc5c7",
+        "model": "composer-2"
+      },
+      "human_author": "pbathuri",
+      "messages": [],
+      "total_additions": 77,
+      "total_deletions": 37,
+      "accepted_lines": 77,
+      "overriden_lines": 0
+    }
+  }
+}
