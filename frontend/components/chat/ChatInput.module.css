@@ -1,0 +1,60 @@
+/* Voice waveform placeholder — SCAFFOLD: replace with real audio levels when STT is wired */
+
+.waveform {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(28, 176, 246, 0.45);
+  background: rgba(28, 176, 246, 0.08);
+}
+
+.bar {
+  width: 4px;
+  border-radius: 2px;
+  background: #1cb0f6;
+  animation: wave 0.9s ease-in-out infinite;
+}
+
+.bar:nth-child(1) {
+  height: 12px;
+  animation-delay: 0ms;
+}
+
+.bar:nth-child(2) {
+  height: 22px;
+  animation-delay: 120ms;
+}
+
+.bar:nth-child(3) {
+  height: 16px;
+  animation-delay: 240ms;
+}
+
+.bar:nth-child(4) {
+  height: 26px;
+  animation-delay: 360ms;
+}
+
+.bar:nth-child(5) {
+  height: 14px;
+  animation-delay: 480ms;
+}
+
+@keyframes wave {
+
+  0%,
+  100% {
+    transform: scaleY(0.45);
+    opacity: 0.65;
+  }
+
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
