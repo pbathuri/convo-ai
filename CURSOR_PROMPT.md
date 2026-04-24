@@ -1,4 +1,4 @@
-# Cursor Composer Prompt — Convo AI: Duolingo-Style UI/UX (Next.js)
+# Cursor Composer Prompt - Convo AI: Duolingo-Style UI/UX (Next.js)
 
 **Frozen reference for the `frontend/` app.** Implementation lives only under [`frontend/`](frontend/); the Python/Streamlit tree is separate.
 
@@ -14,7 +14,7 @@
 
 ## Project structure (target)
 
-See [`frontend/`](frontend/) — `app/`, `components/`, `lib/`, `public/mascot/`, API routes under `app/api/`.
+See [`frontend/`](frontend/) - `app/`, `components/`, `lib/`, `public/mascot/`, API routes under `app/api/`.
 
 ## Design system (summary)
 
@@ -35,9 +35,9 @@ Routes: `domain` → `subdomain` → `experience` → `discovery` → `goal` →
 
 ## API scaffolds
 
-- `POST /api/chat` — mock AI payload shape until Python backend is wired.
-- `GET`/`PUT /api/user` — profile scaffold.
-- `GET /api/skills` — skill tree scaffold.
+- `POST /api/chat` - mock AI payload shape until Python backend is wired.
+- `GET`/`PUT /api/user` - profile scaffold.
+- `GET /api/skills` - skill tree scaffold.
 
 Optional: on first load of learn routes, `GET /api/user` may hydrate store (guarded, e.g. once per tab session).
 

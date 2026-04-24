@@ -2,7 +2,7 @@
 
 # Convo AI
 
-**Duolingo-style conversation practice for domain expertise — political science, business comms, debate, philosophy, and more.**
+**Duolingo-style conversation practice for domain expertise - political science, business comms, debate, philosophy, and more.**
 
 <br/>
 
@@ -17,7 +17,7 @@
 
 ## TL;DR
 
-Interactive conversation practice with Duolingo-style progression — domain modules, persona-driven coaching, voice flows, emotional feedback, XP, skill maps, and session-style practice.
+Interactive conversation practice with Duolingo-style progression - domain modules, persona-driven coaching, voice flows, emotional feedback, XP, skill maps, and session-style practice.
 
 Lightweight demo twin → [**convo-ai-demo**](https://github.com/pbathuri/convo-ai-demo).
 
@@ -29,7 +29,7 @@ Lightweight demo twin → [**convo-ai-demo**](https://github.com/pbathuri/convo-
 |------|-------|---------|
 | `frontend/` | Next.js 14 · Tailwind · Framer Motion · Zustand | Primary web UI + scaffolds for backend integration |
 | `app/`, `components/`, `data/` | Python · Streamlit | Simulation engines, domains, legacy UI |
-| [`CURSOR_PROMPT.md`](CURSOR_PROMPT.md) | — | Frozen reference for `frontend/` |
+| [`CURSOR_PROMPT.md`](CURSOR_PROMPT.md) | - | Frozen reference for `frontend/` |
 
 ---
 
@@ -86,7 +86,7 @@ If your tree uses a different entry file, adjust the path.
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) if present. License: MIT — see `License`.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) if present. License: MIT - see `License`.
 
 ---
 

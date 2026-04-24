@@ -1,7 +1,7 @@
 
 # 🤝 Contributing to Convo AI
 
-We welcome contributions of all types — from bug fixes and features to UI improvements and documentation.
+We welcome contributions of all types - from bug fixes and features to UI improvements and documentation.
 
 ## 🚀 Local Setup
 
@@ -30,10 +30,10 @@ streamlit run app.py
 
 ## 📂 Folder Overview
 
-- `services/` — Engines (feedback, skill, memory, voice, etc.)
-- `components/` — UI blocks (charts, maps, dashboards)
-- `services/domains/` — Expert domain conversation generators
-- `data/` — Skill progression configs
+- `services/` - Engines (feedback, skill, memory, voice, etc.)
+- `components/` - UI blocks (charts, maps, dashboards)
+- `services/domains/` - Expert domain conversation generators
+- `data/` - Skill progression configs
 
 ## 📬 Feedback
 

@@ -1,5 +1,5 @@
 
-# 📄 Convo AI — One-Pager
+# 📄 Convo AI - One-Pager
 
 ## 🧠 What is Convo AI?
 
@@ -12,7 +12,7 @@ Convo AI is a Duolingo-style conversational simulation platform designed to help
 - 📈 Skill progression maps with milestones
 - 🎮 XP, streaks, and goal-based progression
 - 🎙️ Speech-to-text & text-to-speech engine
-- 🧩 Modular architecture — plug & play domains
+- 🧩 Modular architecture - plug & play domains
 
 ## 🎯 Target Audience
 
@@ -41,4 +41,4 @@ Convo AI is a Duolingo-style conversational simulation platform designed to help
 
 ## 💡 Vision
 
-To become the go-to platform for immersive, emotionally aware communication practice — one conversation at a time.
+To become the go-to platform for immersive, emotionally aware communication practice - one conversation at a time.
