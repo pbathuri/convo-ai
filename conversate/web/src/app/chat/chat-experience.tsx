@@ -1,29 +1,34 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { DidAgentStage } from "@/components/did/DidAgentStage";
 import { Button } from "@/components/ui/button";
-import type { PersonaSlug } from "@/lib/personas";
+import type { PersonaId } from "@/lib/personas";
+import { getPersona } from "@/lib/personas";
 import { useSessionStore } from "@/stores/session-store";
 
 type Msg = { id: string; role: "user" | "assistant"; content: string };
 
 type Props = {
-  slug: PersonaSlug;
-  personaLabel: string;
+  personaId: PersonaId;
+  headline: string;
+  subtitle: string;
   agentId: string;
   clientKey: string;
   openingLine: string;
 };
 
 export function ChatExperience({
-  slug,
-  personaLabel,
+  personaId,
+  headline,
+  subtitle,
   agentId,
   clientKey,
   openingLine,
 }: Props) {
   const setPersona = useSessionStore((s) => s.setPersona);
+  const p = getPersona(personaId);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [messages, setMessages] = useState<Msg[]>(() => [
@@ -31,8 +36,8 @@ export function ChatExperience({
   ]);
 
   useEffect(() => {
-    setPersona(slug);
-  }, [slug, setPersona]);
+    setPersona(personaId);
+  }, [personaId, setPersona]);
 
   useEffect(() => {
     setMessages([{ id: "opening", role: "assistant", content: openingLine }]);
@@ -48,24 +53,18 @@ export function ChatExperience({
     setInput("");
     setBusy(true);
     try {
-      const history = [...messages, userMsg].map(({ role, content }) => ({
-        role,
-        content,
-      }));
+      const history = [...messages, userMsg].map(({ role, content }) => ({ role, content }));
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ persona: slug, history }),
+        body: JSON.stringify({ persona: personaId, history }),
       });
       if (!res.ok) {
         const err = await res.text();
         throw new Error(err || res.statusText);
       }
       const data = (await res.json()) as { reply: string };
-      setMessages((m) => [
-        ...m,
-        { id: `a-${Date.now()}`, role: "assistant", content: data.reply },
-      ]);
+      setMessages((m) => [...m, { id: `a-${Date.now()}`, role: "assistant", content: data.reply }]);
     } catch (e) {
       setMessages((m) => [
         ...m,
@@ -83,31 +82,29 @@ export function ChatExperience({
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       <section className="space-y-3">
-        <h1 className="text-2xl font-semibold">Chat</h1>
+        <h1 className="text-2xl font-semibold">Session</h1>
         <p className="text-sm text-muted-foreground">
-          Persona: <span className="text-foreground">{personaLabel}</span>
+          <span className="text-foreground">{headline}</span>
+          {subtitle ? <span className="block">{subtitle}</span> : null}
         </p>
+        {p ? (
+          <div className="relative h-40 w-full max-w-sm overflow-hidden rounded-lg border bg-muted">
+            <Image src={p.photoUrl} alt={p.displayName} fill className="object-cover" sizes="320px" />
+          </div>
+        ) : null}
         {canStream ? (
-          <DidAgentStage
-            agentId={agentId}
-            clientKey={clientKey}
-            openingLine={openingLine}
-          />
+          <DidAgentStage agentId={agentId} clientKey={clientKey} openingLine={openingLine} />
         ) : (
           <p className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">
-            Set <code className="text-xs">NEXT_PUBLIC_DID_CLIENT_KEY</code> and
-            the <code className="text-xs">DID_PERSONA_*</code> env vars for this
-            persona so the D-ID Agents stream can start.
+            Set <code className="text-xs">NEXT_PUBLIC_DID_CLIENT_KEY</code> and the matching{" "}
+            <code className="text-xs">DID_PERSONA_*</code> env var for this persona.
           </p>
         )}
       </section>
       <section className="flex flex-col gap-3">
         <div className="min-h-[280px] flex-1 space-y-3 rounded-lg border bg-card p-4">
           {messages.map((m) => (
-            <div
-              key={m.id}
-              className={m.role === "user" ? "text-right" : "text-left"}
-            >
+            <div key={m.id} className={m.role === "user" ? "text-right" : "text-left"}>
               <div
                 className={
                   m.role === "user"

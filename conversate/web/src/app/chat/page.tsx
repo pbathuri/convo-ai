@@ -1,18 +1,19 @@
 import { generateOpeningLine } from "@/lib/llm";
 import {
-  type PersonaSlug,
+  defaultPersonaId,
+  getPersona,
   personaAgentId,
-  personaLabel,
-  personaSlugSchema,
+  personaIdSchema,
+  type PersonaId,
 } from "@/lib/personas";
 import { ChatExperience } from "./chat-experience";
 
 export const dynamic = "force-dynamic";
 
-function resolveSlug(raw: string | undefined): PersonaSlug {
-  const v = raw ?? "coach";
-  const p = personaSlugSchema.safeParse(v);
-  return p.success ? p.data : "coach";
+function resolvePersonaId(raw: string | undefined): PersonaId {
+  const v = raw ?? defaultPersonaId();
+  const p = personaIdSchema.safeParse(v);
+  return p.success ? p.data : defaultPersonaId();
 }
 
 export default async function ChatPage({
@@ -20,21 +21,24 @@ export default async function ChatPage({
 }: {
   searchParams: { persona?: string };
 }) {
-  const slug = resolveSlug(searchParams.persona);
-  const agentId = personaAgentId(slug);
+  const personaId = resolvePersonaId(searchParams.persona);
+  const persona = getPersona(personaId);
+  const agentId = personaAgentId(personaId) ?? "";
   const clientKey = process.env.NEXT_PUBLIC_DID_CLIENT_KEY ?? "";
-  let openingLine = `Hi — I'm your ${personaLabel(slug)}. Tell me what you'd like to practice.`;
+  const label = persona ? `${persona.displayName} (${persona.companyName})` : personaId;
+  let openingLine = `Hi — I'm ${label}. Tell me what you'd like to practice.`;
   try {
-    openingLine = await generateOpeningLine(personaLabel(slug));
+    openingLine = await generateOpeningLine(label);
   } catch {
-    /* missing GOOGLE_AI_STUDIO_KEY or upstream error — keep fallback */
+    /* missing GOOGLE_AI_STUDIO_KEY or upstream */
   }
 
   return (
     <ChatExperience
-      slug={slug}
-      personaLabel={personaLabel(slug)}
-      agentId={agentId ?? ""}
+      personaId={personaId}
+      headline={label}
+      subtitle={persona?.role ?? ""}
+      agentId={agentId}
       clientKey={clientKey}
       openingLine={openingLine}
     />

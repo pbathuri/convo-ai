@@ -1,17 +1,19 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { generateOpeningLine } from "@/lib/llm";
-import { personaLabel, personaSlugSchema } from "@/lib/personas";
+import { getPersona, personaIdSchema } from "@/lib/personas";
 
 const bodySchema = z.object({
-  persona: personaSlugSchema,
+  persona: personaIdSchema,
 });
 
 export async function POST(req: Request) {
   try {
     const json: unknown = await req.json();
     const { persona } = bodySchema.parse(json);
-    const line = await generateOpeningLine(personaLabel(persona));
+    const p = getPersona(persona);
+    const label = p ? `${p.displayName} (${p.companyName})` : persona;
+    const line = await generateOpeningLine(label);
     return NextResponse.json({ openingLine: line });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Bad request";

@@ -13,9 +13,7 @@ export function DidAgentStage({ agentId, clientKey, openingLine }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const managerRef = useRef<AgentManager | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [phase, setPhase] = useState<
-    "idle" | "connecting" | "connected" | "speaking" | "done"
-  >("idle");
+  const [phase, setPhase] = useState<"idle" | "connecting" | "connected" | "speaking" | "done">("idle");
 
   useEffect(() => {
     if (!agentId || !clientKey || !openingLine) return;
@@ -35,7 +33,7 @@ export function DidAgentStage({ agentId, clientKey, openingLine }: Props) {
               const el = videoRef.current;
               if (!el || cancelled) return;
               el.srcObject = srcObject;
-              void el.play().catch(() => { });
+              void el.play().catch(() => {});
             },
             onError(err) {
               setError(err?.message ?? String(err));
@@ -80,12 +78,7 @@ export function DidAgentStage({ agentId, clientKey, openingLine }: Props) {
     <div className="space-y-2">
       <div className="relative aspect-video w-full max-w-xl overflow-hidden rounded-lg border bg-black">
         {/* biome-ignore lint/a11y/useMediaCaption: D-ID agent stream is synchronized A/V */}
-        <video
-          ref={videoRef}
-          className="h-full w-full object-cover"
-          playsInline
-          controls
-        />
+        <video ref={videoRef} className="h-full w-full object-cover" playsInline controls />
       </div>
       <p className="text-xs text-muted-foreground">Stream: {phase}</p>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
