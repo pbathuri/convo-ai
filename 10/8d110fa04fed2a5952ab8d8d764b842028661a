@@ -1,0 +1,32 @@
+conversate/web/docs/personas/google-l4-swe.md
+  s_1322c8294517ae::t_45dcd214ef0e09 1-27
+conversate/web/docs/personas/amazon-l5-bar-raiser.md
+  s_1322c8294517ae::t_f571bf8bb247c9 1-27
+conversate/web/docs/personas/goldman-vp-banking.md
+  s_1322c8294517ae::t_d6ac3124e936df 1-27
+conversate/web/docs/personas/microsoft-prin-pm.md
+  s_1322c8294517ae::t_14a69fc441087b 1-27
+conversate/web/docs/personas/mckinsey-em-behavioral.md
+  s_1322c8294517ae::t_9fca07c461fc48 1-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "108d110fa04fed2a5952ab8d8d764b842028661a",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "default"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
