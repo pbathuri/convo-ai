@@ -6,17 +6,16 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   agentId: string;
   clientKey: string;
-  openingLine: string;
 };
 
-export function DidAgentStage({ agentId, clientKey, openingLine }: Props) {
+export function DidAgentStage({ agentId, clientKey }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const managerRef = useRef<AgentManager | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [phase, setPhase] = useState<"idle" | "connecting" | "connected" | "speaking" | "done">("idle");
+  const [phase, setPhase] = useState<"idle" | "connecting" | "connected" | "error">("idle");
 
   useEffect(() => {
-    if (!agentId || !clientKey || !openingLine) return;
+    if (!agentId || !clientKey) return;
 
     let cancelled = false;
 
@@ -50,14 +49,11 @@ export function DidAgentStage({ agentId, clientKey, openingLine }: Props) {
           await manager.disconnect();
           return;
         }
-        setPhase("connected");
-        setPhase("speaking");
-        await manager.speak({ type: "text", input: openingLine });
-        if (!cancelled) setPhase("done");
+        if (!cancelled) setPhase("connected");
       } catch (e) {
         if (!cancelled) {
           setError(e instanceof Error ? e.message : String(e));
-          setPhase("idle");
+          setPhase("error");
         }
       }
     })();
@@ -72,7 +68,7 @@ export function DidAgentStage({ agentId, clientKey, openingLine }: Props) {
         el.srcObject = null;
       }
     };
-  }, [agentId, clientKey, openingLine]);
+  }, [agentId, clientKey]);
 
   return (
     <div className="space-y-2">

@@ -1,4 +1,3 @@
-import { generateOpeningLine } from "@/lib/llm";
 import {
   defaultPersonaId,
   getPersona,
@@ -16,7 +15,7 @@ function resolvePersonaId(raw: string | undefined): PersonaId {
   return p.success ? p.data : defaultPersonaId();
 }
 
-export default async function ChatPage({
+export default function ChatPage({
   searchParams,
 }: {
   searchParams: { persona?: string };
@@ -25,22 +24,15 @@ export default async function ChatPage({
   const persona = getPersona(personaId);
   const agentId = personaAgentId(personaId) ?? "";
   const clientKey = process.env.NEXT_PUBLIC_DID_CLIENT_KEY ?? "";
-  const label = persona ? `${persona.displayName} (${persona.companyName})` : personaId;
-  let openingLine = `Hi — I'm ${label}. Tell me what you'd like to practice.`;
-  try {
-    openingLine = await generateOpeningLine(label);
-  } catch {
-    /* missing GOOGLE_AI_STUDIO_KEY or upstream */
-  }
+  const headline = persona ? `${persona.displayName} (${persona.companyName})` : personaId;
 
   return (
     <ChatExperience
       personaId={personaId}
-      headline={label}
+      headline={headline}
       subtitle={persona?.role ?? ""}
       agentId={agentId}
       clientKey={clientKey}
-      openingLine={openingLine}
     />
   );
 }

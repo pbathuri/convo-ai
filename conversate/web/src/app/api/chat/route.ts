@@ -1,3 +1,7 @@
+/**
+ * DORMANT (V2) — Gemini-backed chat relay. V1 uses D-ID Agents for LLM/TTS/ASR; this route is not called from the UI.
+ * Kept for future webhook / hybrid flows.
+ */
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { type ChatTurn, generateChatReply } from "@/lib/llm";

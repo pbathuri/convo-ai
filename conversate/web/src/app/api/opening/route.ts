@@ -1,3 +1,6 @@
+/**
+ * DORMANT (V2) — Server-generated opening via Gemini. V1 uses D-ID Studio greeting; this route is not called from the UI.
+ */
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { generateOpeningLine } from "@/lib/llm";

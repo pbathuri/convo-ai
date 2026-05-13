@@ -1,3 +1,7 @@
+// RESERVED FOR V2 — D-ID LLM webhook override. Not used in V1.
+// V1 architecture: D-ID Agents run their own GPT-4.1 brain with
+// the persona prompt configured in D-ID Studio.
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getServerEnv } from "./env";
 
