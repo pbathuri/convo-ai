@@ -1,0 +1,16 @@
+companies:
+  - id: amazon
+    seeds:
+      - "https://www.aboutamazon.com/about-us/leadership-principles"
+  - id: google
+    seeds:
+      - "https://careers.google.com/how-we-care/"
+  - id: mckinsey
+    seeds:
+      - "https://www.mckinsey.com/careers"
+  - id: goldmansachs
+    seeds:
+      - "https://www.goldmansachs.com/careers"
+  - id: microsoft
+    seeds:
+      - "https://careers.microsoft.com/v2/global/en/home"

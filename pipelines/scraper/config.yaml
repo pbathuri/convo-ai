@@ -1,0 +1,14 @@
+# Default minimum seconds between HTTP requests to the same host (per source may override).
+per_host_seconds: 5
+
+sources:
+  youtube:
+    per_host_seconds: 5
+  glassdoor:
+    per_host_seconds: 8
+  company_careers:
+    per_host_seconds: 5
+  q_banks:
+    per_host_seconds: 5
+  reddit:
+    per_host_seconds: 5

@@ -1,0 +1,9 @@
+sources:
+  - id: interviewbit_behavioral
+    type: http
+    url: "https://www.interviewbit.com/blog/behavioral-interview-questions/"
+    output_subdir: interviewbit
+  - id: star_csv
+    type: csv
+    path: star_questions.csv
+    output_subdir: star_csv
