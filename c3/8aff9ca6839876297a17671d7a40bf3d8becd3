@@ -1,0 +1,49 @@
+conversate/web/src/app/page.tsx
+  s_1322c8294517ae::t_f78a2bd92b61b1 1,4,8,12-13,16-43,46-49
+conversate/web/src/app/api/opening/route.ts
+  s_1322c8294517ae::t_4daf9c5efa1020 4,7,14-16
+conversate/web/src/lib/env.ts
+  s_1322c8294517ae::t_95c0a1391bfc26 6,9-10,20-21
+  s_1322c8294517ae::t_6ce8fb99b08c5c 3-4,7-8
+conversate/web/src/app/chat/page.tsx
+  s_1322c8294517ae::t_e5d67940cfdd33 3-4,6-7,13-16,24-26,38,40-41
+  s_1322c8294517ae::t_82458158b4f8f3 28-29,31,33,39
+conversate/web/src/stores/session-store.ts
+  s_1322c8294517ae::t_b19a228b6ecd4c 4,7-8,13,15
+conversate/web/src/app/api/chat/route.ts
+  s_1322c8294517ae::t_9b256d4c22b752 4,7,20-21
+conversate/web/src/app/chat/chat-experience.tsx
+  s_1322c8294517ae::t_1e66565d39f655 56,60,67,96,107
+  s_1322c8294517ae::t_03cc39ef1086da 23-25,88,92,100
+  s_1322c8294517ae::t_36864235db2946 3,7-8,14-16,31,39-40,85,87,90-91,93-94,99
+conversate/web/src/components/did/DidAgentStage.tsx
+  s_1322c8294517ae::t_5c01601bed4ba4 36,81
+  s_1322c8294517ae::t_b2575b59de1d73 16
+conversate/web/src/app/personas/page.tsx
+  s_1322c8294517ae::t_6f32f63b39fc61 1,3-4,11,13-15,18-19,21-40,43
+conversate/web/src/app/api/personas/route.ts
+  s_1322c8294517ae::t_f9d0471a075d54 1-19
+conversate/web/src/lib/personas.ts
+  s_1322c8294517ae::t_e2ed6308db7a0a 3-8,10-23,26-90,93-97,100-102
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "c38aff9ca6839876297a17671d7a40bf3d8becd3",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "default"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
