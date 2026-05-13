@@ -1,0 +1,38 @@
+conversate/web/src/components/did/DidAgentStage.tsx
+  s_1322c8294517ae::t_79e22a9f3616a7 11,15,18,52,56,71
+conversate/web/src/app/api/chat/route.ts
+  s_1322c8294517ae::t_b91be1fa47e383 1-4
+conversate/web/src/app/chat/chat-experience.tsx
+  s_1322c8294517ae::t_8a2d398b73f9bd 4,27,47,55-66
+conversate/web/README.md
+  s_1322c8294517ae::t_774cf15a5eed00 1,3,5-11,14-16,19
+conversate/web/src/app/api/llm/status/route.ts
+  s_1322c8294517ae::t_f936810e4cbe1c 1-10
+conversate/web/src/lib/llm.ts
+  s_1322c8294517ae::t_fa4d7705195f01 1-4
+conversate/web/src/app/chat/page.tsx
+  s_1322c8294517ae::t_6eb3fa58745d87 18,27,32
+conversate/web/src/app/api/opening/route.ts
+  s_1322c8294517ae::t_e9790ce575a6e4 1-3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "f4dcfa5c374c7fc2b35b8d3565d04bcdfd5d5411",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "default"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
