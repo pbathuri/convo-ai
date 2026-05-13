@@ -1,0 +1,122 @@
+pipelines/scraper/seeds/companies.yaml
+  s_cdcb8d7880af57::t_71463dbf8cd192 1-6
+pipelines/scraper/scraper/context.py
+  s_cdcb8d7880af57::t_ff4697254e1e24 1-21
+pipelines/scraper/config.yaml
+  s_cdcb8d7880af57::t_16f35a9f47f528 1-14
+pipelines/scraper/scraper/sources/reddit.py
+  s_cdcb8d7880af57::t_749aeabc9c18b6 1-3,5,7-44,46-77,80,83,87-89,101,108-114,117-118,121-124,127,137-140,145-146,151-157
+  s_cdcb8d7880af57::t_ee4fa4b40eb215 4,45,78-79,81-82,84-86,90-100,102-107,115-116,119-120,125-126,128-136,141-144,147-150
+  s_cdcb8d7880af57::t_86b34b9cae98b1 6
+pipelines/scraper/scraper/corpus.py
+  s_cdcb8d7880af57::t_e3ac200aa740db 1-53
+pipelines/scraper/scraper/logging_setup.py
+  s_cdcb8d7880af57::t_4bb8fe2b4a69b6 10-40
+  s_cdcb8d7880af57::t_2d8a16bfaf7573 48,50,57,64,67-73,75-77,79
+  s_cdcb8d7880af57::t_52584a60d3713e 1-9,41-47,49,51-56,58-63,65-66,74,78,80-81
+pipelines/scraper/.gitignore
+  s_cdcb8d7880af57::t_e0483f57ed8bb1 1-6
+pipelines/scraper/scraper/sources/base.py
+  s_cdcb8d7880af57::t_f164d0a6a7224a 1-22
+pipelines/scraper/scraper/sources/youtube.py
+  s_cdcb8d7880af57::t_493e2ac85f34fb 221
+  s_cdcb8d7880af57::t_42e8d52577de5d 3
+  s_cdcb8d7880af57::t_383184cfbefda3 7,223,226,241,289-290,297,301-304,307,309-311,315,330-333,339-342
+  s_1322c8294517ae::t_e626c10c724720 18
+  s_1322c8294517ae::t_5bf61c131ee015 4-5
+  s_cdcb8d7880af57::t_8dce57cc97ac6f 10
+  s_1322c8294517ae::t_fa190a9f33b6d9 161
+  s_1322c8294517ae::t_98f4fb642fbd01 200,206-208
+  s_1322c8294517ae::t_6b15b7406f09bc 120-130,133,152,154-156,163-188,195,209-210
+  s_cdcb8d7880af57::t_f78df6374b6be0 247,253,267-272
+  s_cdcb8d7880af57::t_052095264d680c 70-119,131-132,134-151,153,157-160,162,189-194,196-199,201-205,211-213
+  s_cdcb8d7880af57::t_00c6203c5c7f67 6
+  s_cdcb8d7880af57::t_692ce918e8ced8 59-60,65-66,214-220,222,224-225,227-240,242-245,248-251,254-255,257-266,273-288,299,306,308,312-314,317-319,321-325,327-329,334-338
+  s_1322c8294517ae::t_28a85bbbcf9aec 246
+  s_1322c8294517ae::t_3aa1daa486badd 343-344
+  s_cdcb8d7880af57::t_cb170cf32b9f37 252,256
+  s_cdcb8d7880af57::t_7f478d25172aae 31
+  s_cdcb8d7880af57::t_f16acdbe979deb 1-2,8-9,11-17,19-30,32-58,61-64,67-69,291-296,298,300,305,316,320,326
+pipelines/scraper/seeds/reddit_fixture.jsonl
+  s_cdcb8d7880af57::t_ac640b6ea34783 1-4
+pipelines/scraper/seeds/reddit.yaml
+  s_cdcb8d7880af57::t_e582b8ed6e4ae7 1-4
+pipelines/scraper/run.py
+  s_1322c8294517ae::t_df90bfee1fabcc 1-6
+pipelines/scraper/seeds/star_questions.csv
+  s_cdcb8d7880af57::t_b5bc5f02000f91 1-4
+pipelines/scraper/scraper/run.py
+  s_cdcb8d7880af57::t_882bb3313a2432 1-3,5-23,25-141
+  s_cdcb8d7880af57::t_e85283ac43a33b 4
+  s_cdcb8d7880af57::t_c2e2d84aacba74 24
+pipelines/scraper/scraper/robots.py
+  s_cdcb8d7880af57::t_066d2f2c134dc6 44
+  s_cdcb8d7880af57::t_ba712a76e8fe65 1-43,45-58
+pipelines/scraper/scraper/settings.py
+  s_cdcb8d7880af57::t_2b624547e678f9 1-42
+pipelines/scraper/seeds/youtube_channels.yaml
+  s_cdcb8d7880af57::t_d7cb3171b20bc5 1-2,4-33
+  s_cdcb8d7880af57::t_3ee9c25639cead 3
+pipelines/scraper/requirements.txt
+  s_cdcb8d7880af57::t_e8f6bb322d7896 1-19
+pipelines/scraper/.env.example
+  s_cdcb8d7880af57::t_74a35c4e454027 1-10
+pipelines/scraper/scraper/__init__.py
+  s_cdcb8d7880af57::t_9a4665624c0cb0 1-3
+pipelines/scraper/scraper/sources/glassdoor.py
+  s_cdcb8d7880af57::t_6f295acc180098 35-41
+  s_cdcb8d7880af57::t_5816eaeea46936 127
+  s_cdcb8d7880af57::t_1db699c485c236 92-102
+  s_cdcb8d7880af57::t_1459773f57d9ba 1-34,42-91,103-126,128-179,183-193
+  s_cdcb8d7880af57::t_cd048cd01d6588 180-182
+pipelines/scraper/scraper/sources/company_careers.py
+  s_cdcb8d7880af57::t_a3c637c17cc022 179
+  s_cdcb8d7880af57::t_b076d7f9374027 107-109,113
+  s_cdcb8d7880af57::t_89dda36e8c45ab 1-106,110-112,114-178,180-190
+pipelines/scraper/scraper/http_client.py
+  s_1322c8294517ae::t_eca1a79ff9d2fd 63-65,67-68,71-78
+  s_cdcb8d7880af57::t_685b4387466fa0 3-5,9-10,19-24,49
+  s_1322c8294517ae::t_23b8b075ed9674 66,69-70
+  s_cdcb8d7880af57::t_cfa3389967173f 1-2,6-8,11-18,25-48,50-62
+pipelines/scraper/scraper/sources/q_banks.py
+  s_cdcb8d7880af57::t_f764beb04e27a1 1-4,6,8-112,115-184
+  s_cdcb8d7880af57::t_8209b29c68c903 5
+  s_cdcb8d7880af57::t_a9c14b8b2675c5 7
+  s_cdcb8d7880af57::t_847d1837ca3d6a 113-114
+pipelines/scraper/seeds/q_banks.yaml
+  s_cdcb8d7880af57::t_09fc56b909ab5b 1-9
+pipelines/scraper/scraper/sources/__init__.py
+  s_cdcb8d7880af57::t_f453e1b07d4bb1 1
+pipelines/scraper/seeds/company_careers.yaml
+  s_cdcb8d7880af57::t_30b972bee78599 1-16
+pipelines/scraper/scraper/manifest.py
+  s_cdcb8d7880af57::t_01ae8bbdbf8d21 13,16-19,52-53,61,65-67,69,74,84,87,103,105,108-111,113-118,120-124,143-144
+  s_cdcb8d7880af57::t_c3d84bb50cc099 1-12,14-15,20-51,54-60,62-64,68,70-73,75-83,85-86,98-102,104,106,112,125-142,145
+  s_cdcb8d7880af57::t_9ae4c6ecea96f1 88-97,107,119
+pipelines/scraper/scraper/rate_limit.py
+  s_cdcb8d7880af57::t_629cee5a603c73 1-29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "e8e6b3fabf314c1cec8ccc8ec7fcba1e5ba4437c",
+  "prompts": {},
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "default"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    },
+    "s_cdcb8d7880af57": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "2c507146-f57b-4b13-900e-b1a9291b00d4",
+        "model": "default"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
