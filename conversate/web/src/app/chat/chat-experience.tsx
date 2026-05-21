@@ -14,6 +14,10 @@ import { InterviewRoomPanel, SakuraPageShell } from "@/components/ui/sakura";
 import { trackPageEvent } from "@/lib/analytics/client";
 import type { PersonaId } from "@/lib/personas";
 import {
+  clearSessionInflight,
+  getOrCreateSessionId,
+} from "@/lib/session/create-session";
+import {
   type AvatarMode,
   type InterviewPhase,
   interviewPhaseHint,
@@ -46,7 +50,7 @@ export function ChatExperience({ personaId, agentId, clientKey }: Props) {
   const [savedSpeechCount, setSavedSpeechCount] = useState(0);
   const [unsavedSpeechCount, setUnsavedSpeechCount] = useState(0);
   const [manualEntryCount, setManualEntryCount] = useState(0);
-  const inflightRef = useRef<Promise<void> | null>(null);
+  const prevPersonaRef = useRef<PersonaId | null>(null);
 
   const trackPhase = useCallback(
     (phase: InterviewPhase) => {
@@ -93,6 +97,12 @@ export function ChatExperience({ personaId, agentId, clientKey }: Props) {
   }, [canStream, setPhase]);
 
   useEffect(() => {
+    if (prevPersonaRef.current && prevPersonaRef.current !== personaId) {
+      clearSessionInflight(prevPersonaRef.current);
+    }
+    prevPersonaRef.current = personaId;
+
+    let cancelled = false;
     setSessionId(null);
     setPhase("creating_session");
     setSpeechSegments([]);
@@ -112,25 +122,17 @@ export function ChatExperience({ personaId, agentId, clientKey }: Props) {
       SESSION_CREATE_TIMEOUT_MS,
     );
 
-    const run = async () => {
-      try {
-        const res = await fetch("/api/sessions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ personaId }),
-          signal: controller.signal,
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = (await res.json()) as { session: { id: string } };
-        if (controller.signal.aborted) return;
-        const id = data.session.id;
+    void getOrCreateSessionId(personaId, controller.signal)
+      .then((id) => {
+        if (cancelled) return;
         setSessionId(id);
-        const isLocal = id.startsWith("local-");
-        if (isLocal) {
+        if (id.startsWith("local-")) {
           setToast("Session degraded (local mode) — history may not persist.");
         }
         setPhase(canStream ? "avatar_connecting" : "transcript_only");
-      } catch (err) {
+      })
+      .catch((err) => {
+        if (cancelled) return;
         if (
           controller.signal.aborted &&
           !(err instanceof Error && err.message.includes("HTTP"))
@@ -143,17 +145,13 @@ export function ChatExperience({ personaId, agentId, clientKey }: Props) {
         }
         setSessionId(`local-${Date.now()}`);
         setPhase(canStream ? "avatar_connecting" : "transcript_only");
-      } finally {
+      })
+      .finally(() => {
         window.clearTimeout(timeoutId);
-      }
-    };
-
-    inflightRef.current = run();
-    void inflightRef.current;
+      });
 
     return () => {
-      controller.abort();
-      window.clearTimeout(timeoutId);
+      cancelled = true;
     };
   }, [personaId, canStream, setPhase]);
 
