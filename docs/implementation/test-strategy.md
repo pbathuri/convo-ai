@@ -33,3 +33,19 @@ Manual (`/chat?persona=amazon-l5-bar-raiser`):
 7. End session and score flow unchanged.
 
 Build gate: `cd conversate/web && npm run build`
+
+KB safety gate: `cd conversate/web && npm run kb:smoke`
+
+## Sakura MVP browser checklist
+
+| Route | Check |
+|-------|-------|
+| `/` | Hero, explainer steps, persona preview cards |
+| `/personas` | Five cards, company accent, Open chat |
+| `/chat?persona=amazon-l5-bar-raiser` | Interview room panel, D-ID, speech capture |
+| `/sessions` | List with message count + score badge |
+| `/sessions/[id]` | Transcript, Generate score, feedback report |
+| `/progress` | Sessions completed, avg score, next drill |
+| `/admin` | Metric cards (no secrets) |
+| `/api/health` | 200 |
+| `/api/personas` | Five personas JSON |
