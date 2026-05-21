@@ -136,7 +136,19 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
         Stream: {phase}
         {greetingLatencyMs != null ? ` · greeting ready ~${greetingLatencyMs}ms` : null}
       </p>
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      {error ? (
+        <div className="space-y-1 text-sm text-destructive">
+          <p>{error}</p>
+          {error.toLowerCase().includes("fetch") ? (
+            <p className="text-xs text-muted-foreground">
+              Check that <code className="text-[11px]">NEXT_PUBLIC_DID_CLIENT_KEY</code> is set,
+              the agent ID in <code className="text-[11px]">DID_PERSONA_*</code> is valid, and
+              http://localhost:3000 is allowlisted in D-ID Studio for this client key. Use Chrome
+              (not an embedded preview browser).
+            </p>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }

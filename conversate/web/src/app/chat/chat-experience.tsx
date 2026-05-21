@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { DidAgentStage } from "@/components/did/DidAgentStage";
 import { PostSessionActions } from "@/components/session/PostSessionActions";
 import { SessionObjectiveCard } from "@/components/session/SessionObjectiveCard";
@@ -12,33 +12,22 @@ import { PersonaBadge } from "@/components/ui/interview-room";
 import { InterviewRoomPanel, SakuraPageShell } from "@/components/ui/sakura";
 import type { PersonaId } from "@/lib/personas";
 import type { SpeechSegment } from "@/lib/speech/types";
-import { getPersona } from "@/lib/personas";
 import { useSessionStore } from "@/stores/session-store";
 
 type Props = {
   personaId: PersonaId;
-  headline: string;
-  subtitle: string;
   agentId: string;
   clientKey: string;
 };
 
-export function ChatExperience({
-  personaId,
-  headline,
-  subtitle,
-  agentId,
-  clientKey,
-}: Props) {
+export function ChatExperience({ personaId, agentId, clientKey }: Props) {
   const setPersona = useSessionStore((s) => s.setPersona);
-  const p = getPersona(personaId);
   const canStream = Boolean(agentId && clientKey);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [phase, setPhase] = useState("preflight");
   const [micReady, setMicReady] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [speechSegments, setSpeechSegments] = useState<SpeechSegment[]>([]);
-  const sessionCreateStarted = useRef(false);
 
   const onSpeechSegmentFinal = useCallback((segment: SpeechSegment) => {
     if (!segment.isFinal) return;
@@ -53,9 +42,9 @@ export function ChatExperience({
   }, [personaId, setPersona]);
 
   useEffect(() => {
-    if (sessionCreateStarted.current) return;
-    sessionCreateStarted.current = true;
-
+    setSessionId(null);
+    setPhase("preflight");
+    setSpeechSegments([]);
     const controller = new AbortController();
 
     void (async () => {
@@ -66,7 +55,9 @@ export function ChatExperience({
           body: JSON.stringify({ personaId }),
           signal: controller.signal,
         });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = (await res.json()) as { session: { id: string } };
+        if (controller.signal.aborted) return;
         setSessionId(data.session.id);
         setPhase("connecting");
       } catch (err) {
@@ -104,7 +95,7 @@ export function ChatExperience({
     setPhase("completed");
   }, [sessionId]);
 
-  const showCapture = Boolean(sessionId && phase !== "preflight");
+  const showCapture = Boolean(sessionId);
 
   return (
     <SakuraPageShell wide className="py-6">
@@ -122,13 +113,7 @@ export function ChatExperience({
 
           <main className="space-y-4">
             <SessionStatusBar phase={phase} sessionId={sessionId ?? undefined} />
-            <div className="flex items-center gap-3">
-              <PersonaBadge personaId={personaId} />
-            </div>
-            <p className="text-sm text-muted-foreground">
-              <span className="text-foreground">{headline}</span>
-              {subtitle ? <span className="block">{subtitle}</span> : null}
-            </p>
+            <PersonaBadge personaId={personaId} />
             {canStream ? (
               <DidAgentStage agentId={agentId} clientKey={clientKey} personaId={personaId} />
             ) : (

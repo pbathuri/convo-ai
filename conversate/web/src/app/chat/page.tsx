@@ -24,15 +24,7 @@ export default function ChatPage({
   const persona = getPersona(personaId);
   const agentId = personaAgentId(personaId) ?? "";
   const clientKey = process.env.NEXT_PUBLIC_DID_CLIENT_KEY ?? "";
-  const headline = persona ? `${persona.displayName} (${persona.companyName})` : personaId;
-
   return (
-    <ChatExperience
-      personaId={personaId}
-      headline={headline}
-      subtitle={persona?.role ?? ""}
-      agentId={agentId}
-      clientKey={clientKey}
-    />
+    <ChatExperience personaId={personaId} agentId={agentId} clientKey={clientKey} />
   );
 }
