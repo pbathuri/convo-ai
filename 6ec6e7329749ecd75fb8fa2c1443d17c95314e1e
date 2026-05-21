@@ -1,0 +1,33 @@
+.gitignore
+  29d3fb2ccea4ae4d 2-3
+components/ui_blocks.py
+  29d3fb2ccea4ae4d 50-54,57-59,62
+components/chat_ui.py
+  29d3fb2ccea4ae4d 46-55,57-59,63-65,69-82,85-117,119-123,125-139,142-150,153-161,163-164,167-173,176-207,209-227,292-293,296-297,299,315,317-318,351-354,371-377,380-384,389-398,457-461
+components/onboarding.py
+  29d3fb2ccea4ae4d 73,75,77,86,88,96-101,116-117,138-141,152-153,155-156,164,168,178-180,182-186,194-197,441-442,489-490
+app/app.py
+  29d3fb2ccea4ae4d 50-53,55-60,65-67
+streamlit/config.toml
+  29d3fb2ccea4ae4d 3,5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "6ec6e7329749ecd75fb8fa2c1443d17c95314e1e",
+  "prompts": {
+    "29d3fb2ccea4ae4d": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "59a6d1ca-64de-476b-aaf9-60c0a6ebc5c7",
+        "model": "composer-2"
+      },
+      "human_author": "pbathuri",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 0,
+      "accepted_lines": 265,
+      "overriden_lines": 0
+    }
+  }
+}

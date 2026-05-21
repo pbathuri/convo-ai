@@ -1,0 +1,23 @@
+README.md
+  29d3fb2ccea4ae4d 3,6,14-16,18,26,33,35,40,44,50,52-53,61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "55d5712179d9637fc3eadcdf2de3308033e9422f",
+  "prompts": {
+    "29d3fb2ccea4ae4d": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "59a6d1ca-64de-476b-aaf9-60c0a6ebc5c7",
+        "model": "composer-2"
+      },
+      "human_author": "pbathuri",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 65,
+      "overriden_lines": 0
+    }
+  }
+}
