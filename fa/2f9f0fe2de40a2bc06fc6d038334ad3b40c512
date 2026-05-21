@@ -1,0 +1,31 @@
+docs/implementation/did-local-debugging.md
+  s_1322c8294517ae::t_47bf8d5dd5382c 1-47
+conversate/web/src/components/did/DidAgentStage.tsx
+  s_1322c8294517ae::t_892dcf3f4ea22a 17-23,27-29,33-35,43-44,46-47,52-54,60-64,130,200
+  s_1322c8294517ae::t_bc8959d2bb8a16 24-26,30-32,36-42,45,48-51,55-59,71-73,116-118,187-192,196-198
+  s_1322c8294517ae::t_534d14c40cbee4 6
+conversate/web/src/lib/did/error-classify.ts
+  s_1322c8294517ae::t_bc8959d2bb8a16 7-12
+  s_1322c8294517ae::t_8ad5459f4e4638 1-6,13-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "fa2f9f0fe2de40a2bc06fc6d038334ad3b40c512",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
