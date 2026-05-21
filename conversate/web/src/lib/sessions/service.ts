@@ -70,14 +70,32 @@ export async function updateSessionStatus(
   return toSummary(row);
 }
 
+export type SessionListItem = SessionSummary & {
+  messageCount: number;
+  overallScore: number | null;
+};
+
 export async function listSessions(userId?: string): Promise<SessionSummary[]> {
+  const enriched = await listSessionsEnriched(userId);
+  return enriched;
+}
+
+export async function listSessionsEnriched(userId?: string): Promise<SessionListItem[]> {
   if (!isDatabaseConfigured()) return [];
   const rows = await prisma.session.findMany({
     where: userId ? { userId } : undefined,
     orderBy: { createdAt: "desc" },
     take: 50,
+    include: {
+      _count: { select: { messages: true } },
+      scores: { take: 1, orderBy: { createdAt: "desc" } },
+    },
   });
-  return rows.map(toSummary);
+  return rows.map((row) => ({
+    ...toSummary(row),
+    messageCount: row._count.messages,
+    overallScore: row.scores[0]?.overallScore ?? null,
+  }));
 }
 
 export async function getSession(sessionId: string) {

@@ -34,7 +34,7 @@ export async function POST(
   const kbContext = ranked.map((c) => c.content);
   const rubric = getRubricForPersona(parsedPersona.data);
 
-  const { output, modelName, latencyMs } = await scoreTranscript({
+  const { output, modelName, latencyMs, degraded } = await scoreTranscript({
     personaId: parsedPersona.data,
     transcript: transcript || "(empty transcript — paste or capture messages first)",
     kbContext,
@@ -79,5 +79,5 @@ export async function POST(
     });
   }
 
-  return NextResponse.json({ report, output, retrievalTrace });
+  return NextResponse.json({ report, output, retrievalTrace, degraded: degraded ?? false });
 }
