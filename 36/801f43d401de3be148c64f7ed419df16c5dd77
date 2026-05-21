@@ -1,0 +1,24 @@
+docs/audits/industry-standard-rebuild-audit.md
+  s_1322c8294517ae::t_1063d10aab54cb 4
+  s_1322c8294517ae::t_e55923b969bc59 15-16
+docs/audits/repo-health-graph.md
+  s_1322c8294517ae::t_ab95a75c28a70e 3-4,6-7,11,13-14
+docs/audits/benchmark-results-2026-05-21.md
+  s_1322c8294517ae::t_9fe6b2eebb00bc 70-87
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "36801f43d401de3be148c64f7ed419df16c5dd77",
+  "prompts": {},
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
