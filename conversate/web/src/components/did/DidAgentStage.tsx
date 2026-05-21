@@ -34,21 +34,14 @@ function DidErrorPanel({
       role="alert"
     >
       <p className="font-medium text-destructive">
-        D-ID stream could not connect
+        D-ID stream could not connect.
       </p>
       <p className="text-xs text-muted-foreground">{message}</p>
       <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
-        <li>Check localhost allowlist in D-ID Studio.</li>
         <li>
-          Add <code className="text-[11px]">http://localhost:3000</code> and{" "}
-          <code className="text-[11px]">http://localhost:3001</code> for this
-          embed client key.
+          Check that localhost is allowlisted in D-ID Studio for this embed key.
         </li>
-        <li>
-          Use a D-ID Studio embed client key in{" "}
-          <code className="text-[11px]">NEXT_PUBLIC_DID_CLIENT_KEY</code>, not a
-          server API key.
-        </li>
+        <li>Use a D-ID Studio embed client key, not a server API key.</li>
         <li>
           Test in real Chrome; Cursor embedded browser may block WebRTC/CORS.
         </li>

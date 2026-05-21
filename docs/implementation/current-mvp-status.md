@@ -1,9 +1,9 @@
 # Current MVP status
 
 **Branch:** `commercial-v1`  
-**Last updated:** 2026-05-22 (golden path reliability pass)  
+**Last updated:** 2026-05-22 (Sakura MVP stabilization pass)  
 **Active app:** `conversate/web`  
-**Audit:** [industry-standard-rebuild-audit.md](../audits/industry-standard-rebuild-audit.md)
+**Audits:** [stabilization-audit-2026-05-21.md](../audits/stabilization-audit-2026-05-21.md), [repo-health-graph.md](../audits/repo-health-graph.md)
 
 ## Readiness
 

@@ -32,8 +32,8 @@ In D-ID Studio, for your embed client key:
 
 When the stream fails, the chat room shows:
 
-- **D-ID stream could not connect**
-- Check localhost allowlist in D-ID Studio
+- **D-ID stream could not connect.**
+- Check that localhost is allowlisted in D-ID Studio for this embed key.
 - Use a D-ID Studio embed client key, not a server API key
 - Test in real Chrome; Cursor embedded browser may block WebRTC/CORS
 - **Continue transcript-only interview** — keeps speech capture, manual transcript, end session, and scoring
