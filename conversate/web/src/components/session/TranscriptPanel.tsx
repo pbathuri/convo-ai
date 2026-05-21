@@ -51,8 +51,9 @@ export function TranscriptPanel({ sessionId, speechSegments = [] }: Props) {
     <GlassCard className="space-y-3">
       <h3 className="text-sm font-medium">Session transcript</h3>
       <p className="text-xs text-muted-foreground">
-        Candidate-side capture only — not a full two-party D-ID transcript. Agent lines must be
-        added manually unless a future D-ID callback is available.
+        Candidate-side capture only — not a full two-party D-ID transcript.
+        Sources: <strong>browser speech</strong>, <strong>manual paste</strong>,
+        or future <strong>D-ID callback</strong> (not wired in V1).
       </p>
 
       {browserLines.length > 0 ? (
@@ -61,7 +62,10 @@ export function TranscriptPanel({ sessionId, speechSegments = [] }: Props) {
           <ul className="max-h-32 space-y-1 overflow-y-auto text-xs text-muted-foreground">
             {browserLines.map((s) => (
               <li key={s.line}>
-                <span className="text-[10px] uppercase text-primary/80">{s.source}</span> {s.line}
+                <span className="text-[10px] uppercase text-primary/80">
+                  {s.source}
+                </span>{" "}
+                {s.line}
               </li>
             ))}
           </ul>
@@ -74,7 +78,10 @@ export function TranscriptPanel({ sessionId, speechSegments = [] }: Props) {
           <ul className="max-h-32 space-y-1 overflow-y-auto text-xs text-muted-foreground">
             {saved.map((s) => (
               <li key={s.line}>
-                <span className="text-[10px] uppercase text-primary/80">{s.source}</span> {s.line}
+                <span className="text-[10px] uppercase text-primary/80">
+                  {s.source}
+                </span>{" "}
+                {s.line}
               </li>
             ))}
           </ul>
