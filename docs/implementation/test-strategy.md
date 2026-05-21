@@ -18,7 +18,14 @@
 
 ## CI gates
 
-PR: lint + unit + API smoke. Nightly: Playwright + retrieval benchmark.
+```bash
+cd conversate/web
+npm run test      # Vitest: persona schema, KB policy, admin authz, speech persist, scoring
+npm run verify    # build + test + kb:smoke
+npm run lint
+```
+
+PR: lint + `npm run verify`. Playwright golden path: manual Chrome checklist until E2E is added.
 
 ## Browser SpeechRecognition transcript prototype test cases
 
