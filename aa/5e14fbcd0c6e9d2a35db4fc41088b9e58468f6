@@ -1,0 +1,19 @@
+docs/audits/industry-standard-rebuild-audit.md
+  s_1322c8294517ae::t_e7de92f6ab1caf 1-103
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "aa5e14fbcd0c6e9d2a35db4fc41088b9e58468f6",
+  "prompts": {},
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
