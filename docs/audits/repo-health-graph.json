@@ -1,0 +1,830 @@
+{
+  "generatedAt": "2026-05-21T13:40:00Z",
+  "gitSha": "3edbb0c",
+  "branch": "commercial-v1",
+  "mcpSync": {
+    "server": "user-code-review-graph",
+    "status": "unavailable",
+    "reason": "MCP server errored; CallMcpTool reports server not in available list. JSON is source of truth until MCP restored.",
+    "syncInstructions": "docs/audits/mcp-graph-sync.md"
+  },
+  "healthEnum": [
+    "working",
+    "degraded",
+    "broken",
+    "untested",
+    "dormant",
+    "legacy"
+  ],
+  "tagEnum": [
+    "active-MVP",
+    "offline-pipeline",
+    "legacy-archive",
+    "documentation"
+  ],
+  "benchmarks": [
+    {
+      "id": "B01",
+      "ref": "benchmark-results-2026-05-21.md#b01",
+      "result": "pass"
+    },
+    {
+      "id": "B02",
+      "ref": "benchmark-results-2026-05-21.md#b02",
+      "result": "fail"
+    },
+    {
+      "id": "B03",
+      "ref": "benchmark-results-2026-05-21.md#b03",
+      "result": "pass"
+    },
+    {
+      "id": "B04",
+      "ref": "benchmark-results-2026-05-21.md#b04",
+      "result": "pass"
+    },
+    {
+      "id": "B05",
+      "ref": "benchmark-results-2026-05-21.md#b05",
+      "result": "pass"
+    },
+    {
+      "id": "B06",
+      "ref": "benchmark-results-2026-05-21.md#b06",
+      "result": "pass"
+    },
+    {
+      "id": "B07",
+      "ref": "benchmark-results-2026-05-21.md#b07",
+      "result": "pass"
+    },
+    {
+      "id": "B08",
+      "ref": "benchmark-results-2026-05-21.md#b08",
+      "result": "pass_degraded"
+    },
+    {
+      "id": "B09",
+      "ref": "benchmark-results-2026-05-21.md#b09",
+      "result": "pass"
+    },
+    {
+      "id": "B10",
+      "ref": "benchmark-results-2026-05-21.md#b10",
+      "result": "pass"
+    },
+    {
+      "id": "M01",
+      "ref": "benchmark-results-2026-05-21.md#m01",
+      "result": "pass"
+    },
+    {
+      "id": "M02",
+      "ref": "benchmark-results-2026-05-21.md#m02",
+      "result": "pass"
+    },
+    {
+      "id": "M03",
+      "ref": "benchmark-results-2026-05-21.md#m03",
+      "result": "pass"
+    },
+    {
+      "id": "M04",
+      "ref": "benchmark-results-2026-05-21.md#m04",
+      "result": "fail"
+    },
+    {
+      "id": "M05",
+      "ref": "benchmark-results-2026-05-21.md#m05",
+      "result": "pass"
+    },
+    {
+      "id": "M06",
+      "ref": "benchmark-results-2026-05-21.md#m06",
+      "result": "unverified"
+    },
+    {
+      "id": "M07",
+      "ref": "benchmark-results-2026-05-21.md#m07",
+      "result": "pass"
+    },
+    {
+      "id": "M08",
+      "ref": "benchmark-results-2026-05-21.md#m08",
+      "result": "pass"
+    },
+    {
+      "id": "M09",
+      "ref": "benchmark-results-2026-05-21.md#m09",
+      "result": "pass"
+    }
+  ],
+  "envNodes": [
+    {
+      "id": "env:NEXT_PUBLIC_DID_CLIENT_KEY",
+      "kind": "env",
+      "tag": "active-MVP",
+      "health": "working",
+      "summary": "Set; D-ID SDK attempts agent fetch"
+    },
+    {
+      "id": "env:DID_PERSONA_*",
+      "kind": "env",
+      "tag": "active-MVP",
+      "health": "working",
+      "summary": "Per-persona agent IDs resolve (e.g. v2_agt_4pjSCal7)"
+    },
+    {
+      "id": "env:DATABASE_URL",
+      "kind": "env",
+      "tag": "active-MVP",
+      "health": "working",
+      "summary": "Prisma session.count OK; sessions persist"
+    },
+    {
+      "id": "env:GOOGLE_AI_STUDIO_KEY",
+      "kind": "env",
+      "tag": "active-MVP",
+      "health": "degraded",
+      "summary": "Key present but Gemini returns quota error; stub scoring used"
+    },
+    {
+      "id": "env:ADMIN_EMAILS",
+      "kind": "env",
+      "tag": "active-MVP",
+      "health": "working",
+      "summary": "KB import returns 403 without x-admin-email"
+    },
+    {
+      "id": "env:UPSTASH_REDIS_*",
+      "kind": "env",
+      "tag": "active-MVP",
+      "health": "working",
+      "summary": "/api/redis/ping returns PONG"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "page:/",
+      "kind": "page",
+      "path": "conversate/web/src/app/page.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M01"
+    },
+    {
+      "id": "page:/personas",
+      "kind": "page",
+      "path": "conversate/web/src/app/personas/page.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M02"
+    },
+    {
+      "id": "page:/chat",
+      "kind": "page",
+      "path": "conversate/web/src/app/chat/page.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M03"
+    },
+    {
+      "id": "component:chat-experience",
+      "kind": "component",
+      "path": "conversate/web/src/app/chat/chat-experience.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M03",
+      "summary": "Session POST per persona; showCapture=!!sessionId"
+    },
+    {
+      "id": "component:DidAgentStage",
+      "kind": "component",
+      "path": "conversate/web/src/components/did/DidAgentStage.tsx",
+      "tag": "active-MVP",
+      "health": "broken",
+      "benchmarkRef": "M04",
+      "summary": "CORS blocks api.d-id.com in embedded browser; env-specific partial in Chrome"
+    },
+    {
+      "id": "component:SpeechTranscriptCapture",
+      "kind": "component",
+      "path": "conversate/web/src/components/session/SpeechTranscriptCapture.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M05",
+      "summary": "UI renders; mic/Web Speech not verified in automation"
+    },
+    {
+      "id": "component:FeedbackReport",
+      "kind": "component",
+      "path": "conversate/web/src/components/feedback/FeedbackReport.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M08"
+    },
+    {
+      "id": "page:/sessions",
+      "kind": "page",
+      "path": "conversate/web/src/app/sessions/page.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M07"
+    },
+    {
+      "id": "page:/sessions/[id]",
+      "kind": "page",
+      "path": "conversate/web/src/app/sessions/[sessionId]/page.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M07"
+    },
+    {
+      "id": "page:/progress",
+      "kind": "page",
+      "path": "conversate/web/src/app/progress/page.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M09"
+    },
+    {
+      "id": "page:/admin",
+      "kind": "page",
+      "path": "conversate/web/src/app/admin/page.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M09"
+    },
+    {
+      "id": "page:/admin/personas",
+      "kind": "page",
+      "path": "conversate/web/src/app/admin/personas/page.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "summary": "Persona table with env keys"
+    },
+    {
+      "id": "page:/admin/kb",
+      "kind": "page",
+      "path": "conversate/web/src/app/admin/kb/page.tsx",
+      "tag": "active-MVP",
+      "health": "untested",
+      "summary": "Shell copy only; no queue UI"
+    },
+    {
+      "id": "page:/admin/scoring",
+      "kind": "page",
+      "path": "conversate/web/src/app/admin/scoring/page.tsx",
+      "tag": "active-MVP",
+      "health": "untested",
+      "summary": "Placeholder shell"
+    },
+    {
+      "id": "page:/admin/cost",
+      "kind": "page",
+      "path": "conversate/web/src/app/admin/cost/page.tsx",
+      "tag": "active-MVP",
+      "health": "untested",
+      "summary": "Placeholder shell"
+    },
+    {
+      "id": "page:/admin/scraper-runs",
+      "kind": "page",
+      "path": "conversate/web/src/app/admin/scraper-runs/page.tsx",
+      "tag": "active-MVP",
+      "health": "untested",
+      "summary": "Docs pointer to pipelines/scraper"
+    },
+    {
+      "id": "page:/admin/audit-log",
+      "kind": "page",
+      "path": "conversate/web/src/app/admin/audit-log/page.tsx",
+      "tag": "active-MVP",
+      "health": "untested",
+      "summary": "Placeholder shell"
+    },
+    {
+      "id": "page:/admin/sessions",
+      "kind": "page",
+      "path": "conversate/web/src/app/admin/sessions/page.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "summary": "Lists recent sessions when DB up"
+    },
+    {
+      "id": "page:/settings",
+      "kind": "page",
+      "path": "conversate/web/src/app/settings/page.tsx",
+      "tag": "active-MVP",
+      "health": "untested"
+    },
+    {
+      "id": "page:/analytics",
+      "kind": "page",
+      "path": "conversate/web/src/app/analytics/page.tsx",
+      "tag": "active-MVP",
+      "health": "working",
+      "summary": "Docs page; bridge active globally"
+    },
+    {
+      "id": "api:/api/health",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/health/route.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B04"
+    },
+    {
+      "id": "api:/api/personas",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/personas/route.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B05"
+    },
+    {
+      "id": "api:/api/sessions",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/sessions/route.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B06"
+    },
+    {
+      "id": "api:/api/sessions/[id]",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/sessions/[sessionId]/route.ts",
+      "tag": "active-MVP",
+      "health": "working"
+    },
+    {
+      "id": "api:/api/sessions/[id]/messages",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/sessions/[sessionId]/messages/route.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B07"
+    },
+    {
+      "id": "api:/api/sessions/[id]/score",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/sessions/[sessionId]/score/route.ts",
+      "tag": "active-MVP",
+      "health": "degraded",
+      "benchmarkRef": "B08",
+      "summary": "Returns 200 with degraded stub when Gemini quota exceeded"
+    },
+    {
+      "id": "api:/api/kb/chunks/import",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/kb/chunks/import/route.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B09"
+    },
+    {
+      "id": "api:/api/chat",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/chat/route.ts",
+      "tag": "active-MVP",
+      "health": "dormant",
+      "summary": "Not used in V1; D-ID Studio owns live brain"
+    },
+    {
+      "id": "api:/api/opening",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/opening/route.ts",
+      "tag": "active-MVP",
+      "health": "dormant"
+    },
+    {
+      "id": "api:/api/llm/status",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/llm/status/route.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "summary": "Reports llmRoute dormant"
+    },
+    {
+      "id": "api:/api/redis/ping",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/redis/ping/route.ts",
+      "tag": "active-MVP",
+      "health": "working"
+    },
+    {
+      "id": "api:/api/analytics/event",
+      "kind": "api_route",
+      "path": "conversate/web/src/app/api/analytics/event/route.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M04"
+    },
+    {
+      "id": "lib:personas",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/personas.ts",
+      "tag": "active-MVP",
+      "health": "working"
+    },
+    {
+      "id": "lib:sessions/service",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/sessions/service.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B06"
+    },
+    {
+      "id": "lib:transcripts/service",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/transcripts/service.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B07"
+    },
+    {
+      "id": "lib:scoring/scorer",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/scoring/scorer.ts",
+      "tag": "active-MVP",
+      "health": "degraded",
+      "benchmarkRef": "B08"
+    },
+    {
+      "id": "lib:scoring/feedback-engine",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/scoring/feedback-engine.ts",
+      "tag": "active-MVP",
+      "health": "working"
+    },
+    {
+      "id": "lib:kb/policy",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/kb/policy.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B03"
+    },
+    {
+      "id": "lib:kb/retrieval",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/kb/retrieval.ts",
+      "tag": "active-MVP",
+      "health": "untested",
+      "summary": "Used on score path; no retrieval benchmark run"
+    },
+    {
+      "id": "lib:kb/service",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/kb/service.ts",
+      "tag": "active-MVP",
+      "health": "working"
+    },
+    {
+      "id": "lib:admin/authz",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/admin/authz.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B09"
+    },
+    {
+      "id": "lib:admin/metrics",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/admin/metrics.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M09"
+    },
+    {
+      "id": "lib:progress/service",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/progress/service.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "M09"
+    },
+    {
+      "id": "lib:db",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/db.ts",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B10"
+    },
+    {
+      "id": "lib:llm",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/llm.ts",
+      "tag": "active-MVP",
+      "health": "dormant"
+    },
+    {
+      "id": "lib:speech/browser-speech",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/speech/browser-speech.ts",
+      "tag": "active-MVP",
+      "health": "untested",
+      "benchmarkRef": "M06"
+    },
+    {
+      "id": "lib:analytics/init",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/analytics/init.ts",
+      "tag": "active-MVP",
+      "health": "degraded",
+      "summary": "No-op stub; events still POST via client"
+    },
+    {
+      "id": "lib:analytics/client",
+      "kind": "lib_module",
+      "path": "conversate/web/src/lib/analytics/client.ts",
+      "tag": "active-MVP",
+      "health": "working"
+    },
+    {
+      "id": "infra:next-build",
+      "kind": "infra",
+      "path": "conversate/web",
+      "tag": "active-MVP",
+      "health": "working",
+      "benchmarkRef": "B01"
+    },
+    {
+      "id": "infra:biome-lint",
+      "kind": "infra",
+      "path": "conversate/web",
+      "tag": "active-MVP",
+      "health": "degraded",
+      "benchmarkRef": "B02"
+    },
+    {
+      "id": "infra:vitest-playwright",
+      "kind": "infra",
+      "path": "docs/implementation/test-strategy.md",
+      "tag": "active-MVP",
+      "health": "broken",
+      "summary": "Documented but no test runner in package.json"
+    },
+    {
+      "id": "external:d-id-api",
+      "kind": "external_service",
+      "tag": "active-MVP",
+      "health": "broken",
+      "benchmarkRef": "M04",
+      "summary": "CORS from localhost in embedded browser"
+    },
+    {
+      "id": "external:google-gemini",
+      "kind": "external_service",
+      "tag": "active-MVP",
+      "health": "degraded",
+      "benchmarkRef": "B08"
+    },
+    {
+      "id": "pipeline:scraper",
+      "kind": "pipeline",
+      "path": "pipelines/scraper",
+      "tag": "offline-pipeline",
+      "health": "untested",
+      "summary": "Not executed; import paths exist"
+    },
+    {
+      "id": "pipeline:kb-python",
+      "kind": "pipeline",
+      "path": "pipelines/kb",
+      "tag": "offline-pipeline",
+      "health": "working",
+      "summary": "Python policy/sanitize import OK; TS policy via kb:smoke"
+    },
+    {
+      "id": "eval:rubric_eval",
+      "kind": "pipeline",
+      "path": "eval/rubric_eval.py",
+      "tag": "offline-pipeline",
+      "health": "untested"
+    },
+    {
+      "id": "legacy:streamlit-app",
+      "kind": "app",
+      "path": "app/app.py",
+      "tag": "legacy-archive",
+      "health": "legacy",
+      "summary": "Do not extend; superseded by conversate/web"
+    },
+    {
+      "id": "legacy:components",
+      "kind": "package",
+      "path": "components/",
+      "tag": "legacy-archive",
+      "health": "legacy"
+    },
+    {
+      "id": "legacy:app-services",
+      "kind": "package",
+      "path": "app/services/",
+      "tag": "legacy-archive",
+      "health": "legacy",
+      "summary": "31 Python modules — persona_engine, scoring_engine, domains/*"
+    }
+  ],
+  "edges": [
+    {
+      "from": "page:/chat",
+      "to": "component:chat-experience",
+      "type": "imports"
+    },
+    {
+      "from": "component:chat-experience",
+      "to": "api:/api/sessions",
+      "type": "http_calls"
+    },
+    {
+      "from": "component:chat-experience",
+      "to": "component:DidAgentStage",
+      "type": "imports"
+    },
+    {
+      "from": "component:chat-experience",
+      "to": "component:SpeechTranscriptCapture",
+      "type": "imports"
+    },
+    {
+      "from": "component:SpeechTranscriptCapture",
+      "to": "api:/api/sessions/[id]/messages",
+      "type": "http_calls"
+    },
+    {
+      "from": "component:DidAgentStage",
+      "to": "external:d-id-api",
+      "type": "external_service"
+    },
+    {
+      "from": "component:DidAgentStage",
+      "to": "env:NEXT_PUBLIC_DID_CLIENT_KEY",
+      "type": "reads_env"
+    },
+    {
+      "from": "component:DidAgentStage",
+      "to": "env:DID_PERSONA_*",
+      "type": "reads_env"
+    },
+    {
+      "from": "page:/chat",
+      "to": "lib:personas",
+      "type": "imports"
+    },
+    {
+      "from": "api:/api/sessions",
+      "to": "lib:sessions/service",
+      "type": "imports"
+    },
+    {
+      "from": "lib:sessions/service",
+      "to": "lib:db",
+      "type": "imports"
+    },
+    {
+      "from": "lib:sessions/service",
+      "to": "env:DATABASE_URL",
+      "type": "reads_env"
+    },
+    {
+      "from": "api:/api/sessions/[id]/messages",
+      "to": "lib:transcripts/service",
+      "type": "imports"
+    },
+    {
+      "from": "api:/api/sessions/[id]/score",
+      "to": "lib:scoring/scorer",
+      "type": "imports"
+    },
+    {
+      "from": "api:/api/sessions/[id]/score",
+      "to": "lib:kb/retrieval",
+      "type": "imports"
+    },
+    {
+      "from": "lib:scoring/scorer",
+      "to": "external:google-gemini",
+      "type": "external_service"
+    },
+    {
+      "from": "lib:scoring/scorer",
+      "to": "env:GOOGLE_AI_STUDIO_KEY",
+      "type": "reads_env"
+    },
+    {
+      "from": "page:/sessions/[id]",
+      "to": "api:/api/sessions/[id]/score",
+      "type": "http_calls"
+    },
+    {
+      "from": "page:/sessions/[id]",
+      "to": "component:FeedbackReport",
+      "type": "imports"
+    },
+    {
+      "from": "api:/api/kb/chunks/import",
+      "to": "lib:kb/service",
+      "type": "imports"
+    },
+    {
+      "from": "api:/api/kb/chunks/import",
+      "to": "lib:admin/authz",
+      "type": "imports"
+    },
+    {
+      "from": "page:/progress",
+      "to": "lib:progress/service",
+      "type": "imports"
+    },
+    {
+      "from": "page:/admin",
+      "to": "lib:admin/metrics",
+      "type": "imports"
+    },
+    {
+      "from": "api:/api/chat",
+      "to": "lib:llm",
+      "type": "imports"
+    },
+    {
+      "from": "api:/api/opening",
+      "to": "lib:llm",
+      "type": "imports"
+    },
+    {
+      "from": "pipeline:scraper",
+      "to": "api:/api/kb/chunks/import",
+      "type": "data_flow"
+    },
+    {
+      "from": "pipeline:kb-python",
+      "to": "lib:kb/policy",
+      "type": "data_flow"
+    },
+    {
+      "from": "page:/personas",
+      "to": "page:/chat",
+      "type": "data_flow"
+    },
+    {
+      "from": "page:/",
+      "to": "page:/personas",
+      "type": "data_flow"
+    }
+  ],
+  "brokenComponents": [
+    {
+      "id": "component:DidAgentStage",
+      "severity": "high",
+      "repro": "Open /chat in Cursor embedded browser; observe Stream: error and console CORS on GET https://api.d-id.com/agents/{id}",
+      "rootCause": "Browser-origin fetch to api.d-id.com blocked without Access-Control-Allow-Origin for embedded preview origin",
+      "fixes": [
+        "Add http://localhost:3000 to D-ID Studio client-key allowlist",
+        "Verify in real Chrome (not embedded preview)",
+        "Optional: add Next.js API proxy route for agent metadata to avoid browser CORS"
+      ]
+    },
+    {
+      "id": "infra:vitest-playwright",
+      "severity": "medium",
+      "repro": "No npm test script; test-strategy.md references Vitest/Playwright",
+      "rootCause": "Test harness never wired into package.json",
+      "fixes": [
+        "Add vitest + minimal tests for kb/policy, scorer stub, session create",
+        "Add Playwright smoke for /chat speech panel visibility"
+      ]
+    }
+  ],
+  "degradedComponents": [
+    {
+      "id": "lib:scoring/scorer",
+      "repro": "POST /api/sessions/{id}/score returns degraded:true",
+      "rootCause": "Gemini API quota exceeded (429)",
+      "fixes": [
+        "Enable billing/quota on Google AI Studio",
+        "Accept stub for demos"
+      ]
+    },
+    {
+      "id": "infra:biome-lint",
+      "repro": "npm run lint exit 1",
+      "rootCause": "Format drift + unused variable in score route",
+      "fixes": [
+        "npm run format",
+        "Fix or remove unused personaId in score route"
+      ]
+    },
+    {
+      "id": "lib:analytics/init",
+      "repro": "Console logs no-op stub",
+      "rootCause": "Provider not wired",
+      "fixes": [
+        "Integrate Mixpanel/Segment when product needs server-side analytics"
+      ]
+    }
+  ]
+}
