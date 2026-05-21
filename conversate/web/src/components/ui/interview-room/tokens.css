@@ -23,12 +23,10 @@
   --sakura-glass-bg: rgba(255, 252, 250, 0.78);
   --sakura-glass-border: rgba(232, 180, 196, 0.4);
   --sakura-shadow-soft: 0 8px 32px rgba(74, 44, 61, 0.08);
-  --sakura-gradient-hero: linear-gradient(
-    135deg,
-    var(--sakura-petal-50) 0%,
-    var(--sakura-ivory) 45%,
-    #f8f0ff 100%
-  );
+  --sakura-gradient-hero: linear-gradient(135deg,
+      var(--sakura-petal-50) 0%,
+      var(--sakura-ivory) 45%,
+      #f8f0ff 100%);
 }
 
 .dark .interview-room,

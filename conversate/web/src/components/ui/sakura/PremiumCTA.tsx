@@ -8,7 +8,12 @@ type Props = {
   className?: string;
 };
 
-export function PremiumCTA({ href, children, variant = "primary", className }: Props) {
+export function PremiumCTA({
+  href,
+  children,
+  variant = "primary",
+  className,
+}: Props) {
   return (
     <Link
       href={href}

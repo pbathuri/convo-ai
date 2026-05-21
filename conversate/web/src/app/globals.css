@@ -75,10 +75,12 @@
 }
 
 @keyframes sakura-petal-float {
+
   0%,
   100% {
     transform: translateY(0) rotate(-8deg);
   }
+
   50% {
     transform: translateY(18px) rotate(8deg);
   }

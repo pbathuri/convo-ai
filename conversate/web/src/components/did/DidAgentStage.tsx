@@ -122,7 +122,7 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
                     phaseMs: latency,
                   });
                 })
-                .catch(() => {});
+                .catch(() => { });
             },
             onError(err) {
               const msg = err?.message ?? String(err);
