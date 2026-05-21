@@ -1,0 +1,26 @@
+conversate/web/src/components/session/SessionReadinessCard.tsx
+  s_1322c8294517ae::t_eec78a0ea43de0 3,14-29,34-36
+conversate/web/src/app/chat/chat-experience.tsx
+  s_1322c8294517ae::t_201a303113309c 3,11-12,41,56-60,67,72-73,76,79-82,107-108,110-121,123-144,146-170
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "2db5d9c490692561c8a4d1ddea4adef67caba9ee",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
