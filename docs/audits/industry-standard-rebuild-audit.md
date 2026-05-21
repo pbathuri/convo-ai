@@ -1,7 +1,7 @@
 # Industry-standard rebuild audit
 
 **Branch:** `commercial-v1`  
-**Commit:** `16fc678` (pre-rebuild baseline)  
+**Commit:** `16fc678` (pre-rebuild baseline) → golden-path pass on `commercial-v1`  
 **Active app:** `conversate/web`  
 **Date:** 2026-05-22
 
@@ -12,7 +12,8 @@
 | `npm run build` | Pass |
 | `npm run test` | Pass (13 tests, 6 files) |
 | `npm run kb:smoke` | Pass |
-| `npm run lint` | Fail — format drift in `DidAgentStage.tsx` (fixed in rebuild) |
+| `npm run lint` | Pass |
+| `npm run verify` | Pass (build + test + kb:smoke) |
 
 ## Route inventory
 

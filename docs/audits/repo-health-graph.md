@@ -1,16 +1,17 @@
 # Repo health graph — Conversate
 
-**Audit date:** 2026-05-21  
-**Git:** `3edbb0c` (`commercial-v1`)  
+**Audit date:** 2026-05-22 (golden-path reliability pass)  
+**Git:** `commercial-v1`  
 **Machine-readable graph:** [repo-health-graph.json](./repo-health-graph.json)  
-**Benchmark evidence:** [benchmark-results-2026-05-21.md](./benchmark-results-2026-05-21.md)
+**Benchmark evidence:** [benchmark-results-2026-05-21.md](./benchmark-results-2026-05-21.md)  
+**Rebuild audit:** [industry-standard-rebuild-audit.md](./industry-standard-rebuild-audit.md)
 
 ## Executive summary
 
-The **active MVP** (`conversate/web`) builds and runs end-to-end for session create → transcript append → degraded scoring → feedback UI. **Two blockers** affect the live interview experience:
+The **active MVP** (`conversate/web`) completes the golden path with **transcript-only fallback** when D-ID fails. `npm run verify` passes (build + 16 unit tests + kb:smoke).
 
-1. **D-ID live stream** — broken in Cursor embedded browser due to **CORS** on `api.d-id.com` (keys appear configured).
-2. **Automated tests** — documented in test-strategy but **not implemented** in package.json.
+1. **D-ID live stream** — optional; degraded in embedded browser (CORS); use Chrome + allowlist or transcript-only mode.
+2. **Automated tests** — Vitest + `npm run verify`; manual Chrome checklist in [demo-readiness-checklist.md](../implementation/demo-readiness-checklist.md).
 
 **Postgres** is **working** in this audit (sessions persist; count=15). **Gemini scoring** returns HTTP 200 with **`degraded: true`** (quota stub). **KB governance smoke** passes.
 

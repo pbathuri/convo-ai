@@ -67,3 +67,21 @@ Console: Access to fetch ... blocked by CORS policy
 ## Terminal observations (dev history)
 
 Prior `npm run dev` logs showed intermittent `prisma:error ... connection Closed` — not reproduced during B10 (count succeeded).
+
+---
+
+## Golden-path verification — 2026-05-22
+
+**Branch:** `commercial-v1` (post reliability rebuild)
+
+| Check | Result |
+|-------|--------|
+| `npm run build` | PASS |
+| `npm run lint` | PASS |
+| `npm run test` | PASS (16 tests) |
+| `npm run kb:smoke` | PASS |
+| `npm run verify` | PASS |
+| Transcript-only fallback | Implemented |
+| Session timeout | 8s |
+| D-ID connect timeout | 15s |
+| Chrome manual checklist | Pending human run — see [demo-readiness-checklist.md](../implementation/demo-readiness-checklist.md) |
