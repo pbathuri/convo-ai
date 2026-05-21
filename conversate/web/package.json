@@ -15,7 +15,8 @@
     "db:reset": "prisma migrate reset --force",
     "kb:smoke": "tsx scripts/kb-smoke.ts",
     "test": "vitest run",
-    "test:unit": "vitest run"
+    "test:unit": "vitest run",
+    "verify": "npm run build && npm run test && npm run kb:smoke"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
