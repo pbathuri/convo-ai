@@ -1,0 +1,13 @@
+conversate/web/src/lib/sessions/service.ts
+  ai_agent 2-7,31-33,70-72,91-93,115-119
+conversate/web/src/app/sessions/[sessionId]/page.tsx
+  ai_agent 6,19-24,28-31,34-50,55-58,65-67,76-79,92-94,103,106,108-110
+conversate/web/src/app/sessions/page.tsx
+  ai_agent 5,23-26,43-49,53-55,57-58,62,65-67,71-83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "0688f2b1214b4231c3260c0b203f51548bde8c1a",
+  "prompts": {}
+}
