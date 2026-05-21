@@ -1,0 +1,19 @@
+conversate/web/src/lib/scoring/local-heuristics.ts
+  ai_agent 1-125
+conversate/web/src/app/api/sessions/[sessionId]/score/route.ts
+  ai_agent 4-5,27-35,37-42,44-49,51-88,90-100
+conversate/web/src/components/feedback/FeedbackReport.tsx
+  ai_agent 4-8,38-39,45-46,62-71,73-82,85,87-95,103-108
+conversate/web/src/lib/scoring/local-heuristics.test.ts
+  ai_agent 1-31
+conversate/web/src/components/session/GenerateScoreButton.tsx
+  ai_agent 10,13-38
+conversate/web/src/lib/scoring/scorer.ts
+  ai_agent 4-7,9-10,12-16,22-28,34-37,39,42,44-50,84-88,91-93,96-97,100
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "5b573259281b854f00081a0027d96771204bfed7",
+  "prompts": {}
+}
