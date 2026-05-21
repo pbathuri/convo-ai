@@ -1,0 +1,47 @@
+conversate/web/src/lib/speech/types.ts
+  s_1322c8294517ae::t_f5673daca8cab6 1-68
+conversate/web/src/components/session/TranscriptPanel.tsx
+  s_1322c8294517ae::t_7206fa943ef5db 6,8-11,13,15,34-40,43-49,51-52,54-55,57-70,72-81,83-98
+conversate/web/src/lib/speech/browser-speech.ts
+  s_1322c8294517ae::t_99ee2dc474eda5 1-147
+docs/implementation/test-strategy.md
+  s_1322c8294517ae::t_af49a04ba79b63 22-35
+conversate/web/src/app/api/sessions/[sessionId]/messages/route.ts
+  s_1322c8294517ae::t_c97c8d2000a4a3 11-12
+docs/audits/transcript-capture-feasibility.md
+  s_1322c8294517ae::t_91da37dcce6889 30-31
+conversate/web/src/lib/transcripts/service.ts
+  s_1322c8294517ae::t_23f906a5b52282 7-8
+conversate/web/src/hooks/useBrowserSpeechRecognition.ts
+  s_1322c8294517ae::t_b34b1b3fcc9e0d 1-87
+docs/solutions/2026-05-20-browser-speech-recognition.md
+  s_1322c8294517ae::t_6e0464da20bcd9 1-62
+conversate/web/src/app/chat/chat-experience.tsx
+  s_1322c8294517ae::t_adb39d2c565163 10,13
+  s_1322c8294517ae::t_0e76c6b72ce4ba 39-47
+  s_1322c8294517ae::t_7c65f524e5fd80 132-141
+conversate/web/src/components/session/SpeechTranscriptCapture.tsx
+  s_1322c8294517ae::t_46306344e47a30 1-2,4-67,69-85,91,93-140,151-175
+  s_1322c8294517ae::t_64bf8bd7efefd9 3,68,86-90,92,141-150
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "8b38a7d0248400e558929e3773fb3b159faee654",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
