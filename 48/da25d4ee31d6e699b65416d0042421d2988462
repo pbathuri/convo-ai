@@ -1,0 +1,17 @@
+conversate/web/src/lib/analytics/types.ts
+  ai_agent 19
+conversate/web/src/lib/session/interview-phase.ts
+  ai_agent 1-55
+conversate/web/src/components/session/SessionStatusBar.tsx
+  ai_agent 1,6-7,13-14,17-26,28-34
+conversate/web/src/app/chat/chat-experience.tsx
+  ai_agent 4,11,14,16-22,35-36,38-42,46-48,51-75,88-94,97,99-101,103-108,112,128-132,145,158,161,167,169-185,196,199-204,222-223,225,228-244,249-250,252-258,260-271,284,290-295,300-301,306,313,316-317
+conversate/web/src/lib/session/interview-phase.test.ts
+  ai_agent 1-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "48da25d4ee31d6e699b65416d0042421d2988462",
+  "prompts": {}
+}
