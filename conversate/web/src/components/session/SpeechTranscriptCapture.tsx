@@ -15,6 +15,8 @@ type Props = {
   sessionId: string;
   onSegmentFinal?: (segment: SpeechSegment) => void;
   onPersistError?: (message: string) => void;
+  onPersistSuccess?: () => void;
+  onUnsavedCountChange?: (count: number) => void;
 };
 
 type FailedSegment = { segment: SpeechSegment; error: string };
@@ -69,6 +71,8 @@ export function SpeechTranscriptCapture({
   sessionId,
   onSegmentFinal,
   onPersistError,
+  onPersistSuccess,
+  onUnsavedCountChange,
 }: Props) {
   const [consent, setConsent] = useState(false);
   const [persistWarning, setPersistWarning] = useState<string | null>(null);
@@ -99,10 +103,15 @@ export function SpeechTranscriptCapture({
         return false;
       }
       setFailedQueue((q) => q.filter((f) => f.segment.id !== segment.id));
+      onPersistSuccess?.();
       return true;
     },
-    [consent, onPersistError, sessionId],
+    [consent, onPersistError, onPersistSuccess, sessionId],
   );
+
+  useEffect(() => {
+    onUnsavedCountChange?.(failedQueue.length);
+  }, [failedQueue.length, onUnsavedCountChange]);
 
   const handleFinal = useCallback(
     async (segment: SpeechSegment) => {
@@ -233,7 +242,8 @@ export function SpeechTranscriptCapture({
               className="flex flex-wrap items-center justify-between gap-2 rounded border border-amber-500/40 bg-amber-500/5 p-2"
             >
               <span className="text-amber-800 dark:text-amber-200">
-                Not saved: {segment.text.slice(0, 40)}… — {error}
+                Not saved — Retry: {segment.text.slice(0, 40)}
+                {segment.text.length > 40 ? "…" : ""} ({error})
               </span>
               <Button
                 type="button"

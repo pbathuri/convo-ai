@@ -8,9 +8,14 @@ import type { SpeechSegment } from "@/lib/speech/types";
 type Props = {
   sessionId: string;
   speechSegments?: SpeechSegment[];
+  onManualSaved?: (entryCount: number) => void;
 };
 
-export function TranscriptPanel({ sessionId, speechSegments = [] }: Props) {
+export function TranscriptPanel({
+  sessionId,
+  speechSegments = [],
+  onManualSaved,
+}: Props) {
   const [draft, setDraft] = useState("");
   const [saved, setSaved] = useState<{ source: string; line: string }[]>([]);
 
@@ -31,12 +36,12 @@ export function TranscriptPanel({ sessionId, speechSegments = [] }: Props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages }),
     });
-    setSaved(
-      messages.map((m) => ({
-        source: "manual",
-        line: `${m.role}: ${m.content}`,
-      })),
-    );
+    const entries = messages.map((m) => ({
+      source: "manual",
+      line: `${m.role}: ${m.content}`,
+    }));
+    setSaved(entries);
+    onManualSaved?.(entries.length);
     setDraft("");
   }
 
