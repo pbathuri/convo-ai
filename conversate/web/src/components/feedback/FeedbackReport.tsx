@@ -18,7 +18,20 @@ type Props = {
   personaId: PersonaId;
   sessionId: string;
   degraded?: boolean;
+  transcriptWordCount?: number;
+  messageCount?: number;
 };
+
+function buildExemplarRewrite(
+  weakness: string | undefined,
+  quote: string | undefined,
+): string {
+  if (!weakness && !quote) {
+    return "Lead with one sentence of context, your specific action, and a measurable result.";
+  }
+  const base = quote?.slice(0, 120) ?? "In that situation";
+  return `Stronger version: ${base}… — then state the decision, trade-off, and outcome with one metric (e.g. latency, revenue, or users). Focus: ${weakness ?? "add specificity"}.`;
+}
 
 export function FeedbackReportView({
   overallScore,
@@ -30,7 +43,15 @@ export function FeedbackReportView({
   personaId,
   sessionId,
   degraded,
+  transcriptWordCount = 0,
+  messageCount = 0,
 }: Props) {
+  const topFixes = [...weaknesses, ...actionItems].slice(0, 3);
+  const sparse =
+    messageCount < 2 ||
+    transcriptWordCount < 40 ||
+    (evidence.length === 1 && evidence[0]?.quote.length < 30);
+
   return (
     <div className="space-y-4">
       {degraded ? (
@@ -39,14 +60,32 @@ export function FeedbackReportView({
           unavailable.
         </p>
       ) : null}
-      <GlassCard>
-        <h2 className="mb-2 text-lg font-medium">Your coaching report</h2>
-        <p className="mb-3 text-xs text-muted-foreground">
-          What you said → how strong it was → why → what to fix → what to
-          practice next.
+
+      {sparse ? (
+        <p className="rounded-md border border-dashed border-amber-500/40 px-3 py-2 text-xs text-muted-foreground">
+          Feedback quality is limited — add more transcript (browser speech or
+          manual paste) before your next practice session.
         </p>
-        <ScoreBar label="Overall readiness" score={overallScore} />
+      ) : null}
+
+      <GlassCard>
+        <h2 className="mb-2 text-lg font-medium">Your coaching plan</h2>
+        <p className="mb-3 text-xs text-muted-foreground">
+          Readiness → top fixes → evidence → exemplar pattern → next drill.
+        </p>
+        <ScoreBar label="Interview readiness" score={overallScore} />
       </GlassCard>
+
+      {topFixes.length > 0 ? (
+        <GlassCard>
+          <h3 className="text-sm font-medium">Top 3 fixes</h3>
+          <ol className="mt-2 list-inside list-decimal space-y-1 text-sm text-muted-foreground">
+            {topFixes.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
+          </ol>
+        </GlassCard>
+      ) : null}
 
       {strengths.length > 0 ? (
         <GlassCard>
@@ -61,21 +100,10 @@ export function FeedbackReportView({
 
       {weaknesses.length > 0 ? (
         <GlassCard>
-          <h3 className="text-sm font-medium">Top fixes</h3>
+          <h3 className="text-sm font-medium">Growth areas</h3>
           <ul className="mt-2 list-inside list-disc text-sm text-muted-foreground">
             {weaknesses.map((w) => (
               <li key={w}>{w}</li>
-            ))}
-          </ul>
-        </GlassCard>
-      ) : null}
-
-      {actionItems.length > 0 ? (
-        <GlassCard>
-          <h3 className="text-sm font-medium">Action items</h3>
-          <ul className="mt-2 list-inside list-disc text-sm text-muted-foreground">
-            {actionItems.map((a) => (
-              <li key={a}>{a}</li>
             ))}
           </ul>
         </GlassCard>
@@ -96,18 +124,26 @@ export function FeedbackReportView({
         </GlassCard>
       ) : null}
 
+      <GlassCard>
+        <h3 className="text-sm font-medium">Exemplar rewrite pattern</h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {buildExemplarRewrite(weaknesses[0], evidence[0]?.quote)}
+        </p>
+      </GlassCard>
+
       {nextDrill ? (
         <GlassCard>
           <h3 className="text-sm font-medium">Next drill</h3>
           <p className="mt-2 text-sm text-muted-foreground">{nextDrill}</p>
-          <Link
-            href={`/chat?persona=${personaId}`}
-            className="mt-3 inline-block text-sm font-medium text-[var(--sakura-petal-500)] hover:underline"
-          >
-            Practice again →
-          </Link>
         </GlassCard>
       ) : null}
+
+      <Link
+        href={`/chat?persona=${personaId}`}
+        className="inline-block rounded-md bg-[var(--sakura-petal-500)] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+      >
+        Practice again
+      </Link>
 
       <p className="text-xs text-muted-foreground">Session {sessionId}</p>
     </div>

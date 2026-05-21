@@ -22,6 +22,11 @@ export default async function SessionDetailPage({
     lastRun?.modelProvider === "local" ||
     (typeof lastRun?.modelName === "string" &&
       lastRun.modelName.includes("stub"));
+  const messages = session?.messages ?? [];
+  const transcriptWordCount = messages.reduce(
+    (n, m) => n + m.content.split(/\s+/).filter(Boolean).length,
+    0,
+  );
 
   return (
     <SakuraPageShell className="space-y-6 py-8">
@@ -101,6 +106,8 @@ export default async function SessionDetailPage({
           personaId={personaIdSchema.parse(personaId)}
           sessionId={params.sessionId}
           degraded={scoringDegraded}
+          messageCount={messages.length}
+          transcriptWordCount={transcriptWordCount}
         />
       ) : (
         <div className="space-y-2 rounded-xl border border-[var(--sakura-glass-border)] bg-[var(--sakura-glass-bg)] p-4">
