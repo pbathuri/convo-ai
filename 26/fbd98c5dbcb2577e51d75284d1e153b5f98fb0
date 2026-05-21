@@ -1,0 +1,27 @@
+conversate/web/src/app/page.tsx
+  s_1322c8294517ae::t_178e144528450b 3-4,7-13,16-39,42-47,52,55-64,67-73,78
+conversate/web/src/app/personas/page.tsx
+  s_1322c8294517ae::t_5c766e4568a22a 24
+  s_1322c8294517ae::t_b1ce93f3d325dc 3-5,9-16,22,25-27,29-32,34-45,47-53,60-66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "26fbd98c5dbcb2577e51d75284d1e153b5f98fb0",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
