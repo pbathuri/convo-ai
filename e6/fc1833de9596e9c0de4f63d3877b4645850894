@@ -1,0 +1,26 @@
+conversate/web/src/lib/scoring/scorer.test.ts
+  s_1322c8294517ae::t_1164a4e2171ab9 1-36
+docs/implementation/test-strategy.md
+  s_1322c8294517ae::t_0beb2af9a873bb 21-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "e6fc1833de9596e9c0de4f63d3877b4645850894",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
