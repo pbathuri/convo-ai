@@ -1,6 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { isDatabaseConfigured, prisma } from "@/lib/db";
-import { validateKbImport, type KbImportGovernance } from "./policy";
+import { type KbImportGovernance, validateKbImport } from "./policy";
 
 export async function importKbChunks(opts: {
   source: KbImportGovernance & { sourceUrl?: string; captureMethod: string };
@@ -46,5 +46,9 @@ export async function importKbChunks(opts: {
     })),
   });
 
-  return { imported: opts.chunks.length, sourceId: source.id, mode: "db" as const };
+  return {
+    imported: opts.chunks.length,
+    sourceId: source.id,
+    mode: "db" as const,
+  };
 }

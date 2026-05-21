@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import {
+  difficultySchema,
+  interviewModeSchema,
+  personaIdSchema,
+} from "@/lib/personas";
 import { createSession, listSessions } from "@/lib/sessions/service";
-import { difficultySchema, interviewModeSchema, personaIdSchema } from "@/lib/personas";
 
 const createSchema = z.object({
   personaId: personaIdSchema,
@@ -19,7 +23,10 @@ export async function POST(req: Request) {
   const json: unknown = await req.json();
   const parsed = createSchema.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: parsed.error.flatten() },
+      { status: 400 },
+    );
   }
   const session = await createSession(parsed.data);
   return NextResponse.json({ session }, { status: 201 });

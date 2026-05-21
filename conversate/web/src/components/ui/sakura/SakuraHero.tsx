@@ -9,7 +9,13 @@ type Props = {
   className?: string;
 };
 
-export function SakuraHero({ eyebrow, title, subtitle, children, className }: Props) {
+export function SakuraHero({
+  eyebrow,
+  title,
+  subtitle,
+  children,
+  className,
+}: Props) {
   return (
     <section
       className={cn(
@@ -27,9 +33,13 @@ export function SakuraHero({ eyebrow, title, subtitle, children, className }: Pr
         {title}
       </h1>
       {subtitle ? (
-        <p className="mt-3 max-w-2xl text-base text-[var(--sakura-plum-muted)]">{subtitle}</p>
+        <p className="mt-3 max-w-2xl text-base text-[var(--sakura-plum-muted)]">
+          {subtitle}
+        </p>
       ) : null}
-      {children ? <div className="mt-6 flex flex-wrap gap-3">{children}</div> : null}
+      {children ? (
+        <div className="mt-6 flex flex-wrap gap-3">{children}</div>
+      ) : null}
     </section>
   );
 }

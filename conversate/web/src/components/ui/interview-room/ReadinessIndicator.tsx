@@ -18,7 +18,12 @@ export function ReadinessIndicator({ label, status }: Props) {
   return (
     <div className="flex items-center justify-between gap-2 text-sm">
       <span>{label}</span>
-      <span className={cn("rounded-full px-2 py-0.5 text-xs font-medium", STATUS_CLASS[status])}>
+      <span
+        className={cn(
+          "rounded-full px-2 py-0.5 text-xs font-medium",
+          STATUS_CLASS[status],
+        )}
+      >
         {status}
       </span>
     </div>

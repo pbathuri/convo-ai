@@ -1,11 +1,18 @@
 import { z } from "zod";
 
-const emptyToUndefined = (v: unknown) => (v === "" || v === undefined ? undefined : v);
+const emptyToUndefined = (v: unknown) =>
+  v === "" || v === undefined ? undefined : v;
 
 const serverSchema = z.object({
   GOOGLE_AI_STUDIO_KEY: z.string().optional(),
-  UPSTASH_REDIS_REST_URL: z.preprocess(emptyToUndefined, z.string().url().optional()),
-  UPSTASH_REDIS_REST_TOKEN: z.preprocess(emptyToUndefined, z.string().optional()),
+  UPSTASH_REDIS_REST_URL: z.preprocess(
+    emptyToUndefined,
+    z.string().url().optional(),
+  ),
+  UPSTASH_REDIS_REST_TOKEN: z.preprocess(
+    emptyToUndefined,
+    z.string().optional(),
+  ),
   DID_DAILY_MINUTE_BUDGET: z.coerce.number().optional(),
   SESSION_COOKIE_SECRET: z.string().optional(),
 });

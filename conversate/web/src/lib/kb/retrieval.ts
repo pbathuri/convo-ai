@@ -26,11 +26,16 @@ export async function retrieveContextForScoring(
     take: 50,
   });
 
-  const terms = query.toLowerCase().split(/\s+/).filter((t) => t.length > 3);
+  const terms = query
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((t) => t.length > 3);
   const scored = chunks.map((c) => {
     const text = c.content.toLowerCase();
     const keyword =
-      terms.length === 0 ? 0 : terms.filter((t) => text.includes(t)).length / terms.length;
+      terms.length === 0
+        ? 0
+        : terms.filter((t) => text.includes(t)).length / terms.length;
     const srcQ = c.source.approvalStatus === "approved" ? 1 : 0.3;
     const score = 0.25 * keyword + 0.1 * srcQ;
     return {

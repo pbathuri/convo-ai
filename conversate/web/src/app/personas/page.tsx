@@ -1,7 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CompanyAccent } from "@/components/ui/interview-room/CompanyAccent";
-import { PremiumCTA, SakuraHero, SakuraPageShell } from "@/components/ui/sakura";
+import {
+  PremiumCTA,
+  SakuraHero,
+  SakuraPageShell,
+} from "@/components/ui/sakura";
 import { PERSONAS, personaAgentId } from "@/lib/personas";
 
 export default function PersonasPage() {
@@ -21,15 +25,29 @@ export default function PersonasPage() {
               key={p.id}
               className="overflow-hidden rounded-2xl border border-[var(--sakura-glass-border)] bg-[var(--sakura-glass-bg)] shadow-[var(--sakura-shadow-soft)]"
             >
-              <CompanyAccent personaId={p.id} className="block h-1.5 w-full rounded-none" />
+              <CompanyAccent
+                personaId={p.id}
+                className="block h-1.5 w-full rounded-none"
+              />
               <div className="flex flex-col gap-4 p-5 sm:flex-row">
                 <div className="relative mx-auto h-28 w-28 shrink-0 overflow-hidden rounded-xl border border-[var(--sakura-glass-border)] bg-muted sm:mx-0">
-                  <Image src={p.photoUrl} alt={p.displayName} fill className="object-cover" sizes="112px" />
+                  <Image
+                    src={p.photoUrl}
+                    alt={p.displayName}
+                    fill
+                    className="object-cover"
+                    sizes="112px"
+                  />
                 </div>
                 <div className="min-w-0 flex-1 space-y-2">
                   <div className="flex items-center gap-2">
-                    <CompanyAccent personaId={p.id} className="h-2.5 w-2.5 rounded-full" />
-                    <h2 className="font-semibold text-[var(--sakura-plum)]">{p.displayName}</h2>
+                    <CompanyAccent
+                      personaId={p.id}
+                      className="h-2.5 w-2.5 rounded-full"
+                    />
+                    <h2 className="font-semibold text-[var(--sakura-plum)]">
+                      {p.displayName}
+                    </h2>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {p.companyName} — {p.role}
@@ -50,7 +68,9 @@ export default function PersonasPage() {
                   <p className="font-mono text-[10px] text-muted-foreground">
                     {p.didAgentEnvKey}: {aid ? `${aid.slice(0, 12)}…` : "unset"}
                   </p>
-                  <PremiumCTA href={`/chat?persona=${p.id}`}>Open chat</PremiumCTA>
+                  <PremiumCTA href={`/chat?persona=${p.id}`}>
+                    Open chat
+                  </PremiumCTA>
                 </div>
               </div>
             </li>
@@ -59,7 +79,10 @@ export default function PersonasPage() {
       </ul>
 
       <p className="text-center text-sm text-muted-foreground">
-        <Link href="/" className="text-[var(--sakura-petal-500)] hover:underline">
+        <Link
+          href="/"
+          className="text-[var(--sakura-petal-500)] hover:underline"
+        >
           ← Back to home
         </Link>
       </p>

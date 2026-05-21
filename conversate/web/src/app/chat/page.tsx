@@ -1,9 +1,8 @@
 import {
   defaultPersonaId,
-  getPersona,
+  type PersonaId,
   personaAgentId,
   personaIdSchema,
-  type PersonaId,
 } from "@/lib/personas";
 import { ChatExperience } from "./chat-experience";
 
@@ -21,10 +20,13 @@ export default function ChatPage({
   searchParams: { persona?: string };
 }) {
   const personaId = resolvePersonaId(searchParams.persona);
-  const persona = getPersona(personaId);
   const agentId = personaAgentId(personaId) ?? "";
   const clientKey = process.env.NEXT_PUBLIC_DID_CLIENT_KEY ?? "";
   return (
-    <ChatExperience personaId={personaId} agentId={agentId} clientKey={clientKey} />
+    <ChatExperience
+      personaId={personaId}
+      agentId={agentId}
+      clientKey={clientKey}
+    />
   );
 }

@@ -52,7 +52,8 @@ export const PERSONAS: PersonaDefinition[] = [
       "Tell me about a time you had to make a high-stakes technical decision with incomplete data.",
     candidateInstructions:
       "Use STAR. Quantify impact. Show ownership and customer obsession.",
-    forbiddenBehavior: "Do not ask for salary or benefits in the first 10 minutes.",
+    forbiddenBehavior:
+      "Do not ask for salary or benefits in the first 10 minutes.",
     fallbackBehavior:
       "If the candidate is vague, ask for metrics, trade-offs, and what they would do differently.",
   },
@@ -94,7 +95,8 @@ export const PERSONAS: PersonaDefinition[] = [
     candidateInstructions:
       "Structure answers: situation, complication, resolution, learning. Be concise.",
     forbiddenBehavior: "Do not ramble beyond 2 minutes per story.",
-    fallbackBehavior: "Ask for the recommendation, pushback, and measurable outcome.",
+    fallbackBehavior:
+      "Ask for the recommendation, pushback, and measurable outcome.",
   },
   {
     id: "goldman-vp-banking",
@@ -113,7 +115,8 @@ export const PERSONAS: PersonaDefinition[] = [
       "Why this group, why now, and what deal or market trend are you following closely?",
     candidateInstructions:
       "Be crisp. Show market awareness. Tie answers to client impact.",
-    forbiddenBehavior: "Do not discuss confidential deal names without anonymizing.",
+    forbiddenBehavior:
+      "Do not discuss confidential deal names without anonymizing.",
     fallbackBehavior: "Redirect to public comps and industry drivers if stuck.",
   },
   {
@@ -134,7 +137,8 @@ export const PERSONAS: PersonaDefinition[] = [
     candidateInstructions:
       "Show customer empathy, cross-functional leadership, and data-informed decisions.",
     forbiddenBehavior: "Do not blame other teams without owning your role.",
-    fallbackBehavior: "Ask what signal they missed and how they changed their process.",
+    fallbackBehavior:
+      "Ask what signal they missed and how they changed their process.",
   },
 ];
 
@@ -148,7 +152,12 @@ const PERSONA_ID_TUPLE = [
 
 export const personaIdSchema = z.enum(PERSONA_ID_TUPLE);
 
-export const interviewModeSchema = z.enum(["behavioral", "technical", "case", "mixed"]);
+export const interviewModeSchema = z.enum([
+  "behavioral",
+  "technical",
+  "case",
+  "mixed",
+]);
 export const difficultySchema = z.enum(["easy", "medium", "hard"]);
 
 export function getPersona(id: string): PersonaDefinition | undefined {

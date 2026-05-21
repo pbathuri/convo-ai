@@ -1,8 +1,8 @@
 import type { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { isAdminResponse, requireAdmin } from "@/lib/admin/authz";
 import { writeAuditLog } from "@/lib/admin/audit";
+import { isAdminResponse, requireAdmin } from "@/lib/admin/authz";
 import { importKbChunks } from "@/lib/kb/service";
 
 const schema = z.object({
@@ -32,12 +32,17 @@ export async function POST(req: Request) {
   const json: unknown = await req.json();
   const parsed = schema.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: parsed.error.flatten() },
+      { status: 400 },
+    );
   }
 
   try {
     const result = await importKbChunks({
-      source: parsed.data.source as Parameters<typeof importKbChunks>[0]["source"],
+      source: parsed.data.source as Parameters<
+        typeof importKbChunks
+      >[0]["source"],
       documentTitle: parsed.data.documentTitle,
       chunks: parsed.data.chunks.map((c) => ({
         ...c,

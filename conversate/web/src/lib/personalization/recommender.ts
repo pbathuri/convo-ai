@@ -24,7 +24,8 @@ export function recommendNextDrill(opts: {
   weaknesses: string[];
 }): { personaId: PersonaId; drill: string; basedOn?: string } {
   const p = getPersona(opts.personaId);
-  const fallback = p?.openingQuestion ?? "Practice your opening story with metrics.";
+  const fallback =
+    p?.openingQuestion ?? "Practice your opening story with metrics.";
   const top = opts.weaknesses[0];
   if (!top) {
     return { personaId: opts.personaId, drill: fallback };
@@ -36,7 +37,9 @@ export function recommendNextDrill(opts: {
   };
 }
 
-export function clusterWeaknesses(weaknesses: string[]): { label: string; count: number }[] {
+export function clusterWeaknesses(
+  weaknesses: string[],
+): { label: string; count: number }[] {
   const counts = new Map<string, number>();
   for (const w of weaknesses) {
     const key = w.trim().slice(0, 48) || "General";

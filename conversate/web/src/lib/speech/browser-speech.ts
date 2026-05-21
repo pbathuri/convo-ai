@@ -1,8 +1,8 @@
 import type {
+  BrowserSpeechOptions,
   BrowserSpeechRecognitionConstructor,
   BrowserSpeechRecognitionEvent,
   BrowserSpeechRecognitionInstance,
-  BrowserSpeechOptions,
   BrowserSpeechRecognizer,
   SpeechRecognitionSupport,
   SpeechRecognizerStatus,
@@ -36,7 +36,8 @@ export function createBrowserSpeechRecognizer(
 ): BrowserSpeechRecognizer {
   const Ctor = getRecognitionCtor();
   const support: SpeechRecognitionSupport = Ctor ? "supported" : "unsupported";
-  let status: SpeechRecognizerStatus = support === "supported" ? "idle" : "unsupported";
+  let status: SpeechRecognizerStatus =
+    support === "supported" ? "idle" : "unsupported";
   let recognition: BrowserSpeechRecognitionInstance | null = null;
   let lastFinalNormalized = "";
 
@@ -88,7 +89,9 @@ export function createBrowserSpeechRecognizer(
     };
     instance.onerror = (event) => {
       setStatus("error");
-      options.onError?.(event.message ?? event.error ?? "Speech recognition error");
+      options.onError?.(
+        event.message ?? event.error ?? "Speech recognition error",
+      );
     };
     instance.onresult = handleResult;
     return instance;

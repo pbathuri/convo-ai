@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AnalyticsBridge } from "@/components/AnalyticsBridge";
-import { PetalBackdrop } from "@/components/ui/sakura";
 import { SiteNav } from "@/components/site-nav";
+import { PetalBackdrop } from "@/components/ui/sakura";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,7 +18,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Conversate",
-  description: "Company-specific interview practice with D-ID Agents and Sakura-calm coaching",
+  description:
+    "Company-specific interview practice with D-ID Agents and Sakura-calm coaching",
 };
 
 export default function RootLayout({

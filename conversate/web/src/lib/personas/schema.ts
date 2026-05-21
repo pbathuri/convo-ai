@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { difficultySchema, interviewModeSchema, personaIdSchema } from "@/lib/personas";
+import {
+  difficultySchema,
+  interviewModeSchema,
+  personaIdSchema,
+} from "@/lib/personas";
 
 export const personaDefinitionSchema = z.object({
   id: personaIdSchema,

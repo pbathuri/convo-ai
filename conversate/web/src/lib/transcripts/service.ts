@@ -8,7 +8,9 @@ export type TranscriptMessage = {
   metadata?: Record<string, unknown>;
 };
 
-export function normalizeTranscript(messages: TranscriptMessage[]): TranscriptMessage[] {
+export function normalizeTranscript(
+  messages: TranscriptMessage[],
+): TranscriptMessage[] {
   return messages
     .map((m, i) => ({
       role: m.role,

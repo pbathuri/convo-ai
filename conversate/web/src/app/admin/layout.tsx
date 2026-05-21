@@ -21,7 +21,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </p>
         <nav className="flex flex-col gap-1 text-sm">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="rounded px-2 py-1 hover:bg-muted">
+            <Link
+              key={n.href}
+              href={n.href}
+              className="rounded px-2 py-1 hover:bg-muted"
+            >
               {n.label}
             </Link>
           ))}

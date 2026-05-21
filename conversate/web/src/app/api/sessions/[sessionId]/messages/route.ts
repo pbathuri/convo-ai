@@ -21,7 +21,10 @@ export async function POST(
   const json: unknown = await req.json();
   const parsed = bodySchema.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: parsed.error.flatten() },
+      { status: 400 },
+    );
   }
   const count = await appendMessages(params.sessionId, parsed.data.messages);
   return NextResponse.json({ appended: count });

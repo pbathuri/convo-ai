@@ -23,7 +23,13 @@ export function PostSessionActions({ sessionId, onEnd, onRate }: Props) {
       {onRate ? (
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((n) => (
-            <Button key={n} type="button" size="sm" variant="ghost" onClick={() => onRate(n)}>
+            <Button
+              key={n}
+              type="button"
+              size="sm"
+              variant="ghost"
+              onClick={() => onRate(n)}
+            >
               {n}★
             </Button>
           ))}

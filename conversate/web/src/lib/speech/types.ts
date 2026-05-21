@@ -65,4 +65,5 @@ export interface BrowserSpeechRecognitionInstance {
   abort: () => void;
 }
 
-export type BrowserSpeechRecognitionConstructor = new () => BrowserSpeechRecognitionInstance;
+export type BrowserSpeechRecognitionConstructor =
+  new () => BrowserSpeechRecognitionInstance;

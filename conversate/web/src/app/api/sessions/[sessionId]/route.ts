@@ -33,9 +33,15 @@ export async function PATCH(
   const json: unknown = await req.json();
   const parsed = patchSchema.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: parsed.error.flatten() },
+      { status: 400 },
+    );
   }
-  const session = await updateSessionStatus(params.sessionId, parsed.data.status);
+  const session = await updateSessionStatus(
+    params.sessionId,
+    parsed.data.status,
+  );
   if (!session) {
     return NextResponse.json({ ok: true, local: true });
   }

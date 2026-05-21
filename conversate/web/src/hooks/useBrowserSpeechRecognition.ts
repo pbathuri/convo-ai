@@ -1,7 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createBrowserSpeechRecognizer, detectSpeechRecognitionSupport } from "@/lib/speech/browser-speech";
+import {
+  createBrowserSpeechRecognizer,
+  detectSpeechRecognitionSupport,
+} from "@/lib/speech/browser-speech";
 import type {
   SpeechRecognitionSupport,
   SpeechRecognizerStatus,
@@ -26,7 +29,9 @@ export function useBrowserSpeechRecognition(): UseBrowserSpeechRecognitionResult
   const [interimText, setInterimText] = useState("");
   const [finalSegments, setFinalSegments] = useState<SpeechSegment[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const recognizerRef = useRef<ReturnType<typeof createBrowserSpeechRecognizer> | null>(null);
+  const recognizerRef = useRef<ReturnType<
+    typeof createBrowserSpeechRecognizer
+  > | null>(null);
 
   useEffect(() => {
     setSupport(detectSpeechRecognitionSupport());
