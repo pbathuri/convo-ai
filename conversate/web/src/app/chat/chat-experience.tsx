@@ -7,8 +7,10 @@ import { PostSessionActions } from "@/components/session/PostSessionActions";
 import { SessionObjectiveCard } from "@/components/session/SessionObjectiveCard";
 import { SessionReadinessCard } from "@/components/session/SessionReadinessCard";
 import { SessionStatusBar } from "@/components/session/SessionStatusBar";
+import { SpeechTranscriptCapture } from "@/components/session/SpeechTranscriptCapture";
 import { TranscriptPanel } from "@/components/session/TranscriptPanel";
 import type { PersonaId } from "@/lib/personas";
+import type { SpeechSegment } from "@/lib/speech/types";
 import { getPersona } from "@/lib/personas";
 import { useSessionStore } from "@/stores/session-store";
 
@@ -34,6 +36,15 @@ export function ChatExperience({
   const [phase, setPhase] = useState("preflight");
   const [micReady, setMicReady] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [speechSegments, setSpeechSegments] = useState<SpeechSegment[]>([]);
+
+  const onSpeechSegmentFinal = useCallback((segment: SpeechSegment) => {
+    if (!segment.isFinal) return;
+    setSpeechSegments((prev) => {
+      if (prev.some((s) => s.id === segment.id)) return prev;
+      return [...prev, segment];
+    });
+  }, []);
 
   useEffect(() => {
     setPersona(personaId);
@@ -118,7 +129,16 @@ export function ChatExperience({
       </main>
 
       <aside className="space-y-4">
-        {sessionId ? <TranscriptPanel sessionId={sessionId} /> : null}
+        {sessionId ? (
+          <>
+            <SpeechTranscriptCapture
+              sessionId={sessionId}
+              onSegmentFinal={onSpeechSegmentFinal}
+              onPersistError={(msg) => setToast(msg)}
+            />
+            <TranscriptPanel sessionId={sessionId} speechSegments={speechSegments} />
+          </>
+        ) : null}
         <section className="rounded-lg border bg-card p-4 text-sm text-muted-foreground">
           <p>
             V1 uses your D-ID Agent for speech, reasoning, and lip-sync. Allow the microphone when

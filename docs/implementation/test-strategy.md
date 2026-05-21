@@ -19,3 +19,17 @@
 ## CI gates
 
 PR: lint + unit + API smoke. Nightly: Playwright + retrieval benchmark.
+
+## Browser SpeechRecognition transcript prototype test cases
+
+Manual (`/chat?persona=amazon-l5-bar-raiser`):
+
+1. D-ID connects; speech panel shows “Candidate-side capture only” and headphones warning.
+2. Consent unchecked → Start capture disabled.
+3. Consent + Start → interim text updates; final phrase appears after pause (never POST interim).
+4. Final segment visible under “browser speech” in transcript panel.
+5. With working DB: `user` message row created via messages API.
+6. Unsupported browser: warning state, no crash, manual paste still works.
+7. End session and score flow unchanged.
+
+Build gate: `cd conversate/web && npm run build`

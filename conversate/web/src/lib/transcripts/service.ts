@@ -4,6 +4,8 @@ export type TranscriptMessage = {
   role: "user" | "agent" | "system";
   content: string;
   sequence?: number;
+  provider?: string;
+  metadata?: Record<string, unknown>;
 };
 
 export function normalizeTranscript(messages: TranscriptMessage[]): TranscriptMessage[] {

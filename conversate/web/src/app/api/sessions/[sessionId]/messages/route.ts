@@ -8,6 +8,8 @@ const bodySchema = z.object({
       role: z.enum(["user", "agent", "system"]),
       content: z.string().min(1),
       sequence: z.number().int().optional(),
+      provider: z.string().optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     }),
   ),
 });

@@ -27,7 +27,8 @@ From integration in `DidAgentStage.tsx`:
 ## Chosen V1 path
 
 1. **Primary:** Manual transcript import (user/operator paste `user:` / `agent:` lines)
-2. **Future:** D-ID webhook or external STT on recorded audio; browser `SpeechRecognition` prototype optional
+2. **Implemented (prototype):** Browser `SpeechRecognition` — see [2026-05-20-browser-speech-recognition.md](../solutions/2026-05-20-browser-speech-recognition.md). Candidate-side only; finals-only persistence.
+3. **Future:** D-ID webhook or external STT on recorded audio
 
 ## Task 7 implication
 
