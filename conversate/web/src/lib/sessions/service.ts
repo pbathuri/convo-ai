@@ -1,6 +1,10 @@
-import { getPersona } from "@/lib/personas";
 import { isDatabaseConfigured, prisma } from "@/lib/db";
-import type { CreateSessionInput, SessionStatus, SessionSummary } from "./types";
+import { getPersona } from "@/lib/personas";
+import type {
+  CreateSessionInput,
+  SessionStatus,
+  SessionSummary,
+} from "./types";
 
 function toSummary(row: {
   id: string;
@@ -24,7 +28,9 @@ function toSummary(row: {
   };
 }
 
-export async function createSession(input: CreateSessionInput): Promise<SessionSummary> {
+export async function createSession(
+  input: CreateSessionInput,
+): Promise<SessionSummary> {
   const persona = getPersona(input.personaId);
   if (!persona) throw new Error("Unknown persona");
 
@@ -61,7 +67,9 @@ export async function updateSessionStatus(
   if (!isDatabaseConfigured() || sessionId.startsWith("local-")) {
     return null;
   }
-  const data: { status: SessionStatus; startedAt?: Date; endedAt?: Date } = { status };
+  const data: { status: SessionStatus; startedAt?: Date; endedAt?: Date } = {
+    status,
+  };
   if (status === "live") data.startedAt = new Date();
   if (status === "completed" || status === "failed" || status === "abandoned") {
     data.endedAt = new Date();
@@ -80,7 +88,9 @@ export async function listSessions(userId?: string): Promise<SessionSummary[]> {
   return enriched;
 }
 
-export async function listSessionsEnriched(userId?: string): Promise<SessionListItem[]> {
+export async function listSessionsEnriched(
+  userId?: string,
+): Promise<SessionListItem[]> {
   if (!isDatabaseConfigured()) return [];
   const rows = await prisma.session.findMany({
     where: userId ? { userId } : undefined,
@@ -102,6 +112,10 @@ export async function getSession(sessionId: string) {
   if (!isDatabaseConfigured() || sessionId.startsWith("local-")) return null;
   return prisma.session.findUnique({
     where: { id: sessionId },
-    include: { messages: { orderBy: { sequence: "asc" } }, scores: true },
+    include: {
+      messages: { orderBy: { sequence: "asc" } },
+      scores: { orderBy: { createdAt: "desc" }, take: 1 },
+      modelRuns: { orderBy: { createdAt: "desc" }, take: 1 },
+    },
   });
 }

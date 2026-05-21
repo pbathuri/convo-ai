@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SakuraHero, SakuraPageShell } from "@/components/ui/sakura";
-import { listSessionsEnriched } from "@/lib/sessions/service";
 import { getPersona } from "@/lib/personas";
+import { listSessionsEnriched } from "@/lib/sessions/service";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +20,10 @@ export default async function SessionsPage() {
       {sessions.length === 0 ? (
         <p className="text-sm text-muted-foreground">
           No sessions yet. Start a{" "}
-          <Link href="/personas" className="text-[var(--sakura-petal-500)] underline">
+          <Link
+            href="/personas"
+            className="text-[var(--sakura-petal-500)] underline"
+          >
             practice session
           </Link>
           .
@@ -37,29 +40,48 @@ export default async function SessionsPage() {
                 <div className="flex gap-3">
                   {p ? (
                     <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border">
-                      <Image src={p.photoUrl} alt={p.displayName} fill className="object-cover" sizes="56px" />
+                      <Image
+                        src={p.photoUrl}
+                        alt={p.displayName}
+                        fill
+                        className="object-cover"
+                        sizes="56px"
+                      />
                     </div>
                   ) : null}
                   <div>
-                    <p className="font-medium text-[var(--sakura-plum)]">{p?.displayName ?? s.personaId}</p>
+                    <p className="font-medium text-[var(--sakura-plum)]">
+                      {p?.displayName ?? s.personaId}
+                    </p>
                     <p className="text-xs text-muted-foreground">
-                      {s.status} · {s.messageCount} messages · {new Date(s.createdAt).toLocaleString()}
+                      {p?.companyName ?? "—"} · {s.status} · {s.messageCount}{" "}
+                      messages · {new Date(s.createdAt).toLocaleString()}
                     </p>
                     {s.overallScore != null ? (
                       <p className="mt-1 text-xs font-semibold text-[var(--sakura-petal-500)]">
-                        Score {Math.round(s.overallScore)}
+                        Scored · {Math.round(s.overallScore)}/100
                       </p>
                     ) : (
-                      <p className="mt-1 text-xs text-muted-foreground">Not scored yet</p>
+                      <p className="mt-1 text-xs text-amber-700 dark:text-amber-300">
+                        Not scored yet — open to generate report
+                      </p>
                     )}
                   </div>
                 </div>
-                <Link
-                  href={`/sessions/${s.id}`}
-                  className="text-sm font-medium text-[var(--sakura-plum)] hover:underline"
-                >
-                  Review →
-                </Link>
+                <div className="flex flex-wrap gap-3 text-sm">
+                  <Link
+                    href={`/sessions/${s.id}`}
+                    className="font-medium text-[var(--sakura-plum)] hover:underline"
+                  >
+                    View report
+                  </Link>
+                  <Link
+                    href={`/chat?persona=${s.personaId}`}
+                    className="text-[var(--sakura-petal-500)] hover:underline"
+                  >
+                    Practice again
+                  </Link>
+                </div>
               </li>
             );
           })}
