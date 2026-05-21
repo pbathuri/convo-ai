@@ -32,3 +32,4 @@ convo_ai_export.txt
 # Optional large local artifacts (uncomment if needed)
 # *.pdf
 # *.docx
+.claude/
