@@ -1,0 +1,41 @@
+conversate/web/src/app/admin/scraper-runs/page.tsx
+  s_1322c8294517ae::t_a201df41ec3203 1-2,6
+conversate/web/src/app/admin/kb/page.tsx
+  s_1322c8294517ae::t_d8530f2a8516b0 1-2,6
+conversate/web/README.md
+  s_1322c8294517ae::t_54eba452930f72 3,5-25,31,35-61
+README.md
+  s_1322c8294517ae::t_589b73e7ce785c 5-17
+conversate/web/src/app/admin/audit-log/page.tsx
+  s_1322c8294517ae::t_5c1717dc24a8b0 1-2,6
+docs/implementation/did-local-debugging.md
+  s_1322c8294517ae::t_f397344d4daefb 39-46
+conversate/web/src/app/admin/scoring/page.tsx
+  s_1322c8294517ae::t_e78463da941e6c 1-2,6
+conversate/web/src/app/admin/cost/page.tsx
+  s_1322c8294517ae::t_07ba3a3eb629b2 1-2,6
+docs/implementation/demo-readiness-checklist.md
+  s_1322c8294517ae::t_a59e1282f49cfb 1-20
+conversate/web/src/components/admin/ScaffoldBanner.tsx
+  s_1322c8294517ae::t_490d46b46b997e 1-8
+docs/implementation/latency-budgets.md
+  s_1322c8294517ae::t_2f28e5fccd4a62 1-11
+docs/implementation/current-mvp-status.md
+  s_1322c8294517ae::t_704eb575f7ae0e 4,6-57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "12ba6edf558223677c3d1ae372b9d3c581148f71",
+  "prompts": {},
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
