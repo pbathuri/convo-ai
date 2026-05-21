@@ -18,9 +18,20 @@ type Props = {
   personaId: PersonaId;
   sessionId: string;
   degraded?: boolean;
+  degradedReason?: string | null;
   transcriptWordCount?: number;
   messageCount?: number;
 };
+
+function degradedLabel(reason: string | null | undefined): string {
+  if (reason === "quota") {
+    return "AI scoring is using local fallback because Gemini quota is unavailable.";
+  }
+  if (reason === "missing_key") {
+    return "AI scoring is using local fallback because Gemini API key is not configured.";
+  }
+  return "AI scoring is using local fallback because Gemini quota/key is unavailable.";
+}
 
 function buildExemplarRewrite(
   weakness: string | undefined,
@@ -43,6 +54,7 @@ export function FeedbackReportView({
   personaId,
   sessionId,
   degraded,
+  degradedReason,
   transcriptWordCount = 0,
   messageCount = 0,
 }: Props) {
@@ -56,8 +68,7 @@ export function FeedbackReportView({
     <div className="space-y-4">
       {degraded ? (
         <p className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-800 dark:text-amber-200">
-          AI scoring is using local fallback because Gemini quota/key is
-          unavailable.
+          {degradedLabel(degradedReason)}
         </p>
       ) : null}
 

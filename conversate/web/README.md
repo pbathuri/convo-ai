@@ -2,7 +2,7 @@
 
 Next.js commercial MVP for interview practice. **Not production-ready** — optimized for one reliable golden path.
 
-**Repository:** https://github.com/pbathuri/convo-ai  
+**Repository:** <https://github.com/pbathuri/convo-ai>  
 **Branch:** `commercial-v1`
 
 ## Golden path

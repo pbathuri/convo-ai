@@ -22,6 +22,8 @@ export default async function SessionDetailPage({
     lastRun?.modelProvider === "local" ||
     (typeof lastRun?.modelName === "string" &&
       lastRun.modelName.includes("stub"));
+  const degradedReason =
+    lastRun?.modelProvider === "local" ? "missing_key" : "quota";
   const messages = session?.messages ?? [];
   const transcriptWordCount = messages.reduce(
     (n, m) => n + m.content.split(/\s+/).filter(Boolean).length,
@@ -106,6 +108,7 @@ export default async function SessionDetailPage({
           personaId={personaIdSchema.parse(personaId)}
           sessionId={params.sessionId}
           degraded={scoringDegraded}
+          degradedReason={scoringDegraded ? degradedReason : null}
           messageCount={messages.length}
           transcriptWordCount={transcriptWordCount}
         />

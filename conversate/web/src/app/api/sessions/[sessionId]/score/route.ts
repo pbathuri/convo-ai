@@ -4,6 +4,10 @@ import { rerankChunks } from "@/lib/kb/rerank";
 import { retrieveContextForScoring } from "@/lib/kb/retrieval";
 import { type PersonaId, personaIdSchema } from "@/lib/personas";
 import { buildFeedbackReport } from "@/lib/scoring/feedback-engine";
+import {
+  scoreTranscriptHeuristic,
+  transcriptHasScorableContent,
+} from "@/lib/scoring/local-heuristics";
 import { getRubricForPersona } from "@/lib/scoring/rubrics";
 import { scoreTranscript } from "@/lib/scoring/scorer";
 import { listMessages } from "@/lib/transcripts/service";
@@ -97,6 +101,31 @@ export async function POST(
         { status: 400 },
       );
     }
-    throw e;
+
+    if (transcriptHasScorableContent(transcript)) {
+      const output = scoreTranscriptHeuristic({
+        personaId: parsedPersona.data,
+        transcript,
+        degradedReason: "Scoring service unavailable",
+      });
+      const report = buildFeedbackReport(output);
+      return NextResponse.json({
+        report,
+        output,
+        retrievalTrace: { chunkIds: [], scores: [], sources: [] },
+        degraded: true,
+        degradedReason: "api_error",
+      });
+    }
+
+    return NextResponse.json(
+      {
+        error:
+          e instanceof Error
+            ? e.message
+            : "Scoring failed. Add transcript content and retry.",
+      },
+      { status: 503 },
+    );
   }
 }
