@@ -8,7 +8,7 @@ import {
   scoreTranscriptHeuristic,
   transcriptHasScorableContent,
 } from "@/lib/scoring/local-heuristics";
-import { getRubricForPersona } from "@/lib/scoring/rubrics";
+import { persistScoreResult } from "@/lib/scoring/persist-score";
 import { scoreTranscript } from "@/lib/scoring/scorer";
 import { listMessages } from "@/lib/transcripts/service";
 
@@ -36,8 +36,6 @@ export async function POST(
     );
     const ranked = rerankChunks(rawChunks);
     const kbContext = ranked.map((c) => c.content);
-    const rubric = getRubricForPersona(parsedPersona.data);
-
     const { output, modelName, latencyMs, degraded, degradedReason } =
       await scoreTranscript({
         personaId: parsedPersona.data,
@@ -52,37 +50,16 @@ export async function POST(
       sources: ranked.map((c) => c.sourceId),
     };
 
-    if (isDatabaseConfigured() && !params.sessionId.startsWith("local-")) {
-      const scoreRow = await prisma.score.create({
-        data: {
-          sessionId: params.sessionId,
-          personaId: parsedPersona.data,
-          rubricVersion: rubric.version,
-          overallScore: output.overallScore,
-          dimensions: output.dimensions,
-          strengths: output.strengths,
-          weaknesses: output.weaknesses,
-          actionItems: output.actionItems,
-          evidence: output.evidence,
-          confidence: output.confidence,
-        },
-      });
-      await prisma.modelRun.create({
-        data: {
-          sessionId: params.sessionId,
-          scoreId: scoreRow.id,
-          personaId: parsedPersona.data,
-          modelProvider: degraded ? "local" : "google",
-          modelName,
-          rubricVersion: rubric.version,
-          inputHash: String(transcript.length),
-          outputJson: output,
-          confidence: output.confidence,
-          latencyMs,
-          retrievalTrace,
-        },
-      });
-    }
+    await persistScoreResult({
+      sessionId: params.sessionId,
+      personaId: parsedPersona.data,
+      output,
+      modelName,
+      latencyMs,
+      degraded: degraded ?? false,
+      retrievalTrace,
+      inputHash: String(transcript.length),
+    });
 
     return NextResponse.json({
       report,
@@ -103,16 +80,33 @@ export async function POST(
     }
 
     if (transcriptHasScorableContent(transcript)) {
+      const start = Date.now();
       const output = scoreTranscriptHeuristic({
         personaId: parsedPersona.data,
         transcript,
         degradedReason: "Scoring service unavailable",
       });
       const report = buildFeedbackReport(output);
+      const retrievalTrace = {
+        chunkIds: [] as string[],
+        scores: [] as number[],
+        sources: [] as string[],
+      };
+      const latencyMs = Date.now() - start;
+      await persistScoreResult({
+        sessionId: params.sessionId,
+        personaId: parsedPersona.data,
+        output,
+        modelName: "local-heuristic",
+        latencyMs,
+        degraded: true,
+        retrievalTrace,
+        inputHash: String(transcript.length),
+      });
       return NextResponse.json({
         report,
         output,
-        retrievalTrace: { chunkIds: [], scores: [], sources: [] },
+        retrievalTrace,
         degraded: true,
         degradedReason: "api_error",
       });
