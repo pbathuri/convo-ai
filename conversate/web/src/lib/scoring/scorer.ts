@@ -1,55 +1,53 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { PersonaId } from "@/lib/personas";
 import { getPersona } from "@/lib/personas";
-import { wrapRetrievedContext } from "./safety-preamble";
+import {
+  scoreTranscriptHeuristic,
+  transcriptHasScorableContent,
+} from "./local-heuristics";
 import { getRubricForPersona } from "./rubrics";
-import { scoreOutputSchema, type ScoreOutput } from "./schema";
+import { wrapRetrievedContext } from "./safety-preamble";
+import { type ScoreOutput, scoreOutputSchema } from "./schema";
 
-function buildStubScore(opts: {
-  personaId: PersonaId;
-  transcript: string;
-  rationale?: string;
-}): ScoreOutput {
-  const persona = getPersona(opts.personaId);
-  const rubric = getRubricForPersona(opts.personaId);
-  return {
-    overallScore: 72,
-    dimensions: rubric.dimensions.map((d) => ({
-      name: d.name,
-      score: 70,
-      rationale: opts.rationale ?? "Stub score — set GOOGLE_AI_STUDIO_KEY for live scoring.",
-    })),
-    strengths: ["Clear structure"],
-    weaknesses: ["Needs more quantified impact"],
-    actionItems: [
-      "Add metrics to your opening story",
-      "Practice a 90-second concise version",
-      "Prepare one follow-up depth answer",
-    ],
-    evidence: [
-      { quote: opts.transcript.slice(0, 120) || "(no transcript)", dimension: "Sample" },
-    ],
-    confidence: 0.5,
-    nextDrill: persona?.openingQuestion,
-  };
-}
+export type DegradedReason =
+  | "missing_key"
+  | "quota"
+  | "parse_error"
+  | "api_error";
 
 export async function scoreTranscript(opts: {
   personaId: PersonaId;
   transcript: string;
   kbContext?: string[];
-}): Promise<{ output: ScoreOutput; modelName: string; latencyMs: number; degraded?: boolean }> {
+}): Promise<{
+  output: ScoreOutput;
+  modelName: string;
+  latencyMs: number;
+  degraded?: boolean;
+  degradedReason?: DegradedReason;
+}> {
   const apiKey = process.env.GOOGLE_AI_STUDIO_KEY;
   const persona = getPersona(opts.personaId);
   const rubric = getRubricForPersona(opts.personaId);
   const start = Date.now();
 
+  if (!transcriptHasScorableContent(opts.transcript)) {
+    throw new Error("EMPTY_TRANSCRIPT");
+  }
+
   if (!apiKey) {
-    const stub: ScoreOutput = buildStubScore({
+    const output = scoreTranscriptHeuristic({
       personaId: opts.personaId,
       transcript: opts.transcript,
+      degradedReason: "Gemini key unavailable",
     });
-    return { output: stub, modelName: "stub", latencyMs: Date.now() - start, degraded: true };
+    return {
+      output,
+      modelName: "local-heuristic",
+      latencyMs: Date.now() - start,
+      degraded: true,
+      degradedReason: "missing_key",
+    };
   }
 
   try {
@@ -83,18 +81,23 @@ Return JSON matching: overallScore (0-100), dimensions[{name,score,rationale}], 
       latencyMs: Date.now() - start,
       degraded: false,
     };
-  } catch {
-    const stub = buildStubScore({
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    const isQuota = /429|quota|rate/i.test(msg);
+    const reason: DegradedReason = isQuota ? "quota" : "api_error";
+    const output = scoreTranscriptHeuristic({
       personaId: opts.personaId,
       transcript: opts.transcript,
-      rationale: "Live scoring unavailable (quota or API error) — showing coaching stub.",
+      degradedReason: isQuota
+        ? "Gemini quota exceeded"
+        : "Gemini API unavailable",
     });
     return {
-      output: stub,
-      modelName: "stub-degraded",
+      output,
+      modelName: "local-heuristic",
       latencyMs: Date.now() - start,
       degraded: true,
+      degradedReason: reason,
     };
   }
 }
-
