@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { GlassCard, ScoreBar } from "@/components/ui/interview-room";
-import { PremiumCTA, SakuraHero, SakuraPageShell } from "@/components/ui/sakura";
+import {
+  PremiumCTA,
+  SakuraHero,
+  SakuraPageShell,
+} from "@/components/ui/sakura";
 import { getProgressSnapshot } from "@/lib/progress/service";
 
 export const dynamic = "force-dynamic";
@@ -31,11 +35,16 @@ export default async function ProgressPage() {
         </GlassCard>
         <GlassCard>
           {progress.averageScore != null ? (
-            <ScoreBar label="Average readiness" score={Math.round(progress.averageScore)} />
+            <ScoreBar
+              label="Average readiness"
+              score={Math.round(progress.averageScore)}
+            />
           ) : (
             <>
               <p className="text-xs text-muted-foreground">Average score</p>
-              <p className="text-sm text-muted-foreground">Score at least one session</p>
+              <p className="text-sm text-muted-foreground">
+                Score at least one session
+              </p>
             </>
           )}
         </GlassCard>
@@ -56,9 +65,13 @@ export default async function ProgressPage() {
 
       <GlassCard>
         <h3 className="text-sm font-medium">Recommended next drill</h3>
-        <p className="mt-2 text-sm text-muted-foreground">{progress.nextDrill.drill}</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {progress.nextDrill.drill}
+        </p>
         {progress.nextDrill.basedOn ? (
-          <p className="mt-1 text-xs text-muted-foreground">Based on: {progress.nextDrill.basedOn}</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Based on: {progress.nextDrill.basedOn}
+          </p>
         ) : null}
         <div className="mt-4">
           <PremiumCTA href={`/chat?persona=${progress.nextDrill.personaId}`}>
@@ -67,7 +80,10 @@ export default async function ProgressPage() {
         </div>
       </GlassCard>
 
-      <Link href="/sessions" className="text-sm text-[var(--sakura-petal-500)] hover:underline">
+      <Link
+        href="/sessions"
+        className="text-sm text-[var(--sakura-petal-500)] hover:underline"
+      >
         View all sessions →
       </Link>
     </SakuraPageShell>

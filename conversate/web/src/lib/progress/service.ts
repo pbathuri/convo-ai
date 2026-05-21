@@ -1,5 +1,8 @@
 import { isDatabaseConfigured, prisma } from "@/lib/db";
-import { clusterWeaknesses, recommendNextDrill } from "@/lib/personalization/recommender";
+import {
+  clusterWeaknesses,
+  recommendNextDrill,
+} from "@/lib/personalization/recommender";
 import type { PersonaId } from "@/lib/personas";
 import { personaIdSchema } from "@/lib/personas";
 
@@ -21,7 +24,8 @@ const DEMO: ProgressSnapshot = {
   ],
   nextDrill: {
     personaId: "amazon-l5-bar-raiser",
-    drill: "Tell me about a time you had to make a high-stakes technical decision with incomplete data.",
+    drill:
+      "Tell me about a time you had to make a high-stakes technical decision with incomplete data.",
     basedOn: "Demo data",
   },
 };
@@ -40,7 +44,9 @@ export async function getProgressSnapshot(): Promise<ProgressSnapshot> {
 
   const scores = sessions.flatMap((s) => s.scores.map((sc) => sc.overallScore));
   const averageScore =
-    scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : null;
+    scores.length > 0
+      ? scores.reduce((a, b) => a + b, 0) / scores.length
+      : null;
 
   const allWeaknesses = sessions.flatMap((s) => {
     const w = s.scores[0]?.weaknesses;
@@ -49,7 +55,9 @@ export async function getProgressSnapshot(): Promise<ProgressSnapshot> {
 
   const latest = sessions[0];
   const pid = personaIdSchema.safeParse(latest?.personaId);
-  const personaId = pid.success ? pid.data : ("amazon-l5-bar-raiser" as PersonaId);
+  const personaId = pid.success
+    ? pid.data
+    : ("amazon-l5-bar-raiser" as PersonaId);
   const weaknesses = Array.isArray(latest?.scores[0]?.weaknesses)
     ? (latest.scores[0].weaknesses as string[])
     : [];

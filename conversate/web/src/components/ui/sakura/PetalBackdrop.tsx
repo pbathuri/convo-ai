@@ -8,11 +8,36 @@ export function PetalBackdrop() {
         className="absolute inset-0 opacity-90"
         style={{ background: "var(--sakura-gradient-hero)" }}
       />
-      <svg className="absolute inset-0 h-full w-full opacity-[0.35]" xmlns="http://www.w3.org/2000/svg">
+      {/* biome-ignore lint/a11y/noSvgWithoutTitle: decorative background; parent is aria-hidden */}
+      <svg
+        className="absolute inset-0 h-full w-full opacity-[0.35]"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden
+      >
         <defs>
-          <pattern id="petal-dots" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
-            <circle cx="8" cy="12" r="2" fill="var(--sakura-petal-300)" opacity="0.5" />
-            <ellipse cx="32" cy="28" rx="3" ry="1.5" fill="var(--sakura-petal-500)" opacity="0.25" />
+          <pattern
+            id="petal-dots"
+            x="0"
+            y="0"
+            width="48"
+            height="48"
+            patternUnits="userSpaceOnUse"
+          >
+            <circle
+              cx="8"
+              cy="12"
+              r="2"
+              fill="var(--sakura-petal-300)"
+              opacity="0.5"
+            />
+            <ellipse
+              cx="32"
+              cy="28"
+              rx="3"
+              ry="1.5"
+              fill="var(--sakura-petal-500)"
+              opacity="0.25"
+            />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#petal-dots)" />
