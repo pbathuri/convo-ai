@@ -8,6 +8,26 @@ const METRIC_PATTERN =
 const STAR_PATTERN = /\b(situation|task|action|result)\b/i;
 const TRADEOFF_PATTERN =
   /\b(trade-?off|tradeoff|chose|decided|because|however)\b/i;
+const MECE_PATTERN = /\b(bucket|category|segment|mutually|exclusive)\b/i;
+const CIRCLES_PATTERN =
+  /\b(comprehend|identify|recommend|communicate|structure)\b/i;
+const TECH_DEPTH_PATTERN =
+  /\b(api|latency|scale|system|architecture|database|cache|queue)\b/i;
+
+function personaBonus(text: string, personaId: PersonaId): number {
+  let bonus = 0;
+  if (personaId.includes("pm") || personaId.includes("bar-raiser")) {
+    if (MECE_PATTERN.test(text)) bonus += 6;
+    if (CIRCLES_PATTERN.test(text)) bonus += 6;
+  }
+  if (personaId.includes("swe") || personaId.includes("technical")) {
+    if (TECH_DEPTH_PATTERN.test(text)) bonus += 10;
+  }
+  if (personaId.includes("consult")) {
+    if (MECE_PATTERN.test(text) && METRIC_PATTERN.test(text)) bonus += 8;
+  }
+  return bonus;
+}
 
 function scoreDimension(
   text: string,
@@ -66,11 +86,13 @@ export function scoreTranscriptHeuristic(opts: {
   const text = opts.transcript.trim();
   const quote = text.slice(0, 200) || "(empty)";
 
+  const bonusPoints = personaBonus(text, opts.personaId);
   const dimensions = rubric.dimensions.map((d) => {
     const { score, rationale } = scoreDimension(text, d.name);
+    const adjusted = Math.min(92, score + Math.round(bonusPoints / 3));
     return {
       name: d.name,
-      score,
+      score: adjusted,
       rationale: `${rationale} (${opts.degradedReason})`,
     };
   });
