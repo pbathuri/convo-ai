@@ -1,0 +1,18 @@
+conversate/web/src/components/ui/interview-room/tokens.css
+  ai_agent 26-29,39
+conversate/web/src/components/ui/sakura/PremiumCTA.tsx
+  ai_agent 11-16
+conversate/web/src/app/globals.css
+  ai_agent 78,83,87
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "16fc6781d5c3698ff12723258cd63cbd78bf9951",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
