@@ -2,64 +2,120 @@
 
 import type { AgentManager } from "@d-id/client-sdk";
 import { useEffect, useRef, useState } from "react";
+import { trackDidEvent } from "@/lib/analytics/client";
+import type { PersonaId } from "@/lib/personas";
 
 type Props = {
   agentId: string;
   clientKey: string;
+  personaId?: PersonaId;
 };
 
-export function DidAgentStage({ agentId, clientKey }: Props) {
+type Phase = "idle" | "connecting" | "connected" | "error";
+
+export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const managerRef = useRef<AgentManager | null>(null);
+  const mountMsRef = useRef<number>(0);
   const [error, setError] = useState<string | null>(null);
-  const [phase, setPhase] = useState<"idle" | "connecting" | "connected" | "error">("idle");
+  const [phase, setPhase] = useState<Phase>("idle");
+  const [greetingLatencyMs, setGreetingLatencyMs] = useState<number | null>(null);
 
   useEffect(() => {
     if (!agentId || !clientKey) return;
 
     let cancelled = false;
+    mountMsRef.current = performance.now();
+
+    const basePayload = () => ({
+      personaId,
+      agentId,
+      elapsedMs: Math.round(performance.now() - mountMsRef.current),
+    });
 
     void (async () => {
       try {
         setPhase("connecting");
         setError(null);
+
+        trackDidEvent("did_sdk_import_start", basePayload());
+        const importStart = performance.now();
         const sdk = await import("@d-id/client-sdk");
+        const importMs = Math.round(performance.now() - importStart);
+        trackDidEvent("did_sdk_import_complete", {
+          ...basePayload(),
+          phaseMs: importMs,
+        });
+
+        trackDidEvent("did_manager_create_start", basePayload());
+        const createStart = performance.now();
         const manager = await sdk.createAgentManager(agentId, {
           auth: { type: "key", clientKey },
           streamOptions: { compatibilityMode: "auto", streamWarmup: true },
           callbacks: {
             onSrcObjectReady(srcObject) {
+              trackDidEvent("did_src_ready", basePayload());
               const el = videoRef.current;
               if (!el || cancelled) return;
               el.srcObject = srcObject;
-              void el.play().catch(() => {});
+              trackDidEvent("did_video_play_start", basePayload());
+              void el
+                .play()
+                .then(() => {
+                  const latency = Math.round(performance.now() - mountMsRef.current);
+                  setGreetingLatencyMs(latency);
+                  trackDidEvent("did_video_play_complete", {
+                    ...basePayload(),
+                    phaseMs: latency,
+                  });
+                })
+                .catch(() => {});
             },
             onError(err) {
-              setError(err?.message ?? String(err));
+              const msg = err?.message ?? String(err);
+              setError(msg);
+              trackDidEvent("did_error", { ...basePayload(), error: msg });
             },
           },
         });
+        trackDidEvent("did_manager_create_complete", {
+          ...basePayload(),
+          phaseMs: Math.round(performance.now() - createStart),
+        });
+
         managerRef.current = manager;
         if (cancelled) {
           await manager.disconnect();
           return;
         }
+
+        trackDidEvent("did_connect_start", basePayload());
+        const connectStart = performance.now();
         await manager.connect();
+        trackDidEvent("did_connect_complete", {
+          ...basePayload(),
+          phaseMs: Math.round(performance.now() - connectStart),
+        });
+
         if (cancelled) {
           await manager.disconnect();
           return;
         }
-        if (!cancelled) setPhase("connected");
+        setPhase("connected");
+        trackDidEvent("did_connected", basePayload());
       } catch (e) {
         if (!cancelled) {
-          setError(e instanceof Error ? e.message : String(e));
+          const msg = e instanceof Error ? e.message : String(e);
+          setError(msg);
           setPhase("error");
+          trackDidEvent("did_error", { ...basePayload(), error: msg });
         }
       }
     })();
 
     return () => {
       cancelled = true;
+      trackDidEvent("did_disconnected", basePayload());
       const m = managerRef.current;
       managerRef.current = null;
       void m?.disconnect?.();
@@ -68,7 +124,7 @@ export function DidAgentStage({ agentId, clientKey }: Props) {
         el.srcObject = null;
       }
     };
-  }, [agentId, clientKey]);
+  }, [agentId, clientKey, personaId]);
 
   return (
     <div className="space-y-2">
@@ -76,7 +132,10 @@ export function DidAgentStage({ agentId, clientKey }: Props) {
         {/* biome-ignore lint/a11y/useMediaCaption: D-ID agent stream is synchronized A/V */}
         <video ref={videoRef} className="h-full w-full object-cover" playsInline controls />
       </div>
-      <p className="text-xs text-muted-foreground">Stream: {phase}</p>
+      <p className="text-xs text-muted-foreground">
+        Stream: {phase}
+        {greetingLatencyMs != null ? ` · greeting ready ~${greetingLatencyMs}ms` : null}
+      </p>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
     </div>
   );

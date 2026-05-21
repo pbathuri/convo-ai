@@ -1,0 +1,2 @@
+{"persona_id":"amazon-l5-bar-raiser","question":"Tell me about a time you owned a critical launch.","candidate_answer":"I led a team of 8 to ship a feature that increased conversion 12%.","expected_traits":["ownership","metrics"],"weak_points":["light on customer impact"],"SME_score":75,"rubric_version":"v1"}
+{"persona_id":"google-l4-swe","question":"Design a rate limiter.","candidate_answer":"I would use a token bucket with Redis.","expected_traits":["clarity","trade-offs"],"weak_points":["no failure modes"],"SME_score":68,"rubric_version":"v1"}

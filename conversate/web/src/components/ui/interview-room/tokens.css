@@ -1,0 +1,13 @@
+.interview-room {
+  --ir-radius: 0.75rem;
+  --ir-glass-bg: rgba(255, 255, 255, 0.06);
+  --ir-glass-border: rgba(255, 255, 255, 0.12);
+  --ir-accent-amazon: #ff9900;
+  --ir-accent-google: #4285f4;
+  --ir-accent-mckinsey: #003366;
+  --ir-accent-goldman: #6eafd1;
+  --ir-accent-microsoft: #00a4ef;
+  --ir-score-high: #22c55e;
+  --ir-score-mid: #eab308;
+  --ir-score-low: #ef4444;
+}
