@@ -20,6 +20,19 @@ describe("shouldPersistSegment", () => {
 });
 
 describe("isDuplicateSegment", () => {
+  it("dedupes same text within 5 seconds", () => {
+    const seen = {
+      ids: new Set<string>(),
+      recent: [{ text: "hello world", at: 1000 }],
+    };
+    const dup: SpeechSegment = {
+      ...base,
+      id: "a2",
+      endedAt: new Date(4500).toISOString(),
+    };
+    expect(isDuplicateSegment(dup, seen)).toBe(true);
+  });
+
   it("dedupes by id", () => {
     const seen = {
       ids: new Set<string>(),

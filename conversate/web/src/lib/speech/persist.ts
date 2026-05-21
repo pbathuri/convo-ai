@@ -5,7 +5,7 @@ export function shouldPersistSegment(segment: SpeechSegment): boolean {
   return segment.isFinal && segment.text.trim().length > 0;
 }
 
-const DEDUPE_WINDOW_MS = 3000;
+const DEDUPE_WINDOW_MS = 5000;
 
 /** Dedupe by id or near-duplicate text within a time window. */
 export function isDuplicateSegment(

@@ -57,8 +57,9 @@ export function TranscriptPanel({
       <h3 className="text-sm font-medium">Session transcript</h3>
       <p className="text-xs text-muted-foreground">
         Candidate-side capture only — not a full two-party D-ID transcript.
-        Sources: <strong>browser speech</strong>, <strong>manual paste</strong>,
-        or future <strong>D-ID callback</strong> (not wired in V1).
+        Sources: <strong>browser speech</strong>,{" "}
+        <strong>manual transcript</strong>, or future{" "}
+        <strong>D-ID callback</strong> (not wired in V1).
       </p>
 
       {browserLines.length > 0 ? (
