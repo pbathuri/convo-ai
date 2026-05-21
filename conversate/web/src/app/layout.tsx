@@ -18,7 +18,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Conversate",
-  description: "Voice-forward practice with Gemini + D-ID Agents",
+  description: "Company-specific interview practice with D-ID Agents and Sakura-calm coaching",
 };
 
 export default function RootLayout({
