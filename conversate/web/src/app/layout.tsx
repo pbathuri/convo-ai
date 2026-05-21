@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AnalyticsBridge } from "@/components/AnalyticsBridge";
+import { PetalBackdrop } from "@/components/ui/sakura";
 import { SiteNav } from "@/components/site-nav";
 
 const geistSans = localFont({
@@ -28,11 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} sakura-theme min-h-screen font-sans`}
       >
         <AnalyticsBridge />
+        <PetalBackdrop />
         <SiteNav />
-        <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
+        <main>{children}</main>
       </body>
     </html>
   );

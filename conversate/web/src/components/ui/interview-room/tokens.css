@@ -1,7 +1,8 @@
-.interview-room {
+.interview-room,
+.sakura-theme {
   --ir-radius: 0.75rem;
-  --ir-glass-bg: rgba(255, 255, 255, 0.06);
-  --ir-glass-border: rgba(255, 255, 255, 0.12);
+  --ir-glass-bg: rgba(255, 252, 250, 0.72);
+  --ir-glass-border: rgba(232, 180, 196, 0.35);
   --ir-accent-amazon: #ff9900;
   --ir-accent-google: #4285f4;
   --ir-accent-mckinsey: #003366;
@@ -10,4 +11,31 @@
   --ir-score-high: #22c55e;
   --ir-score-mid: #eab308;
   --ir-score-low: #ef4444;
+
+  /* Sakura palette */
+  --sakura-petal-50: #fff7f9;
+  --sakura-petal-100: #fde8ef;
+  --sakura-petal-300: #f5b8cc;
+  --sakura-petal-500: #e88aab;
+  --sakura-ivory: #fffbf7;
+  --sakura-plum: #4a2c3d;
+  --sakura-plum-muted: #6b4d5c;
+  --sakura-glass-bg: rgba(255, 252, 250, 0.78);
+  --sakura-glass-border: rgba(232, 180, 196, 0.4);
+  --sakura-shadow-soft: 0 8px 32px rgba(74, 44, 61, 0.08);
+  --sakura-gradient-hero: linear-gradient(
+    135deg,
+    var(--sakura-petal-50) 0%,
+    var(--sakura-ivory) 45%,
+    #f8f0ff 100%
+  );
+}
+
+.dark .interview-room,
+.dark .sakura-theme {
+  --ir-glass-bg: rgba(40, 28, 36, 0.65);
+  --ir-glass-border: rgba(232, 180, 196, 0.2);
+  --sakura-glass-bg: rgba(40, 28, 36, 0.72);
+  --sakura-ivory: #1a1216;
+  --sakura-plum: #f5e8ee;
 }
