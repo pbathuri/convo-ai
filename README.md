@@ -2,7 +2,19 @@
 
 Convo AI is a **Streamlit** application for practicing domain-specific conversations with an LLM. It combines Duolingo-style progression visuals, skill tracking, emotional “radar” feedback, optional voice input/output, streaks and XP, and pluggable **domain modules** (political science, business, debate, philosophy, and more).
 
-**Repository:** [github.com/pbathuri/convo-ai-demo](https://github.com/pbathuri/convo-ai-demo)
+**Repository:** https://github.com/pbathuri/convo-ai
+
+---
+
+## Conversate commercial MVP (active product)
+
+The **interview-practice app** lives under [`conversate/web/`](conversate/web/) on branch **`commercial-v1`**.
+
+- Run: `cd conversate/web && npm install && npm run dev`
+- Verify: `npm run verify` (build + unit tests + KB smoke)
+- Status: [`docs/implementation/current-mvp-status.md`](docs/implementation/current-mvp-status.md)
+
+This is **not production-ready**. D-ID is optional (transcript-only fallback). The Streamlit app below is **legacy reference only**.
 
 ---
 

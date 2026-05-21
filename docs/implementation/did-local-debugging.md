@@ -36,6 +36,14 @@ In D-ID Studio, for your embed client key:
 | Missing agent | Wrong `DID_PERSONA_*` | Match Studio agent ID |
 | No video | Mic blocked or SDK error | Check console + D-ID dashboard |
 
+## Transcript-only fallback
+
+If D-ID fails or times out (15s), click **Continue transcript-only interview** in the chat room.
+
+- Persona, objective, timer, browser speech, and manual transcript stay active.
+- End session and generate score as usual.
+- Coaching uses your saved transcript (Gemini or local heuristic).
+
 ## What not to do
 
 - Do not proxy server API keys through the browser.
