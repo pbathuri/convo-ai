@@ -1,0 +1,13 @@
+conversate/web/src/components/ui/sakura/PetalBackdrop.tsx
+  ai_agent 11-16,18-40
+conversate/web/src/app/progress/page.tsx
+  ai_agent 3-7,38-41,45-47,68-70,72-74,83-86
+conversate/web/src/lib/progress/service.ts
+  ai_agent 2-5,27-28,47-49,58-60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "9800b680aaa0e8b91c7b0121c86f2347ab0c14a9",
+  "prompts": {}
+}
