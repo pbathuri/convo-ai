@@ -3,6 +3,7 @@
 import type { AgentManager } from "@d-id/client-sdk";
 import { useEffect, useRef, useState } from "react";
 import { trackDidEvent } from "@/lib/analytics/client";
+import { classifyDidError } from "@/lib/did/error-classify";
 import type { PersonaId } from "@/lib/personas";
 
 type Props = {
@@ -13,13 +14,63 @@ type Props = {
 
 type Phase = "idle" | "connecting" | "connected" | "error";
 
+function DidErrorPanel({ message }: { message: string }) {
+  const kind = classifyDidError(message);
+  return (
+    <div
+      className="space-y-2 rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-sm"
+      role="alert"
+    >
+      <p className="font-medium text-destructive">
+        D-ID stream could not connect
+      </p>
+      <p className="text-xs text-muted-foreground">{message}</p>
+      <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
+        <li>
+          Allowlist <code className="text-[11px]">http://localhost:3000</code>{" "}
+          and <code className="text-[11px]">http://localhost:3001</code> in D-ID
+          Studio for this embed client key.
+        </li>
+        <li>
+          Use a <strong>D-ID Studio embed client key</strong> in{" "}
+          <code className="text-[11px]">NEXT_PUBLIC_DID_CLIENT_KEY</code>, not a
+          server API key.
+        </li>
+        <li>
+          Confirm the agent ID in the matching{" "}
+          <code className="text-[11px]">DID_PERSONA_*</code> env var is valid in
+          Studio.
+        </li>
+        <li>
+          Test in real Chrome; Cursor embedded preview may block WebRTC/CORS.
+        </li>
+        {kind === "cors" ? (
+          <li>
+            This looks like a CORS/origin block — fix the Studio allowlist
+            first.
+          </li>
+        ) : null}
+      </ul>
+      <p className="text-xs">
+        See{" "}
+        <code className="text-[11px]">
+          docs/implementation/did-local-debugging.md
+        </code>{" "}
+        in the repo.
+      </p>
+    </div>
+  );
+}
+
 export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const managerRef = useRef<AgentManager | null>(null);
   const mountMsRef = useRef<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
-  const [greetingLatencyMs, setGreetingLatencyMs] = useState<number | null>(null);
+  const [greetingLatencyMs, setGreetingLatencyMs] = useState<number | null>(
+    null,
+  );
 
   useEffect(() => {
     if (!agentId || !clientKey) return;
@@ -62,7 +113,9 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
               void el
                 .play()
                 .then(() => {
-                  const latency = Math.round(performance.now() - mountMsRef.current);
+                  const latency = Math.round(
+                    performance.now() - mountMsRef.current,
+                  );
                   setGreetingLatencyMs(latency);
                   trackDidEvent("did_video_play_complete", {
                     ...basePayload(),
@@ -74,6 +127,7 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
             onError(err) {
               const msg = err?.message ?? String(err);
               setError(msg);
+              setPhase("error");
               trackDidEvent("did_error", { ...basePayload(), error: msg });
             },
           },
@@ -130,25 +184,20 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
     <div className="space-y-2">
       <div className="relative aspect-video w-full max-w-xl overflow-hidden rounded-lg border bg-black">
         {/* biome-ignore lint/a11y/useMediaCaption: D-ID agent stream is synchronized A/V */}
-        <video ref={videoRef} className="h-full w-full object-cover" playsInline controls />
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover"
+          playsInline
+          controls
+        />
       </div>
       <p className="text-xs text-muted-foreground">
         Stream: {phase}
-        {greetingLatencyMs != null ? ` · greeting ready ~${greetingLatencyMs}ms` : null}
+        {greetingLatencyMs != null
+          ? ` · greeting ready ~${greetingLatencyMs}ms`
+          : null}
       </p>
-      {error ? (
-        <div className="space-y-1 text-sm text-destructive">
-          <p>{error}</p>
-          {error.toLowerCase().includes("fetch") ? (
-            <p className="text-xs text-muted-foreground">
-              Check that <code className="text-[11px]">NEXT_PUBLIC_DID_CLIENT_KEY</code> is set,
-              the agent ID in <code className="text-[11px]">DID_PERSONA_*</code> is valid, and
-              http://localhost:3000 is allowlisted in D-ID Studio for this client key. Use Chrome
-              (not an embedded preview browser).
-            </p>
-          ) : null}
-        </div>
-      ) : null}
+      {phase === "error" && error ? <DidErrorPanel message={error} /> : null}
     </div>
   );
 }
