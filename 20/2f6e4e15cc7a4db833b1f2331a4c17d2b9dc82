@@ -1,0 +1,28 @@
+docs/implementation/current-mvp-status.md
+  s_1322c8294517ae::t_4f9813a4193055 35
+conversate/web/src/components/did/DidAgentStage.tsx
+  s_1322c8294517ae::t_903cbd4d7ba8cf 41,43-45,48,53
+docs/implementation/did-local-debugging.md
+  s_1322c8294517ae::t_2aeba78705b8b7 31-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "202f6e4e15cc7a4db833b1f2331a4c17d2b9dc82",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
