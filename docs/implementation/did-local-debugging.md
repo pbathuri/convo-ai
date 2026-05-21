@@ -28,6 +28,16 @@ In D-ID Studio, for your embed client key:
 4. DevTools → Network: confirm `api.d-id.com` requests succeed (no CORS block).
 5. Video should show **Stream: connected**.
 
+## In-app failure panel
+
+When the stream fails, the chat room shows:
+
+- **D-ID stream could not connect**
+- Check localhost allowlist in D-ID Studio
+- Use a D-ID Studio embed client key, not a server API key
+- Test in real Chrome; Cursor embedded browser may block WebRTC/CORS
+- **Continue transcript-only interview** — keeps speech capture, manual transcript, end session, and scoring
+
 ## Common errors
 
 | Symptom | Likely cause | Fix |

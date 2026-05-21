@@ -32,7 +32,7 @@
 | Session API + DB | Working |
 | D-ID | Optional — transcript-only on failure |
 | Speech capture | Working + status summary |
-| Scoring | Degraded without Gemini quota |
+| Scoring | Degraded without Gemini — never 500 for quota/key; heuristic fallback |
 | Vitest + verify | Working (`npm run verify`) |
 | Admin sub-pages | Scaffold (labeled) |
 | KB smoke | Working |
