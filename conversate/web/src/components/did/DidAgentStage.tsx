@@ -5,16 +5,28 @@ import { useEffect, useRef, useState } from "react";
 import { trackDidEvent } from "@/lib/analytics/client";
 import { classifyDidError } from "@/lib/did/error-classify";
 import type { PersonaId } from "@/lib/personas";
+import { DID_CONNECT_TIMEOUT_MS } from "@/lib/session/interview-phase";
+
+export type DidPhase = "idle" | "connecting" | "connected" | "error";
 
 type Props = {
   agentId: string;
   clientKey: string;
   personaId?: PersonaId;
+  connectTimeoutMs?: number;
+  onPhaseChange?: (phase: DidPhase) => void;
+  onError?: (message: string) => void;
+  onConnected?: () => void;
+  hidden?: boolean;
 };
 
-type Phase = "idle" | "connecting" | "connected" | "error";
-
-function DidErrorPanel({ message }: { message: string }) {
+function DidErrorPanel({
+  message,
+  onContinueTranscriptOnly,
+}: {
+  message: string;
+  onContinueTranscriptOnly?: () => void;
+}) {
   const kind = classifyDidError(message);
   return (
     <div
@@ -58,22 +70,60 @@ function DidErrorPanel({ message }: { message: string }) {
         </code>{" "}
         in the repo.
       </p>
+      {onContinueTranscriptOnly ? (
+        <button
+          type="button"
+          className="mt-2 w-full rounded-md bg-[var(--sakura-petal-500)] px-3 py-2 text-sm font-medium text-white hover:opacity-90"
+          onClick={onContinueTranscriptOnly}
+        >
+          Continue transcript-only interview
+        </button>
+      ) : null}
     </div>
   );
 }
 
-export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
+export function DidAgentStage({
+  agentId,
+  clientKey,
+  personaId,
+  connectTimeoutMs = DID_CONNECT_TIMEOUT_MS,
+  onPhaseChange,
+  onError,
+  onConnected,
+  hidden = false,
+  onContinueTranscriptOnly,
+}: Props & { onContinueTranscriptOnly?: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const managerRef = useRef<AgentManager | null>(null);
   const mountMsRef = useRef<number>(0);
   const [error, setError] = useState<string | null>(null);
-  const [phase, setPhase] = useState<Phase>("idle");
+  const [phase, setPhase] = useState<DidPhase>("idle");
   const [greetingLatencyMs, setGreetingLatencyMs] = useState<number | null>(
     null,
   );
+  const connectedRef = useRef(false);
+  const onPhaseChangeRef = useRef(onPhaseChange);
+  const onErrorRef = useRef(onError);
+  const onConnectedRef = useRef(onConnected);
+  onPhaseChangeRef.current = onPhaseChange;
+  onErrorRef.current = onError;
+  onConnectedRef.current = onConnected;
 
+  const setPhaseSafe = (next: DidPhase) => {
+    setPhase(next);
+    onPhaseChangeRef.current?.(next);
+  };
+
+  const reportError = (msg: string) => {
+    setError(msg);
+    setPhaseSafe("error");
+    onErrorRef.current?.(msg);
+  };
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reconnect only when agent/key changes; callbacks use refs
   useEffect(() => {
-    if (!agentId || !clientKey) return;
+    if (!agentId || !clientKey || hidden) return;
 
     let cancelled = false;
     mountMsRef.current = performance.now();
@@ -84,9 +134,20 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
       elapsedMs: Math.round(performance.now() - mountMsRef.current),
     });
 
+    const timeoutId = window.setTimeout(() => {
+      if (cancelled || connectedRef.current) return;
+      reportError(
+        `D-ID connect timed out after ${connectTimeoutMs / 1000}s. Use transcript-only mode to continue.`,
+      );
+      trackDidEvent("did_error", {
+        ...basePayload(),
+        error: "connect_timeout",
+      });
+    }, connectTimeoutMs);
+
     void (async () => {
       try {
-        setPhase("connecting");
+        setPhaseSafe("connecting");
         setError(null);
 
         trackDidEvent("did_sdk_import_start", basePayload());
@@ -122,12 +183,11 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
                     phaseMs: latency,
                   });
                 })
-                .catch(() => { });
+                .catch(() => {});
             },
             onError(err) {
               const msg = err?.message ?? String(err);
-              setError(msg);
-              setPhase("error");
+              reportError(msg);
               trackDidEvent("did_error", { ...basePayload(), error: msg });
             },
           },
@@ -155,13 +215,15 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
           await manager.disconnect();
           return;
         }
-        setPhase("connected");
+        window.clearTimeout(timeoutId);
+        connectedRef.current = true;
+        setPhaseSafe("connected");
+        onConnectedRef.current?.();
         trackDidEvent("did_connected", basePayload());
       } catch (e) {
         if (!cancelled) {
           const msg = e instanceof Error ? e.message : String(e);
-          setError(msg);
-          setPhase("error");
+          reportError(msg);
           trackDidEvent("did_error", { ...basePayload(), error: msg });
         }
       }
@@ -169,6 +231,8 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
 
     return () => {
       cancelled = true;
+      connectedRef.current = false;
+      window.clearTimeout(timeoutId);
       trackDidEvent("did_disconnected", basePayload());
       const m = managerRef.current;
       managerRef.current = null;
@@ -178,7 +242,9 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
         el.srcObject = null;
       }
     };
-  }, [agentId, clientKey, personaId]);
+  }, [agentId, clientKey, personaId, connectTimeoutMs, hidden]);
+
+  if (hidden) return null;
 
   return (
     <div className="space-y-2">
@@ -197,7 +263,12 @@ export function DidAgentStage({ agentId, clientKey, personaId }: Props) {
           ? ` · greeting ready ~${greetingLatencyMs}ms`
           : null}
       </p>
-      {phase === "error" && error ? <DidErrorPanel message={error} /> : null}
+      {phase === "error" && error ? (
+        <DidErrorPanel
+          message={error}
+          onContinueTranscriptOnly={onContinueTranscriptOnly}
+        />
+      ) : null}
     </div>
   );
 }
