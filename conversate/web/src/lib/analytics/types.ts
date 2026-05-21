@@ -16,6 +16,7 @@ export type AnalyticsEventName =
   | "page_view"
   | "persona_selected"
   | "chat_message_sent"
+  | "session_lifecycle"
   | "did_stream_started"
   | "did_stream_error"
   | DidAnalyticsEventName;

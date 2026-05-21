@@ -1,38 +1,37 @@
-type SessionLifecycle =
-  | "idle"
-  | "creating"
-  | "ready"
-  | "local_fallback"
-  | "error";
+import type { InterviewPhase } from "@/lib/session/interview-phase";
 
 type Props = {
   phase: string;
   sessionId?: string;
-  sessionLifecycle?: SessionLifecycle;
+  interviewPhase?: InterviewPhase;
+  hint?: string | null;
 };
 
 export function SessionStatusBar({
   phase,
   sessionId,
-  sessionLifecycle,
+  interviewPhase,
+  hint,
 }: Props) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2 rounded-md border bg-muted/40 px-3 py-2 text-xs">
-      <span>
-        Phase: <strong className="text-foreground">{phase}</strong>
-        {sessionLifecycle ? (
-          <>
-            {" "}
-            · Session:{" "}
-            <strong className="text-foreground">{sessionLifecycle}</strong>
-          </>
-        ) : null}
-      </span>
-      {sessionId ? (
-        <span className="font-mono text-muted-foreground">
-          Session {sessionId.slice(0, 12)}…
+    <div className="space-y-1">
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-md border bg-muted/40 px-3 py-2 text-xs">
+        <span>
+          Status: <strong className="text-foreground">{phase}</strong>
+          {interviewPhase ? (
+            <>
+              {" "}
+              · <span className="font-mono text-[10px]">{interviewPhase}</span>
+            </>
+          ) : null}
         </span>
-      ) : null}
+        {sessionId ? (
+          <span className="font-mono text-muted-foreground">
+            Session {sessionId.slice(0, 12)}…
+          </span>
+        ) : null}
+      </div>
+      {hint ? <p className="text-xs text-muted-foreground">{hint}</p> : null}
     </div>
   );
 }
