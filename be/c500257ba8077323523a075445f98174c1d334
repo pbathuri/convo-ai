@@ -1,0 +1,49 @@
+conversate/web/src/app/globals.css
+  s_1322c8294517ae::t_39ef1f22810fca 9-10,12,14-22,25-28,32-45,48-50,60-69
+  s_1322c8294517ae::t_0b49492fe01858 70-85
+conversate/web/src/components/ui/sakura/SakuraHero.tsx
+  s_1322c8294517ae::t_7c121321c8332e 1-35
+docs/design/sakura-experience.md
+  s_1322c8294517ae::t_594132d635644d 1-40
+conversate/web/src/components/ui/interview-room/tokens.css
+  s_1322c8294517ae::t_25609bd3c791d2 1-2,4-5,14-40
+conversate/web/src/components/ui/sakura/InterviewRoomPanel.tsx
+  s_1322c8294517ae::t_81a75b9e26ac6a 1-21
+docs/design/asset-attributions.md
+  s_1322c8294517ae::t_f589d41ea9ca3d 1-22
+conversate/web/src/components/site-nav.tsx
+  s_1322c8294517ae::t_446e5ae0dd1636 15-16
+conversate/web/src/app/layout.tsx
+  s_1322c8294517ae::t_205e6e911a72d8 5
+  s_1322c8294517ae::t_54501b4e505f90 32,35,37
+conversate/web/src/components/ui/sakura/SakuraPageShell.tsx
+  s_1322c8294517ae::t_a9bf3835c9167f 1-22
+conversate/web/src/components/ui/sakura/PremiumCTA.tsx
+  s_1322c8294517ae::t_a74141cff72312 1-27
+conversate/web/src/components/ui/sakura/PetalBackdrop.tsx
+  s_1322c8294517ae::t_fdfb7138c03702 20-21
+  s_1322c8294517ae::t_4755625b62657e 1-19,22-35
+conversate/web/src/components/ui/sakura/index.ts
+  s_1322c8294517ae::t_a2e8cd5995770c 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "bec500257ba8077323523a075445f98174c1d334",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
