@@ -1,0 +1,23 @@
+docs/demos/README.md
+  s_1322c8294517ae::t_5bcf9611693f58 3-32
+docs/implementation/test-strategy.md
+  s_1322c8294517ae::t_32b69784b3ba73 36-51
+docs/implementation/current-mvp-status.md
+  s_1322c8294517ae::t_18db3c801f2b1b 4,7,9-19,21,25-39,41,43-53,55,57-60,62,64-68,70,72,74-81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "72c1628ab27a66eb34067d0064b1896083f0678d",
+  "prompts": {},
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
