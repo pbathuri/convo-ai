@@ -1,0 +1,24 @@
+docs/audits/stabilization-audit-2026-05-21.md
+  s_1322c8294517ae::t_dc77ebaf2e6951 1-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "afee46183b8ae5d835c4ef6f853739a11f016f9c",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
