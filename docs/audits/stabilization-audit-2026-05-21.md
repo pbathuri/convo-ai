@@ -9,10 +9,10 @@
 | Command | Result |
 |---------|--------|
 | `npm run build` | PASS |
-| `npm run test` | PASS (18 tests, 8 files) |
-| `npm run lint` | FAIL — format drift in `DidAgentStage.tsx` (fixed in pass) |
+| `npm run test` | PASS (20 tests, 9 files) |
+| `npm run lint` | PASS |
 | `npm run kb:smoke` | PASS |
-| `npm run verify` | PASS after lint fix |
+| `npm run verify` | PASS |
 
 ## Component status
 

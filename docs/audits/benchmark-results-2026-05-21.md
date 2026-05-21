@@ -85,3 +85,4 @@ Prior `npm run dev` logs showed intermittent `prisma:error ... connection Closed
 | Session timeout | 8s |
 | D-ID connect timeout | 15s |
 | Chrome manual checklist | Pending human run — see [demo-readiness-checklist.md](../implementation/demo-readiness-checklist.md) |
+| Stabilization pass | 2026-05-22 — Strict Mode session dedupe, 5s transcript dedupe, score persist on fallback |
