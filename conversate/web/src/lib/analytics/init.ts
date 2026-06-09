@@ -1,4 +1,5 @@
 import type { AnalyticsEvent } from "./types";
+import { trackConsoleEvent } from "./console-provider";
 
 /**
  * Stub seam: wire to Segment/GA/PostHog/etc. without coupling call sites.
@@ -9,6 +10,6 @@ export function initAnalytics(): void {
   }
 }
 
-export async function trackEvent(_event: AnalyticsEvent): Promise<void> {
-  /* reserved for server-side fan-out or client batching */
+export async function trackEvent(event: AnalyticsEvent): Promise<void> {
+  trackConsoleEvent(event);
 }
