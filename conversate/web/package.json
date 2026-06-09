@@ -17,7 +17,8 @@
     "kb:smoke": "tsx scripts/kb-smoke.ts",
     "test": "vitest run",
     "test:unit": "vitest run",
-    "verify": "npm run build && npm run test && npm run kb:smoke"
+    "verify": "npm run build && npm run test && npm run kb:smoke && npm run demo:checklist",
+    "demo:checklist": "tsx scripts/demo-checklist-smoke.ts"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
