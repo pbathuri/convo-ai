@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { PERSONAS } from "@/lib/personas";
+import {
+  PERSONAS,
+  getPersonaLiveStatus,
+  personaAgentIdForLive,
+} from "@/lib/personas";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +17,8 @@ export function GET() {
     voiceLabel: p.voiceLabel,
     photoUrl: p.photoUrl,
     didAgentEnvKey: p.didAgentEnvKey,
-    agentId: process.env[p.didAgentEnvKey] ?? "",
+    liveStatus: getPersonaLiveStatus(p.id),
+    agentId: personaAgentIdForLive(p.id) ?? "",
   }));
   return NextResponse.json({ personas });
 }

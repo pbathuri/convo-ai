@@ -10,15 +10,17 @@ Do **not** put a D-ID **server API key** in `NEXT_PUBLIC_*` or client code.
 
 Each persona maps to an env var (e.g. `DID_PERSONA_AMAZON_L5`) holding the Studio agent ID (`v2_agt_...`). See `conversate/web/src/lib/personas.ts`.
 
-## Localhost allowlist
+## Allowed origins (required)
 
 In D-ID Studio, for your embed client key:
 
-1. Open the client key / allowed origins settings.
-2. Add both:
-   - `http://localhost:3000`
-   - `http://localhost:3001`
-3. Save and retry in **Google Chrome** (not Cursor embedded preview).
+1. Open the client key / **Allowed origins** settings.
+2. Add **every** URL users open (no trailing slash):
+   - Production: `https://web-delta-three-73.vercel.app`
+   - Local dev: `http://localhost:3000`, `http://localhost:3001`
+3. Save and hard-refresh in **Google Chrome** (not Cursor embedded preview).
+
+If keys work on the server (`GET /api/did/preflight` → `ok: true`) but the browser still times out, the production origin is missing from the allowlist (CORS blocks `api.d-id.com`).
 
 ## Chrome verification
 

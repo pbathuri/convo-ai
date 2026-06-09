@@ -36,9 +36,9 @@ Manual (`/chat?persona=amazon-l5-bar-raiser`):
 3. Consent + Start → interim text updates; final phrase appears after pause (never POST interim).
 4. Final segment visible under “browser speech” in transcript panel.
 5. Duplicate finals within 5 seconds are not double-posted (`lib/speech/persist.ts`).
-5. With working DB: `user` message row created via messages API.
-6. Unsupported browser: warning state, no crash, manual paste still works.
-7. End session and score flow unchanged.
+6. With working DB: `user` message row created via messages API.
+7. Unsupported browser: warning state, no crash, manual paste still works.
+8. End session and score flow unchanged.
 
 Build gate: `cd conversate/web && npm run build`
 

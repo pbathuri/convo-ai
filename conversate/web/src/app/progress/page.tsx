@@ -1,54 +1,86 @@
 import Link from "next/link";
+import { ScoreTrendChart } from "@/components/insights/ScoreTrendChart";
 import { GlassCard, ScoreBar } from "@/components/ui/interview-room";
 import {
   PremiumCTA,
   SakuraHero,
   SakuraPageShell,
 } from "@/components/ui/sakura";
+import { getInsightsSnapshot } from "@/lib/insights/metrics";
 import { getProgressSnapshot } from "@/lib/progress/service";
 
 export const dynamic = "force-dynamic";
 
 export default async function ProgressPage() {
-  const progress = await getProgressSnapshot();
+  const [progress, insights] = await Promise.all([
+    getProgressSnapshot(),
+    getInsightsSnapshot(),
+  ]);
 
   return (
     <SakuraPageShell className="space-y-8 py-8">
       <SakuraHero
-        eyebrow="Your trajectory"
-        title="Progress"
-        subtitle="Sessions completed, score trends, recurring gaps, and your next drill."
+        eyebrow="Insights"
+        title="Interview readiness"
+        subtitle="Scores, practice time, and trends from your live sessions — not static zeros."
       />
 
-      {progress.mode === "demo" ? (
+      {progress.mode === "demo" || insights.mode === "demo" ? (
         <p className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-800">
-          Demo data — complete and score sessions to see live progress.
+          Demo data — complete and score sessions to see live insights.
         </p>
       ) : null}
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <GlassCard>
           <p className="text-xs text-muted-foreground">Sessions completed</p>
           <p className="text-3xl font-semibold text-[var(--sakura-plum)]">
-            {progress.sessionsCompleted}
+            {insights.sessionsCompleted}
           </p>
         </GlassCard>
         <GlassCard>
-          {progress.averageScore != null ? (
+          {insights.averageReadiness != null ? (
             <ScoreBar
-              label="Average readiness"
-              score={Math.round(progress.averageScore)}
+              label="Avg interview readiness"
+              score={Math.round(insights.averageReadiness)}
             />
           ) : (
             <>
-              <p className="text-xs text-muted-foreground">Average score</p>
-              <p className="text-sm text-muted-foreground">
-                Score at least one session
-              </p>
+              <p className="text-xs text-muted-foreground">Avg readiness</p>
+              <p className="text-sm text-muted-foreground">Score a session first</p>
             </>
           )}
         </GlassCard>
+        <GlassCard>
+          <p className="text-xs text-muted-foreground">Minutes practiced</p>
+          <p className="text-3xl font-semibold text-[var(--sakura-plum)]">
+            {insights.minutesPracticed}
+          </p>
+        </GlassCard>
+        <GlassCard>
+          <p className="text-xs text-muted-foreground">Questions answered</p>
+          <p className="text-3xl font-semibold text-[var(--sakura-plum)]">
+            {insights.questionsAnswered}
+          </p>
+        </GlassCard>
       </div>
+
+      <GlassCard>
+        <h3 className="text-sm font-medium text-[var(--sakura-plum)]">
+          Readiness trend
+        </h3>
+        <div className="mt-4">
+          <ScoreTrendChart points={insights.scoreTrend} />
+        </div>
+        {insights.latestScoredSessionId ? (
+          <Link
+            href={`/sessions/${insights.latestScoredSessionId}`}
+            className="mt-4 inline-block text-sm text-[var(--sakura-petal-500)] hover:underline"
+          >
+            View latest coaching report →
+          </Link>
+        ) : null}
+      </GlassCard>
 
       {progress.weaknessClusters.length > 0 ? (
         <GlassCard>

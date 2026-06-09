@@ -2,7 +2,7 @@
 
 Convo AI is a **Streamlit** application for practicing domain-specific conversations with an LLM. It combines Duolingo-style progression visuals, skill tracking, emotional “radar” feedback, optional voice input/output, streaks and XP, and pluggable **domain modules** (political science, business, debate, philosophy, and more).
 
-**Repository:** https://github.com/pbathuri/convo-ai
+**Repository:** <https://github.com/pbathuri/convo-ai>
 
 ---
 

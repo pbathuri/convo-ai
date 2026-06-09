@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AnalyticsBridge } from "@/components/AnalyticsBridge";
+import { DidSdkPreloader } from "@/components/did/DidSdkPreloader";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { PetalBackdrop } from "@/components/ui/sakura";
 
@@ -33,9 +35,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} sakura-theme min-h-screen font-sans`}
       >
         <AnalyticsBridge />
+        <DidSdkPreloader />
         <PetalBackdrop />
         <SiteNav />
-        <main>{children}</main>
+        <main className="flex min-h-[calc(100vh-8rem)] flex-col">{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );

@@ -4,10 +4,11 @@ import type { AgentManager } from "@d-id/client-sdk";
 import { useEffect, useRef, useState } from "react";
 import { trackDidEvent } from "@/lib/analytics/client";
 import { classifyDidError } from "@/lib/did/error-classify";
+import { preloadDidSdk } from "@/lib/did/preload-sdk";
 import type { PersonaId } from "@/lib/personas";
 import { DID_CONNECT_TIMEOUT_MS } from "@/lib/session/interview-phase";
 
-export type DidPhase = "idle" | "connecting" | "connected" | "error";
+export type DidPhase = "idle" | "preflight" | "connecting" | "connected" | "error";
 
 type Props = {
   agentId: string;
@@ -18,6 +19,7 @@ type Props = {
   onError?: (message: string) => void;
   onConnected?: () => void;
   hidden?: boolean;
+  onContinueTranscriptOnly?: () => void;
 };
 
 function DidErrorPanel({
@@ -28,6 +30,9 @@ function DidErrorPanel({
   onContinueTranscriptOnly?: () => void;
 }) {
   const kind = classifyDidError(message);
+  const origin =
+    typeof window !== "undefined" ? window.location.origin : "your-app-url";
+
   return (
     <div
       className="space-y-2 rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-sm"
@@ -37,28 +42,23 @@ function DidErrorPanel({
         D-ID stream could not connect.
       </p>
       <p className="text-xs text-muted-foreground">{message}</p>
+      <div className="rounded-md bg-muted/60 px-2 py-1.5 font-mono text-[11px] break-all">
+        Allowlist in D-ID Studio: <strong>{origin}</strong>
+      </div>
       <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
         <li>
-          Check that localhost is allowlisted in D-ID Studio for this embed key.
+          D-ID Studio → embed client key → <strong>Allowed origins</strong> → add{" "}
+          <code className="text-[10px]">{origin}</code> (and localhost for dev).
         </li>
         <li>Use a D-ID Studio embed client key, not a server API key.</li>
-        <li>
-          Test in real Chrome; Cursor embedded browser may block WebRTC/CORS.
-        </li>
-        {kind === "cors" ? (
+        <li>Open in Google Chrome (not embedded IDE browsers).</li>
+        {kind === "cors" || kind === "fetch" ? (
           <li>
-            This looks like a CORS/origin block — fix the Studio allowlist
-            first.
+            This is almost always a missing production URL on the allowlist —
+            keys can be valid while the browser still blocks the stream.
           </li>
         ) : null}
       </ul>
-      <p className="text-xs">
-        See{" "}
-        <code className="text-[11px]">
-          docs/implementation/did-local-debugging.md
-        </code>{" "}
-        in the repo.
-      </p>
       {onContinueTranscriptOnly ? (
         <button
           type="button"
@@ -82,7 +82,7 @@ export function DidAgentStage({
   onConnected,
   hidden = false,
   onContinueTranscriptOnly,
-}: Props & { onContinueTranscriptOnly?: () => void }) {
+}: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const managerRef = useRef<AgentManager | null>(null);
   const mountMsRef = useRef<number>(0);
@@ -126,7 +126,7 @@ export function DidAgentStage({
     const timeoutId = window.setTimeout(() => {
       if (cancelled || connectedRef.current) return;
       reportError(
-        `D-ID connect timed out after ${connectTimeoutMs / 1000}s. Use transcript-only mode to continue.`,
+        `D-ID connect timed out after ${connectTimeoutMs / 1000}s. Add ${typeof window !== "undefined" ? window.location.origin : "this site"} to D-ID Studio allowlist, then refresh.`,
       );
       trackDidEvent("did_error", {
         ...basePayload(),
@@ -136,23 +136,49 @@ export function DidAgentStage({
 
     void (async () => {
       try {
-        setPhaseSafe("connecting");
+        setPhaseSafe("preflight");
         setError(null);
 
+        const preflight = await fetch(
+          `/api/did/preflight?agentId=${encodeURIComponent(agentId)}`,
+          { cache: "no-store" },
+        ).catch(() => null);
+
+        if (preflight) {
+          const data = (await preflight.json()) as {
+            ok?: boolean;
+            hint?: string;
+            error?: string;
+          };
+          if (!data.ok) {
+            reportError(
+              data.hint ??
+              data.error ??
+              "D-ID credentials failed server check — fix env vars on Vercel.",
+            );
+            return;
+          }
+        }
+
+        if (cancelled) return;
+
+        setPhaseSafe("connecting");
         trackDidEvent("did_sdk_import_start", basePayload());
         const importStart = performance.now();
-        const sdk = await import("@d-id/client-sdk");
-        const importMs = Math.round(performance.now() - importStart);
+        const sdk = await preloadDidSdk();
         trackDidEvent("did_sdk_import_complete", {
           ...basePayload(),
-          phaseMs: importMs,
+          phaseMs: Math.round(performance.now() - importStart),
         });
 
         trackDidEvent("did_manager_create_start", basePayload());
         const createStart = performance.now();
         const manager = await sdk.createAgentManager(agentId, {
           auth: { type: "key", clientKey },
-          streamOptions: { compatibilityMode: "auto", streamWarmup: true },
+          streamOptions: {
+            compatibilityMode: "on",
+            streamWarmup: true,
+          },
           callbacks: {
             onSrcObjectReady(srcObject) {
               trackDidEvent("did_src_ready", basePayload());
@@ -172,7 +198,7 @@ export function DidAgentStage({
                     phaseMs: latency,
                   });
                 })
-                .catch(() => {});
+                .catch(() => { });
             },
             onError(err) {
               const msg = err?.message ?? String(err);
@@ -212,7 +238,14 @@ export function DidAgentStage({
       } catch (e) {
         if (!cancelled) {
           const msg = e instanceof Error ? e.message : String(e);
-          reportError(msg);
+          const kind = classifyDidError(msg);
+          const origin =
+            typeof window !== "undefined" ? window.location.origin : "";
+          const extra =
+            kind === "cors" || kind === "fetch"
+              ? ` Add ${origin} to D-ID Studio allowed origins.`
+              : "";
+          reportError(msg + extra);
           trackDidEvent("did_error", { ...basePayload(), error: msg });
         }
       }
@@ -235,21 +268,37 @@ export function DidAgentStage({
 
   if (hidden) return null;
 
+  const showVideo = phase === "connected" || phase === "connecting";
+
   return (
     <div className="space-y-2">
-      <div className="relative aspect-video w-full max-w-xl overflow-hidden rounded-lg border bg-black">
-        {/* biome-ignore lint/a11y/useMediaCaption: D-ID agent stream is synchronized A/V */}
-        <video
-          ref={videoRef}
-          className="h-full w-full object-cover"
-          playsInline
-          controls
-        />
-      </div>
+      {showVideo ? (
+        <div className="relative aspect-video w-full max-w-xl overflow-hidden rounded-lg border bg-black">
+          {phase === "connecting" ? (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/80 text-white">
+              <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+              <p className="mt-3 text-sm font-medium">Live stream connecting…</p>
+            </div>
+          ) : null}
+          {/* biome-ignore lint/a11y/useMediaCaption: D-ID agent stream is synchronized A/V */}
+          <video
+            ref={videoRef}
+            className="h-full w-full object-cover"
+            playsInline
+            autoPlay
+            muted={phase !== "connected"}
+            controls={phase === "connected"}
+          />
+        </div>
+      ) : phase === "preflight" ? (
+        <div className="flex min-h-[200px] max-w-xl items-center justify-center rounded-lg border bg-muted/30 text-sm text-muted-foreground">
+          Verifying D-ID credentials…
+        </div>
+      ) : null}
       <p className="text-xs text-muted-foreground">
         Stream: {phase}
         {greetingLatencyMs != null
-          ? ` · greeting ready ~${greetingLatencyMs}ms`
+          ? ` · ready in ${(greetingLatencyMs / 1000).toFixed(1)}s`
           : null}
       </p>
       {phase === "error" && error ? (

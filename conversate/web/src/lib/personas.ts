@@ -17,11 +17,11 @@ export type PersonaDefinition = {
   role: string;
   seniority: string;
   didAgentEnvKey:
-    | "DID_PERSONA_AMAZON_L5"
-    | "DID_PERSONA_GOOGLE_L4"
-    | "DID_PERSONA_MCKINSEY_EM"
-    | "DID_PERSONA_GOLDMAN_VP"
-    | "DID_PERSONA_MSFT_PM";
+  | "DID_PERSONA_AMAZON_L5"
+  | "DID_PERSONA_GOOGLE_L4"
+  | "DID_PERSONA_MCKINSEY_EM"
+  | "DID_PERSONA_GOLDMAN_VP"
+  | "DID_PERSONA_MSFT_PM";
   voiceLabel: string;
   photoUrl: string;
   interviewModes: InterviewMode[];
@@ -164,6 +164,28 @@ export function getPersona(id: string): PersonaDefinition | undefined {
   return PERSONAS.find((p) => p.id === id);
 }
 
+/** D-ID agent with Studio embed + production domain allowlist configured */
+export const EMBEDDED_DID_AGENT_ID = "v2_agt_4pjSCal7";
+
+/** Personas that have a live embedded D-ID interviewer (others are in progress) */
+export const LIVE_EMBEDDED_PERSONA_IDS: PersonaId[] = ["amazon-l5-bar-raiser"];
+
+export type PersonaLiveStatus = "live" | "in_progress";
+
+export function isPersonaLiveEmbedded(personaId: PersonaId): boolean {
+  return LIVE_EMBEDDED_PERSONA_IDS.includes(personaId);
+}
+
+export function getPersonaLiveStatus(personaId: PersonaId): PersonaLiveStatus {
+  return isPersonaLiveEmbedded(personaId) ? "live" : "in_progress";
+}
+
+/** Agent id for D-ID embed — only returned for live-embedded personas */
+export function personaAgentIdForLive(personaId: PersonaId): string | undefined {
+  if (!isPersonaLiveEmbedded(personaId)) return undefined;
+  return personaAgentId(personaId);
+}
+
 export function personaAgentId(personaId: PersonaId): string | undefined {
   const p = getPersona(personaId);
   if (!p) return undefined;
@@ -171,5 +193,9 @@ export function personaAgentId(personaId: PersonaId): string | undefined {
 }
 
 export function defaultPersonaId(): PersonaId {
-  return "amazon-l5-bar-raiser";
+  return LIVE_EMBEDDED_PERSONA_IDS[0] ?? "amazon-l5-bar-raiser";
+}
+
+export function defaultLivePersonaId(): PersonaId {
+  return defaultPersonaId();
 }

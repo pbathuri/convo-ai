@@ -12,7 +12,7 @@ export type InterviewPhase =
 export type AvatarMode = "pending" | "connected" | "failed" | "skipped";
 
 export const SESSION_CREATE_TIMEOUT_MS = 8_000;
-export const DID_CONNECT_TIMEOUT_MS = 15_000;
+export const DID_CONNECT_TIMEOUT_MS = 35_000;
 
 export function interviewPhaseLabel(phase: InterviewPhase): string {
   switch (phase) {
@@ -44,7 +44,7 @@ export function interviewPhaseHint(phase: InterviewPhase): string | null {
     case "creating_session":
       return "If this takes more than 8 seconds, we will use a local session.";
     case "avatar_connecting":
-      return "Avatar connect times out after 15 seconds — you can continue without video.";
+      return "Warming live stream — usually under 10s after allowlist is set.";
     case "avatar_failed":
       return "Use “Continue transcript-only interview” to keep practicing.";
     case "transcript_only":

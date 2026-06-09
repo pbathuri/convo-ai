@@ -1,13 +1,10 @@
 import Link from "next/link";
 
-const links = [
-  { href: "/chat", label: "Session" },
-  { href: "/personas", label: "Personas" },
-  { href: "/sessions", label: "Sessions" },
-  { href: "/progress", label: "Progress" },
-  { href: "/admin", label: "Admin" },
-  { href: "/analytics", label: "Analytics" },
-  { href: "/settings", label: "Settings" },
+const primaryLinks = [
+  { href: "/", label: "Home" },
+  { href: "/personas", label: "Practice" },
+  { href: "/progress", label: "Insights" },
+  { href: "/chat", label: "Live room" },
 ];
 
 export function SiteNav() {
@@ -18,7 +15,7 @@ export function SiteNav() {
           Conversate
         </Link>
         <nav className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-          {links.map((l) => (
+          {primaryLinks.map((l) => (
             <Link key={l.href} href={l.href} className="hover:text-foreground">
               {l.label}
             </Link>

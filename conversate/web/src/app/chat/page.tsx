@@ -1,7 +1,9 @@
+import { resolveDidEmbedCredentials } from "@/lib/did/embed-config";
 import {
-  defaultPersonaId,
+  defaultLivePersonaId,
+  isPersonaLiveEmbedded,
   type PersonaId,
-  personaAgentId,
+  personaAgentIdForLive,
   personaIdSchema,
 } from "@/lib/personas";
 import { ChatExperience } from "./chat-experience";
@@ -9,24 +11,30 @@ import { ChatExperience } from "./chat-experience";
 export const dynamic = "force-dynamic";
 
 function resolvePersonaId(raw: string | undefined): PersonaId {
-  const v = raw ?? defaultPersonaId();
+  const v = raw ?? defaultLivePersonaId();
   const p = personaIdSchema.safeParse(v);
-  return p.success ? p.data : defaultPersonaId();
+  return p.success ? p.data : defaultLivePersonaId();
 }
 
-export default function ChatPage({
+export default async function ChatPage({
   searchParams,
 }: {
   searchParams: { persona?: string };
 }) {
   const personaId = resolvePersonaId(searchParams.persona);
-  const agentId = personaAgentId(personaId) ?? "";
-  const clientKey = process.env.NEXT_PUBLIC_DID_CLIENT_KEY ?? "";
+  const agentId = personaAgentIdForLive(personaId) ?? "";
+  const embed = agentId
+    ? await resolveDidEmbedCredentials(agentId)
+    : { agentId: "", clientKey: "", source: "env_legacy" as const };
+
   return (
     <ChatExperience
       personaId={personaId}
-      agentId={agentId}
-      clientKey={clientKey}
+      agentId={embed.agentId || agentId}
+      clientKey={embed.clientKey}
+      embedKeySource={embed.source}
+      liveEmbedded={isPersonaLiveEmbedded(personaId)}
+      useOfficialEmbed={embed.clientKey.startsWith("ck_")}
     />
   );
 }

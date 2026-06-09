@@ -2,7 +2,7 @@
 
 Run `cd conversate/web && npm run verify` first.
 
-Base URL: `http://localhost:3000`
+Base URL: `http://localhost:3000` (or production: `https://web-delta-three-73.vercel.app`)
 
 - [ ] `/` — landing loads, persona cards visible
 - [ ] `/personas` — five personas, links to chat

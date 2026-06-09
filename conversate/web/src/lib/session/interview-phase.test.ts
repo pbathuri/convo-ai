@@ -10,8 +10,8 @@ describe("interview-phase", () => {
     expect(SESSION_CREATE_TIMEOUT_MS).toBe(8000);
   });
 
-  it("uses 15s D-ID connect budget", () => {
-    expect(DID_CONNECT_TIMEOUT_MS).toBe(15000);
+  it("uses 35s D-ID connect budget", () => {
+    expect(DID_CONNECT_TIMEOUT_MS).toBe(35000);
   });
 
   it("labels transcript_only", () => {

@@ -2,6 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DidAgentStage, type DidPhase } from "@/components/did/DidAgentStage";
+import {
+  DidOfficialEmbed,
+  type DidOfficialPhase,
+} from "@/components/did/DidOfficialEmbed";
+import { InterviewConnectOverlay } from "@/components/did/InterviewConnectOverlay";
+import { preloadDidSdk } from "@/lib/did/preload-sdk";
+import type { DidEmbedCredentials } from "@/lib/did/embed-config";
 import { PostSessionActions } from "@/components/session/PostSessionActions";
 import { SessionObjectiveCard } from "@/components/session/SessionObjectiveCard";
 import { SessionReadinessCard } from "@/components/session/SessionReadinessCard";
@@ -12,7 +19,8 @@ import { TranscriptStatusSummary } from "@/components/session/TranscriptStatusSu
 import { PersonaBadge } from "@/components/ui/interview-room";
 import { InterviewRoomPanel, SakuraPageShell } from "@/components/ui/sakura";
 import { trackPageEvent } from "@/lib/analytics/client";
-import type { PersonaId } from "@/lib/personas";
+import { defaultLivePersonaId, type PersonaId } from "@/lib/personas";
+import Link from "next/link";
 import {
   clearSessionInflight,
   getOrCreateSessionId,
@@ -31,9 +39,19 @@ type Props = {
   personaId: PersonaId;
   agentId: string;
   clientKey: string;
+  liveEmbedded: boolean;
+  useOfficialEmbed?: boolean;
+  embedKeySource?: DidEmbedCredentials["source"];
 };
 
-export function ChatExperience({ personaId, agentId, clientKey }: Props) {
+export function ChatExperience({
+  personaId,
+  agentId,
+  clientKey,
+  liveEmbedded,
+  useOfficialEmbed = false,
+  embedKeySource,
+}: Props) {
   const setPersona = useSessionStore((s) => s.setPersona);
   const canStream = Boolean(agentId && clientKey);
   const mountMsRef = useRef(performance.now());
@@ -50,7 +68,12 @@ export function ChatExperience({ personaId, agentId, clientKey }: Props) {
   const [savedSpeechCount, setSavedSpeechCount] = useState(0);
   const [unsavedSpeechCount, setUnsavedSpeechCount] = useState(0);
   const [manualEntryCount, setManualEntryCount] = useState(0);
+  const [didPhase, setDidPhase] = useState<DidPhase>("idle");
   const prevPersonaRef = useRef<PersonaId | null>(null);
+
+  useEffect(() => {
+    if (liveEmbedded && canStream && !useOfficialEmbed) void preloadDidSdk();
+  }, [liveEmbedded, canStream, useOfficialEmbed]);
 
   const trackPhase = useCallback(
     (phase: InterviewPhase) => {
@@ -167,14 +190,33 @@ export function ChatExperience({ personaId, agentId, clientKey }: Props) {
   }, [canStream, avatarMode]);
 
   const handleDidPhaseChange = useCallback(
-    (didPhase: DidPhase) => {
+    (nextDidPhase: DidPhase) => {
+      setDidPhase(nextDidPhase);
       if (avatarMode === "skipped") return;
-      if (didPhase === "connecting") setPhase("avatar_connecting");
-      if (didPhase === "connected") {
+      if (nextDidPhase === "preflight" || nextDidPhase === "connecting") {
+        setPhase("avatar_connecting");
+      }
+      if (nextDidPhase === "connected") {
         setAvatarMode("connected");
         setPhase("live");
       }
-      if (didPhase === "error") {
+      if (nextDidPhase === "error") {
+        setAvatarMode("failed");
+        setPhase("avatar_failed");
+      }
+    },
+    [avatarMode, setPhase],
+  );
+
+  const handleOfficialPhaseChange = useCallback(
+    (nextPhase: DidOfficialPhase) => {
+      if (avatarMode === "skipped") return;
+      if (nextPhase === "loading") setPhase("avatar_connecting");
+      if (nextPhase === "connected") {
+        setAvatarMode("connected");
+        setPhase("live");
+      }
+      if (nextPhase === "error") {
         setAvatarMode("failed");
         setPhase("avatar_failed");
       }
@@ -196,9 +238,55 @@ export function ChatExperience({ personaId, agentId, clientKey }: Props) {
   const showCapture = Boolean(sessionId);
   const showAvatar =
     canStream &&
+    liveEmbedded &&
     avatarMode !== "skipped" &&
     interviewPhase !== "transcript_only";
   const preparing = interviewPhase === "creating_session" && !sessionId;
+  const connectingLive =
+    showAvatar &&
+    !useOfficialEmbed &&
+    avatarMode !== "failed" &&
+    didPhase !== "connected" &&
+    didPhase !== "error" &&
+    interviewPhase !== "live";
+
+  const connectSteps = [
+    {
+      id: "session",
+      label: "Interview session",
+      state: (sessionId ? "done" : "active") as "done" | "active" | "pending",
+    },
+    {
+      id: "preflight",
+      label: "Verify D-ID credentials",
+      state: (didPhase === "preflight"
+        ? "active"
+        : didPhase === "idle"
+          ? sessionId
+            ? "active"
+            : "pending"
+          : "done") as "done" | "active" | "pending",
+    },
+    {
+      id: "sdk",
+      label: "Load live interviewer",
+      state: (didPhase === "connecting"
+        ? "active"
+        : ["connected", "error"].includes(didPhase)
+          ? "done"
+          : "pending") as "done" | "active" | "pending",
+    },
+    {
+      id: "stream",
+      label: "Start video stream",
+      state: (didPhase === "connected"
+        ? "done"
+        : didPhase === "connecting"
+          ? "active"
+          : "pending") as "done" | "active" | "pending",
+    },
+  ];
+
   const hint = interviewPhaseHint(interviewPhase);
 
   return (
@@ -224,7 +312,24 @@ export function ChatExperience({ personaId, agentId, clientKey }: Props) {
             />
             <PersonaBadge personaId={personaId} />
 
-            {!canStream ? (
+            {!liveEmbedded ? (
+              <div className="rounded-md border border-amber-500/30 bg-amber-500/10 p-4 text-sm">
+                <p className="font-medium text-amber-900">
+                  This interviewer is in progress
+                </p>
+                <p className="mt-1 text-xs text-amber-800">
+                  Only the Amazon room (Sarah Chen) has a live embedded D-ID
+                  agent right now. Use transcript-only here, or switch to the
+                  live room.
+                </p>
+                <Link
+                  href={`/chat?persona=${defaultLivePersonaId()}`}
+                  className="mt-2 inline-block text-xs font-medium text-[var(--sakura-petal-500)] hover:underline"
+                >
+                  Open live Amazon room →
+                </Link>
+              </div>
+            ) : !canStream ? (
               <div className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">
                 <p className="font-medium text-foreground">
                   Transcript-only interview
@@ -232,39 +337,64 @@ export function ChatExperience({ personaId, agentId, clientKey }: Props) {
                 <p className="mt-1 text-xs">
                   D-ID keys are not configured. Set{" "}
                   <code className="text-xs">NEXT_PUBLIC_DID_CLIENT_KEY</code>{" "}
-                  and <code className="text-xs">DID_PERSONA_*</code> to enable
-                  the avatar, or continue with browser speech and manual
+                  and <code className="text-xs">DID_PERSONA_AMAZON_L5</code> to
+                  enable the avatar, or continue with browser speech and manual
                   transcript.
                 </p>
               </div>
             ) : null}
 
-            {showAvatar ? (
-              <DidAgentStage
-                agentId={agentId}
-                clientKey={clientKey}
-                personaId={personaId}
-                onPhaseChange={handleDidPhaseChange}
-                onContinueTranscriptOnly={enterTranscriptOnly}
-              />
+            {embedKeySource === "agent_client_key" ? (
+              <p className="text-xs text-emerald-700">
+                Using your Studio allowlisted embed key (ck_…).
+              </p>
             ) : null}
 
+            <div className="relative max-w-3xl space-y-2">
+              {connectingLive ? (
+                <InterviewConnectOverlay
+                  subtitle="First connect may take a few seconds."
+                  steps={connectSteps}
+                />
+              ) : null}
+
+              {showAvatar && useOfficialEmbed ? (
+                <DidOfficialEmbed
+                  agentId={agentId}
+                  clientKey={clientKey}
+                  personaId={personaId}
+                  onPhaseChange={handleOfficialPhaseChange}
+                  onConnected={() => {
+                    setAvatarMode("connected");
+                    setPhase("live");
+                  }}
+                  onError={() => {
+                    setAvatarMode("failed");
+                    setPhase("avatar_failed");
+                  }}
+                  onContinueTranscriptOnly={enterTranscriptOnly}
+                />
+              ) : null}
+
+              {showAvatar && !useOfficialEmbed ? (
+                <div className={connectingLive ? "sr-only h-0 overflow-hidden" : ""}>
+                  <DidAgentStage
+                    agentId={agentId}
+                    clientKey={clientKey}
+                    personaId={personaId}
+                    onPhaseChange={handleDidPhaseChange}
+                    onContinueTranscriptOnly={enterTranscriptOnly}
+                  />
+                </div>
+              ) : null}
+            </div>
+
             {avatarMode === "skipped" ||
-            interviewPhase === "transcript_only" ? (
+              interviewPhase === "transcript_only" ? (
               <p className="rounded-md border border-[var(--sakura-glass-border)] bg-[var(--sakura-glass-bg)] px-3 py-2 text-xs text-muted-foreground">
                 Transcript-only mode — capture your answers on the right. End
                 session when finished to generate coaching feedback.
               </p>
-            ) : null}
-
-            {interviewPhase === "avatar_failed" && avatarMode !== "skipped" ? (
-              <button
-                type="button"
-                className="w-full max-w-xl rounded-md bg-[var(--sakura-petal-500)] px-3 py-2 text-sm font-medium text-white hover:opacity-90"
-                onClick={enterTranscriptOnly}
-              >
-                Continue transcript-only interview
-              </button>
             ) : null}
 
             {sessionId ? (
