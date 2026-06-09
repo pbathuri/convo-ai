@@ -1,4 +1,5 @@
 import { didAuthHeader } from "@/lib/did/auth";
+import { resolveDidAgentApiUrl } from "@/lib/did/agent-url";
 import { resolveDidEmbedCredentials } from "@/lib/did/embed-config";
 import { EMBEDDED_DID_AGENT_ID } from "@/lib/personas";
 
@@ -25,7 +26,8 @@ export async function didAgentPreflight(
   }
 
   try {
-    const res = await fetch(`https://api.d-id.com/agents/${agentId}`, {
+    const base = resolveDidAgentApiUrl(agentId);
+    const res = await fetch(base, {
       method: "GET",
       headers: {
         Authorization: didAuthHeader(clientKey),
