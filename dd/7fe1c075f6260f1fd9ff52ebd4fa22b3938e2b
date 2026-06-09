@@ -1,0 +1,152 @@
+conversate/web/src/lib/session/interview-phase.ts
+  s_1322c8294517ae::t_9ff0849d6c0026 15
+  s_1322c8294517ae::t_f26b9a0cdddf7e 47
+conversate/web/src/app/chat/page.tsx
+  s_1322c8294517ae::t_a1b25ea18281a4 14,16
+  s_1322c8294517ae::t_caea55a6d4e990 25
+  s_1322c8294517ae::t_e74cc7d8650f71 1,19,26-29,33-35,37
+  s_1322c8294517ae::t_78e9722e62a4d7 4
+  s_1322c8294517ae::t_8d29262c27ee37 3,6
+  s_1322c8294517ae::t_0f262132a8f5a8 36
+conversate/web/src/lib/personas.ts
+  s_1322c8294517ae::t_31e0fd9ae6a95d 167-185,187-188,196-200
+  s_1322c8294517ae::t_7742db5bfa510b 186
+conversate/web/package.json
+  s_1322c8294517ae::t_cbbcea696a4d5f 6
+conversate/web/src/lib/insights/metrics.ts
+  s_1322c8294517ae::t_78f44e0cdcf41b 1-106
+.gitignore
+  s_1322c8294517ae::t_5c3d03a181dded 28-29
+docs/implementation/vercel-production-smoke.md
+  s_1322c8294517ae::t_af004897000889 28-31
+  s_1322c8294517ae::t_d2798181ea6b85 37-44
+conversate/web/src/components/did/DidOfficialEmbed.tsx
+  s_1322c8294517ae::t_57b25fc5c96c3c 1-162
+conversate/web/src/components/did/InterviewConnectOverlay.tsx
+  s_1322c8294517ae::t_3a33d17dd4d68f 1-31,33-46
+  h_ec613b3074a81b 32
+docs/design/asset-attributions.md
+  s_1322c8294517ae::t_2fa9254b2ee398 5,7-13
+conversate/web/src/lib/did/auth.ts
+  s_1322c8294517ae::t_cbd6636c71c87f 1-6
+conversate/web/src/components/personas/PersonaLiveBadge.tsx
+  s_1322c8294517ae::t_0d56533f22d8f4 1-22
+conversate/web/src/components/site-footer.tsx
+  s_1322c8294517ae::t_bf4a9b8a635e21 1-26
+conversate/web/src/app/personas/page.tsx
+  s_1322c8294517ae::t_4a73a2dc4f7807 11
+  s_1322c8294517ae::t_3cb22fee136067 2-3,9-10,14
+docs/implementation/test-strategy.md
+  h_ec613b3074a81b 39-41
+conversate/web/src/app/chat/chat-experience.tsx
+  s_1322c8294517ae::t_c36e8a73e7c6b6 315-332,340-341
+  s_1322c8294517ae::t_f9a9a4240cb80b 357
+  s_1322c8294517ae::t_b7a9edc09119dc 241,245-246,248-251
+  s_1322c8294517ae::t_02bbd20d715f18 5-8,11
+  s_1322c8294517ae::t_4819701acfa66a 75-76
+  s_1322c8294517ae::t_e4fa820129a338 9-10
+  s_1322c8294517ae::t_a98d36acf23789 247
+  s_1322c8294517ae::t_4149c7b81b80fb 71,74
+  s_1322c8294517ae::t_e66d5b09c22fa3 347-350,353,356,358-375,379
+  s_1322c8294517ae::t_0cdecef9040d3e 22-23
+  s_1322c8294517ae::t_68ffc0b7073682 211-212,214-215,219
+  s_1322c8294517ae::t_dcde65a0c31a73 252-289
+  s_1322c8294517ae::t_be95277892ddbc 43-44,52-53
+  s_1322c8294517ae::t_dd2f7078f6acda 42,47-51,54
+  s_1322c8294517ae::t_6a47d411f080d6 193-203
+  s_1322c8294517ae::t_d68aea8ab02cd4 380-388
+  s_1322c8294517ae::t_531c5ade986412 378
+  s_1322c8294517ae::t_e25aa08b8031b7 354-355,376-377,389-390
+conversate/web/.env.example
+  s_1322c8294517ae::t_666a65d2ce26eb 1-3
+  s_1322c8294517ae::t_3393b8cd0dff7b 22-23
+docs/implementation/did-local-debugging.md
+  s_1322c8294517ae::t_1d0d5ccfc81c9b 13,17-23
+conversate/web/src/app/api/did/embed-config/route.ts
+  s_1322c8294517ae::t_5ccf0c58ff17d0 1-21
+conversate/web/src/components/insights/ScoreTrendChart.tsx
+  s_1322c8294517ae::t_1665552b133f91 1-52
+conversate/web/src/components/home/HomeDashboard.tsx
+  s_1322c8294517ae::t_cab573aed1a695 4-9
+  s_1322c8294517ae::t_72b163b651af7c 36
+  s_1322c8294517ae::t_43a6b0bec92ef8 1-3,10-18,26-35,37-193
+  s_1322c8294517ae::t_9ba5c6ba48dd56 19-25
+conversate/web/src/app/api/health/route.ts
+  s_1322c8294517ae::t_558a5fa27a9dbb 10
+  s_1322c8294517ae::t_9ea84a6046e3e5 2-4,7-9,11,13-18
+  s_1322c8294517ae::t_5f8b5627bf8e79 12
+conversate/web/src/components/site-nav.tsx
+  s_1322c8294517ae::t_181654a17eb5ff 3-7,18
+conversate/web/src/components/did/DidSdkPreloader.tsx
+  s_1322c8294517ae::t_361f405f277cce 1-12
+conversate/web/src/app/page.tsx
+  s_1322c8294517ae::t_b7263348d9e4d8 1,3,6
+conversate/web/src/app/progress/page.tsx
+  s_1322c8294517ae::t_eb4428962f5051 2,9,15-18,23-25,28,30,34,38,42,44-45,49-50,54-65,68-83
+conversate/web/src/components/did/DidAgentStage.tsx
+  s_1322c8294517ae::t_1011ee9431e5b0 7,11,22,33-35,45-47,50-51,54-55,57-58,85,129,139,142-165,168,171,178-181,201,241-248,271-272,275-297,301
+conversate/web/src/app/api/personas/route.ts
+  s_1322c8294517ae::t_a087aa24d4ef37 2-6,20-21
+conversate/web/src/lib/env-check.ts
+  s_1322c8294517ae::t_36b408d9edeea6 66
+  s_1322c8294517ae::t_32ae7dfe72a7d0 47,49-53
+  s_1322c8294517ae::t_301eab1c9d43cc 38-43,45-46,48
+  s_1322c8294517ae::t_7a9502dbefee51 1-5
+  s_1322c8294517ae::t_182f3c726fd257 14-18,20
+  s_1322c8294517ae::t_dfa1aa96280cb3 6-13,19,21-37,44,54-65,67-68
+docs/implementation/demo-readiness-checklist.md
+  s_1322c8294517ae::t_ee400e2e17bd14 5
+conversate/web/src/components/personas/PersonasPracticeGrid.tsx
+  s_1322c8294517ae::t_f09b81bc30c9af 5,12-14,42-44,97-100,117-119,121,123-126,132,135-138,160-172
+  s_1322c8294517ae::t_4cea420bb87ae7 25-26
+  s_1322c8294517ae::t_b55399278ff94a 1-4,6-11,15-24,27-41,45-96,101-116,120,127-131,133-134,139-159,173-176
+  h_ec613b3074a81b 122
+conversate/web/src/app/layout.tsx
+  s_1322c8294517ae::t_a908a8c4e2ef46 6
+  s_1322c8294517ae::t_897f0642317dd5 5
+  s_1322c8294517ae::t_9e82e49098e870 38
+  s_1322c8294517ae::t_287d874f624016 41-42
+conversate/web/src/lib/did/server-preflight.ts
+  s_1322c8294517ae::t_7ad213b6b87fe6 73
+  s_1322c8294517ae::t_8f7b1cf7843eed 1,3-62,66-67,86
+  s_1322c8294517ae::t_3164ae3a87dd76 63-65,68-72,74-85
+  s_1322c8294517ae::t_7fde7fd991ca2a 2
+conversate/web/src/lib/session/interview-phase.test.ts
+  s_1322c8294517ae::t_2a84fb48e2dd87 13-14
+conversate/web/src/app/insights/page.tsx
+  s_1322c8294517ae::t_0678bfecbf5479 1-5
+conversate/web/vercel.json
+  s_1322c8294517ae::t_d1742451b9a801 1-4
+conversate/web/src/lib/did/embed-config.ts
+  s_1322c8294517ae::t_654a3b7d2d5667 1-55
+conversate/web/src/app/api/did/preflight/route.ts
+  s_1322c8294517ae::t_15fc7386464399 1,6-10,17-28
+  s_1322c8294517ae::t_2001b855b8c1c0 2-5,11-16
+conversate/web/src/lib/personas/live-status.test.ts
+  s_1322c8294517ae::t_001831cf08270d 1-19
+conversate/web/src/lib/insights/metrics.test.ts
+  s_1322c8294517ae::t_2640ad69f79aee 1-43
+conversate/web/src/lib/did/preload-sdk.ts
+  s_1322c8294517ae::t_9327f859e35d02 1-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "dd7fe1c075f6260f1fd9ff52ebd4fa22b3938e2b",
+  "prompts": {},
+  "humans": {
+    "h_ec613b3074a81b": {
+      "author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1322c8294517ae": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "0ade0558-b1a1-4a61-848b-670a5dc95d68",
+        "model": "composer-2.5"
+      },
+      "human_author": "pbathuri <taaffeite.aart@gmail.com>"
+    }
+  }
+}
