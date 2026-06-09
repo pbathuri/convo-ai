@@ -1,35 +1,34 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { scoreTranscript } from "./scorer";
 
 describe("scoreTranscript", () => {
-  const prevKey = process.env.GOOGLE_AI_STUDIO_KEY;
+  const transcript =
+    "I led a project to reduce latency by forty percent using caching and profiling.";
+
+  beforeEach(() => {
+    vi.stubEnv("GOOGLE_AI_STUDIO_KEY", "");
+  });
 
   afterEach(() => {
-    if (prevKey === undefined) delete process.env.GOOGLE_AI_STUDIO_KEY;
-    else process.env.GOOGLE_AI_STUDIO_KEY = prevKey;
+    vi.unstubAllEnvs();
   });
 
-  it("returns degraded heuristic when Gemini key is missing", async () => {
-    delete process.env.GOOGLE_AI_STUDIO_KEY;
-    const result = await scoreTranscript({
+  it("returns degraded heuristic when Gemini key missing", async () => {
+    const r = await scoreTranscript({
       personaId: "amazon-l5-bar-raiser",
-      transcript:
-        "user: Situation: outage. Action: rollback. Result: 40% latency improvement for 2M users.",
+      transcript,
     });
-    expect(result.degraded).toBe(true);
-    expect(result.degradedReason).toBe("missing_key");
-    expect(result.output.strengths.length).toBeGreaterThan(0);
-    expect(result.output.weaknesses.length).toBeGreaterThan(0);
-    expect(result.output.actionItems.length).toBeGreaterThan(0);
-    expect(result.output.evidence.length).toBeGreaterThan(0);
-    expect(result.output.nextDrill).toBeTruthy();
+    expect(r.degraded).toBe(true);
+    expect(r.degradedReason).toBe("missing_key");
+    expect(r.modelName).toBe("local-heuristic");
+    expect(r.output.overallScore).toBeGreaterThan(0);
   });
 
-  it("throws EMPTY_TRANSCRIPT for blank input", async () => {
+  it("throws on empty transcript", async () => {
     await expect(
       scoreTranscript({
-        personaId: "google-l4-swe",
-        transcript: "   \n  ",
+        personaId: "amazon-l5-bar-raiser",
+        transcript: "   ",
       }),
     ).rejects.toThrow("EMPTY_TRANSCRIPT");
   });

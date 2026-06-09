@@ -3,6 +3,14 @@ import { resolveDidAgentApiUrl } from "@/lib/did/agent-url";
 import { resolveDidEmbedCredentials } from "@/lib/did/embed-config";
 import { EMBEDDED_DID_AGENT_ID } from "@/lib/personas";
 
+function resolveServerOrigin(): string | undefined {
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    process.env.VERCEL_URL?.trim() ||
+    "";
+  if (!raw) return undefined;
+  return raw.startsWith("http") ? raw : `https://${raw}`;
+}
 export type DidPreflightResult = {
   ok: boolean;
   agentId: string;
@@ -26,8 +34,7 @@ export async function didAgentPreflight(
   }
 
   try {
-    const base = resolveDidAgentApiUrl(agentId);
-    const res = await fetch(base, {
+    const base = resolveDidAgentApiUrl(agentId, resolveServerOrigin());    const res = await fetch(base, {
       method: "GET",
       headers: {
         Authorization: didAuthHeader(clientKey),

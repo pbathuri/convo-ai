@@ -30,6 +30,12 @@ function degradedLabel(reason: string | null | undefined): string {
   if (reason === "missing_key") {
     return "AI scoring is using local fallback because Gemini API key is not configured.";
   }
+  if (reason === "parse_error") {
+    return "AI scoring is using local fallback because Gemini returned invalid JSON.";
+  }
+  if (reason === "api_error") {
+    return "AI scoring is using local fallback because the Gemini API request failed.";
+  }
   return "AI scoring is using local fallback because Gemini quota/key is unavailable.";
 }
 
