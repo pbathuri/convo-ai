@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, File, HTTPException, UploadFile
 from pydantic import BaseModel
 
 from app.adapters.stt.deepgram import transcribe_audio
@@ -26,9 +26,14 @@ class SynthesizeResponse(BaseModel):
 
 
 @router.post("/transcribe")
-async def transcribe() -> TranscribeResponse:
-    """Placeholder — accepts multipart in production; returns mock when unkeyed."""
-    result = await transcribe_audio(b"")
+async def transcribe(
+    audio: UploadFile | None = File(None),
+) -> TranscribeResponse:
+    """Accept multipart audio; returns mock/degraded when unkeyed or empty."""
+    content = b""
+    if audio is not None:
+        content = await audio.read()
+    result = await transcribe_audio(content)
     return TranscribeResponse(**result)
 
 

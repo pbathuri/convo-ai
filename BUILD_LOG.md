@@ -41,3 +41,6 @@
 | 2026-06-23 | D-ID | ck_ client key + v2_agt_4pjSCal7 on Vercel; embed ready |
 | 2026-06-23 | Emotion | Gemini analyzer via FastAPI prompt → `/api/emotion/analyze` + score flow |
 | 2026-06-23 | Graph pipeline | skill-tree + memory proxies to Render backend |
+| 2026-06-23 | Voice | Deepgram STT multipart on backend + `/api/voice/*` proxies |
+| 2026-06-23 | Gamification | XP awarded on session score via backend `/gamification/xp` |
+| 2026-06-23 | Domains | `/domains` browse page for legacy coaching modules |

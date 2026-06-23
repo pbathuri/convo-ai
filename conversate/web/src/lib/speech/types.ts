@@ -15,7 +15,7 @@ export type SpeechSegment = {
   confidence?: number;
   startedAt: string;
   endedAt?: string;
-  provider: "browser_speech_recognition";
+  provider: "browser_speech_recognition" | "deepgram";
   raw?: unknown;
 };
 

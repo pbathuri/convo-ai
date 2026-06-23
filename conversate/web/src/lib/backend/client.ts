@@ -41,3 +41,17 @@ export async function backendGet<T>(path: string): Promise<T> {
   }
   return res.json() as Promise<T>;
 }
+
+export async function backendPostMultipart<T>(
+  path: string,
+  form: FormData,
+): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, {
+    method: "POST",
+    body: form,
+  });
+  if (!res.ok) {
+    throw new Error(`backend ${path}: ${res.status}`);
+  }
+  return res.json() as Promise<T>;
+}

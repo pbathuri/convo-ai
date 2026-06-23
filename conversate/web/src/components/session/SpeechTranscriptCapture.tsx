@@ -10,6 +10,7 @@ import {
   shouldPersistSegment,
 } from "@/lib/speech/persist";
 import type { SpeechSegment } from "@/lib/speech/types";
+import { DeepgramRecordFallback } from "@/components/session/DeepgramRecordFallback";
 
 type Props = {
   sessionId: string;
@@ -261,6 +262,15 @@ export function SpeechTranscriptCapture({
       {speech.error ? (
         <p className="text-xs text-destructive">{speech.error}</p>
       ) : null}
+
+      {speech.support === "unsupported" || speech.status === "error" ? (
+        <DeepgramRecordFallback
+          disabled={!consent}
+          onTranscribed={(segment) => void handleFinal(segment)}
+          onError={(msg) => setPersistWarning(msg)}
+        />
+      ) : null}
+
       {persistWarning && failedQueue.length === 0 ? (
         <p className="text-xs text-amber-600">{persistWarning}</p>
       ) : null}

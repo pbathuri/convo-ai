@@ -54,6 +54,25 @@ def test_voice_mock():
     assert r.json()["degraded"] is True
 
 
+def test_voice_transcribe_multipart():
+    r = client.post(
+        "/voice/transcribe",
+        files={"audio": ("clip.webm", b"fake-audio", "audio/webm")},
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert body["provider"] in ("mock", "deepgram")
+    assert "text" in body
+
+
+def test_voice_agent_config():
+    r = client.get("/voice/agent-config")
+    assert r.status_code == 200
+    body = r.json()
+    assert "configured" in body
+    assert "agent" in body
+
+
 def test_skill_tree_api():
     r = client.get("/skill-tree")
     assert r.status_code == 200

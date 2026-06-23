@@ -4,6 +4,7 @@ import { AuthNav } from "@/components/auth/AuthNav";
 const primaryLinks = [
   { href: "/", label: "Home" },
   { href: "/personas", label: "Practice" },
+  { href: "/domains", label: "Domains" },
   { href: "/progress", label: "Insights" },
   { href: "/pricing", label: "Pricing" },
   { href: "/chat", label: "Live room" },

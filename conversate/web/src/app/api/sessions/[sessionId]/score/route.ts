@@ -8,6 +8,8 @@ import {
   analyzeEmotionTraits,
   extractLastUserUtterance,
 } from "@/lib/emotion/analyzer";
+import { backendPost } from "@/lib/backend/client";
+import { calculateXp } from "@/lib/gamification/xp";
 import { buildFeedbackReport } from "@/lib/scoring/feedback-engine";
 import {
   scoreTranscriptHeuristic,
@@ -16,6 +18,20 @@ import {
 import { persistScoreResult } from "@/lib/scoring/persist-score";
 import { scoreTranscript } from "@/lib/scoring/scorer";
 import { listMessages } from "@/lib/transcripts/service";
+
+async function awardXpForScore(score: number): Promise<{
+  xp: number;
+  xpDegraded: boolean;
+}> {
+  try {
+    const res = await backendPost<{ xp: number }>("/gamification/xp", {
+      score,
+    });
+    return { xp: res.xp, xpDegraded: false };
+  } catch {
+    return { xp: calculateXp(score), xpDegraded: true };
+  }
+}
 
 export async function POST(
   _req: Request,
@@ -73,6 +89,8 @@ export async function POST(
       emotionTraits: emotion.traits,
     });
 
+    const { xp, xpDegraded } = await awardXpForScore(output.overallScore);
+
     return NextResponse.json({
       report,
       output,
@@ -82,6 +100,8 @@ export async function POST(
       emotionTraits: emotion.traits,
       emotionDegraded: emotion.degraded,
       emotionSource: emotion.source,
+      xp,
+      xpDegraded,
     });
   } catch (e) {
     if (e instanceof Error && e.message === "EMPTY_TRANSCRIPT") {
@@ -118,12 +138,15 @@ export async function POST(
         retrievalTrace,
         inputHash: String(transcript.length),
       });
+      const { xp, xpDegraded } = await awardXpForScore(output.overallScore);
       return NextResponse.json({
         report,
         output,
         retrievalTrace,
         degraded: true,
         degradedReason: "api_error",
+        xp,
+        xpDegraded,
       });
     }
 

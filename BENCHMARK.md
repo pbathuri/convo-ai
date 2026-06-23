@@ -8,15 +8,15 @@ Legend: ✅ implemented & verified · 🟡 partial/degraded · ❌ not yet · �
 
 | Feature | Speak | ELSA | Praktika | Duolingo | Replika | Conversate |
 |---------|-------|------|----------|----------|---------|------------|
-| Real-time voice conversation | ✅ | ✅ | ✅ | — | ✅ | 🟡 D-ID embed + browser STT |
+| Real-time voice conversation | ✅ | ✅ | ✅ | — | ✅ | 🟡 D-ID embed + browser STT + Deepgram fallback |
 | Pronunciation / speech scoring | ✅ | ✅ | 🟡 | — | — | 🟡 Gemini + heuristic fallback |
 | AI avatar / persona | — | — | ✅ | — | ✅ | ✅ D-ID live (Sarah Chen) |
 | Role-play scenarios | ✅ | 🟡 | ✅ | — | ✅ | ✅ interview personas |
 | Structured feedback report | ✅ | ✅ | ✅ | — | 🟡 | ✅ coaching + emotion radar |
 | Skill progression / curriculum | ✅ | ✅ | ✅ | ✅ | 🟡 | 🟡 skill tree + backend sync |
-| Gamification (XP/streaks) | ✅ | ✅ | ✅ | ✅ | 🟡 | 🟡 progress + backend XP API |
+| Gamification (XP/streaks) | ✅ | ✅ | ✅ | ✅ | 🟡 | 🟡 progress + XP on score (backend sync) |
 | Emotional intelligence radar | — | — | — | — | ✅ | ✅ Gemini via backend prompt |
-| Multi-domain practice | 🟡 | — | 🟡 | ✅ | 🟡 | 🟡 8 legacy domains catalogued |
+| Multi-domain practice | 🟡 | — | 🟡 | ✅ | 🟡 | 🟡 `/domains` catalog + interview live |
 | User accounts + auth | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Supabase SSR |
 | Subscriptions / payments | ✅ | ✅ | ✅ | ✅ | ✅ | 🟡 pricing (Stripe skipped) |
 | Mobile app | ✅ | ✅ | ✅ | ✅ | ✅ | — web-first v1 |
