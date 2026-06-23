@@ -37,3 +37,7 @@
 | 2026-06-17 | Database | Migrated + seeded on `aws-1-us-east-2` pooler; `ready: true` |
 | 2026-06-17 | Auth fix | Email-confirm unblock; resend confirmation on login |
 | 2026-06-17 | Deploy | Vercel prod https://web-delta-three-73.vercel.app — login verified |
+| 2026-06-23 | Render | Backend https://convo-ai-backend-lwwq.onrender.com — connected to Vercel |
+| 2026-06-23 | D-ID | ck_ client key + v2_agt_4pjSCal7 on Vercel; embed ready |
+| 2026-06-23 | Emotion | Gemini analyzer via FastAPI prompt → `/api/emotion/analyze` + score flow |
+| 2026-06-23 | Graph pipeline | skill-tree + memory proxies to Render backend |

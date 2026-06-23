@@ -15,8 +15,23 @@ import { emotionFromReadiness } from "@/lib/emotion/schema";
 import { getInsightsSnapshot } from "@/lib/insights/metrics";
 import { getProgressSnapshot } from "@/lib/progress/service";
 import { getSkillTree } from "@/lib/skill-tree/data";
+import type { SkillTree } from "@/lib/skill-tree/schema";
 
 export const dynamic = "force-dynamic";
+
+async function loadSkillTree(): Promise<SkillTree> {
+  try {
+    const base =
+      process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
+      "http://localhost:3000";
+    const res = await fetch(`${base}/api/skill-tree`, { cache: "no-store" });
+    if (!res.ok) return getSkillTree();
+    const data = (await res.json()) as { tree?: SkillTree };
+    return data.tree ?? getSkillTree();
+  } catch {
+    return getSkillTree();
+  }
+}
 
 export default async function ProgressPage() {
   const authUser = await getAuthUser();
@@ -28,7 +43,7 @@ export default async function ProgressPage() {
   const [progress, insights, skillTree] = await Promise.all([
     getProgressSnapshot(profileId),
     getInsightsSnapshot(profileId),
-    Promise.resolve(getSkillTree()),
+    Promise.resolve(loadSkillTree()),
   ]);
 
   const emotion = emotionFromReadiness(

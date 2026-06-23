@@ -3,6 +3,11 @@ import { isDatabaseConfigured, prisma } from "@/lib/db";
 import { rerankChunks } from "@/lib/kb/rerank";
 import { retrieveContextForScoring } from "@/lib/kb/retrieval";
 import { type PersonaId, personaIdSchema } from "@/lib/personas";
+import { getPersona } from "@/lib/personas";
+import {
+  analyzeEmotionTraits,
+  extractLastUserUtterance,
+} from "@/lib/emotion/analyzer";
 import { buildFeedbackReport } from "@/lib/scoring/feedback-engine";
 import {
   scoreTranscriptHeuristic,
@@ -44,6 +49,12 @@ export async function POST(
       });
 
     const report = buildFeedbackReport(output);
+    const persona = getPersona(parsedPersona.data);
+    const emotion = await analyzeEmotionTraits({
+      user_input: extractLastUserUtterance(transcript),
+      goal: `Practice ${persona?.role ?? "interview"} at ${persona?.companyName ?? "target company"}`,
+      readiness_score: output.overallScore,
+    });
     const retrievalTrace = {
       chunkIds: ranked.map((c) => c.id),
       scores: ranked.map((c) => c.score),
@@ -59,6 +70,7 @@ export async function POST(
       degraded: degraded ?? false,
       retrievalTrace,
       inputHash: String(transcript.length),
+      emotionTraits: emotion.traits,
     });
 
     return NextResponse.json({
@@ -67,6 +79,9 @@ export async function POST(
       retrievalTrace,
       degraded: degraded ?? false,
       degradedReason: degradedReason ?? null,
+      emotionTraits: emotion.traits,
+      emotionDegraded: emotion.degraded,
+      emotionSource: emotion.source,
     });
   } catch (e) {
     if (e instanceof Error && e.message === "EMPTY_TRANSCRIPT") {

@@ -2,9 +2,9 @@
 
 ## Live
 
-- **Production:** https://web-delta-three-73.vercel.app
-- **Vercel project:** `pbathuris-projects/web`
-- Login verified (password + DB persistence)
+- **Frontend:** https://web-delta-three-73.vercel.app
+- **Backend API:** https://convo-ai-backend-lwwq.onrender.com
+- **Render service:** `convo-ai-backend` (branch `auto/20260609T121358Z`)
 
 ## Configured
 
@@ -26,8 +26,8 @@ Site URL can stay `http://localhost:3000` or set to production.
 
 | Item | Action |
 |------|--------|
-| **Backend API** | Deploy FastAPI (`backend/`) to Railway/Fly; set `BACKEND_API_URL` on Vercel |
-| **D-ID allowlist** | Add `web-delta-three-73.vercel.app` in D-ID Studio |
+| **Backend API** | Deployed on Render — `BACKEND_API_URL` set on Vercel |
+| **D-ID allowlist** | Domains verified in Studio; set `NEXT_PUBLIC_DID_CLIENT_KEY=ck_okhHp-...` on Vercel ✓ |
 | **Email confirm (new users)** | Confirm email or disable in Supabase → Providers → Email |
 | **Stripe** | Skipped |
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FeedbackReportView } from "@/components/feedback/FeedbackReport";
 import { GenerateScoreButton } from "@/components/session/GenerateScoreButton";
 import { SakuraPageShell } from "@/components/ui/sakura";
-import { emotionFromReadiness } from "@/lib/emotion/schema";
+import { emotionFromReadiness, emotionTraitsSchema } from "@/lib/emotion/schema";
 import { getPersona, personaIdSchema } from "@/lib/personas";
 import { getSession } from "@/lib/sessions/service";
 
@@ -30,6 +30,11 @@ export default async function SessionDetailPage({
     (n, m) => n + m.content.split(/\s+/).filter(Boolean).length,
     0,
   );
+  const storedEmotion = (() => {
+    const raw = lastRun?.outputJson as Record<string, unknown> | null | undefined;
+    const parsed = emotionTraitsSchema.safeParse(raw?.emotionTraits);
+    return parsed.success ? parsed.data : undefined;
+  })();
 
   return (
     <SakuraPageShell className="space-y-6 py-8">
@@ -112,7 +117,9 @@ export default async function SessionDetailPage({
           degradedReason={scoringDegraded ? degradedReason : null}
           messageCount={messages.length}
           transcriptWordCount={transcriptWordCount}
-          emotionTraits={emotionFromReadiness(score.overallScore)}
+          emotionTraits={
+            storedEmotion ?? emotionFromReadiness(score.overallScore)
+          }
         />
       ) : (
         <div className="space-y-2 rounded-xl border border-[var(--sakura-glass-border)] bg-[var(--sakura-glass-bg)] p-4">

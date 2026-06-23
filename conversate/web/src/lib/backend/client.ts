@@ -33,3 +33,11 @@ export async function backendPost<T>(
   }
   return res.json() as Promise<T>;
 }
+
+export async function backendGet<T>(path: string): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, { next: { revalidate: 0 } });
+  if (!res.ok) {
+    throw new Error(`backend ${path}: ${res.status}`);
+  }
+  return res.json() as Promise<T>;
+}

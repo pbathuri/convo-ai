@@ -1,4 +1,5 @@
 import { isDatabaseConfigured, prisma } from "@/lib/db";
+import type { EmotionTraits } from "@/lib/emotion/schema";
 import type { PersonaId } from "@/lib/personas";
 import { getRubricForPersona } from "./rubrics";
 import type { ScoreOutput } from "./schema";
@@ -16,6 +17,7 @@ export async function persistScoreResult(opts: {
     sources: string[];
   };
   inputHash?: string;
+  emotionTraits?: EmotionTraits;
 }): Promise<void> {
   if (!isDatabaseConfigured() || opts.sessionId.startsWith("local-")) return;
 
@@ -43,7 +45,9 @@ export async function persistScoreResult(opts: {
       modelName: opts.modelName,
       rubricVersion: rubric.version,
       inputHash: opts.inputHash ?? String(opts.output.overallScore),
-      outputJson: opts.output,
+      outputJson: opts.emotionTraits
+        ? { ...opts.output, emotionTraits: opts.emotionTraits }
+        : opts.output,
       confidence: opts.output.confidence,
       latencyMs: opts.latencyMs,
       retrievalTrace: opts.retrievalTrace,
