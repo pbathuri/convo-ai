@@ -1,0 +1,21 @@
+# Render Blueprint — FastAPI backend
+# Deploy: render blueprint apply (after `render login`)
+services:
+  - type: web
+    name: convo-ai-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: CORS_ORIGINS
+        value: https://web-delta-three-73.vercel.app,http://localhost:3000
+      - key: GOOGLE_AI_STUDIO_KEY
+        sync: false
+      - key: DEEPGRAM_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: SENTRY_DSN
+        sync: false

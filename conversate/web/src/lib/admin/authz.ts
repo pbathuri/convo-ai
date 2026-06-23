@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getAuthUser } from "@/lib/auth/supabase";
 
 function getAdminEmails(): string[] {
   return (process.env.ADMIN_EMAILS ?? "")
@@ -9,37 +10,29 @@ function getAdminEmails(): string[] {
 
 export type AdminIdentity = { email: string; userId?: string };
 
-function isDevHeaderAuthAllowed(): boolean {
-  return process.env.NODE_ENV === "development";
-}
-
 /**
- * Resolves admin from x-admin-email header (development only) or future Supabase session.
+ * Resolves admin from Supabase session or dev x-admin-email header.
  */
 export async function resolveAdmin(
   req: Request,
 ): Promise<AdminIdentity | null> {
-  if (!isDevHeaderAuthAllowed()) {
-    // Production: wire Supabase getUser() / session cookie here.
-    return null;
+  const sessionUser = await getAuthUser();
+  if (sessionUser?.role === "admin") {
+    return { email: sessionUser.email, userId: sessionUser.id };
   }
-  const email = req.headers.get("x-admin-email")?.trim().toLowerCase();
-  if (!email || !getAdminEmails().includes(email)) return null;
-  return { email };
+
+  if (process.env.NODE_ENV === "development") {
+    const email = req.headers.get("x-admin-email")?.trim().toLowerCase();
+    if (email && getAdminEmails().includes(email)) {
+      return { email };
+    }
+  }
+  return null;
 }
 
 export async function requireAdmin(
   req: Request,
 ): Promise<AdminIdentity | NextResponse> {
-  if (!isDevHeaderAuthAllowed()) {
-    return NextResponse.json(
-      {
-        error:
-          "Admin authentication required. Configure production session auth (e.g. Supabase) — header-based admin is disabled outside development.",
-      },
-      { status: 401 },
-    );
-  }
   if (getAdminEmails().length === 0) {
     return NextResponse.json(
       { error: "ADMIN_EMAILS is not configured on the server." },
@@ -51,7 +44,7 @@ export async function requireAdmin(
     return NextResponse.json(
       {
         error:
-          "Forbidden. In development, send a matching x-admin-email header for an address listed in ADMIN_EMAILS.",
+          "Forbidden. Sign in with an admin account or use x-admin-email in development.",
       },
       { status: 403 },
     );

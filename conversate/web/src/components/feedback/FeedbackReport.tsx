@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { EmotionRadar } from "@/components/insights/EmotionRadar";
 import {
   EvidenceHighlight,
   GlassCard,
   ScoreBar,
 } from "@/components/ui/interview-room";
+import type { EmotionTraits } from "@/lib/emotion/schema";
+import { emotionFromReadiness } from "@/lib/emotion/schema";
 import type { PersonaId } from "@/lib/personas";
 
 type Props = {
@@ -21,6 +24,7 @@ type Props = {
   degradedReason?: string | null;
   transcriptWordCount?: number;
   messageCount?: number;
+  emotionTraits?: EmotionTraits;
 };
 
 function degradedLabel(reason: string | null | undefined): string {
@@ -63,7 +67,9 @@ export function FeedbackReportView({
   degradedReason,
   transcriptWordCount = 0,
   messageCount = 0,
+  emotionTraits,
 }: Props) {
+  const emotion = emotionTraits ?? emotionFromReadiness(overallScore);
   const topFixes = [...weaknesses, ...actionItems].slice(0, 3);
   const sparse =
     messageCount < 2 ||
@@ -91,6 +97,11 @@ export function FeedbackReportView({
           Readiness → top fixes → evidence → exemplar pattern → next drill.
         </p>
         <ScoreBar label="Interview readiness" score={overallScore} />
+      </GlassCard>
+
+      <GlassCard>
+        <h3 className="text-sm font-medium">Communication radar</h3>
+        <EmotionRadar traits={emotion} className="mt-4" />
       </GlassCard>
 
       {topFixes.length > 0 ? (

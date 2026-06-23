@@ -1,13 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SakuraHero, SakuraPageShell } from "@/components/ui/sakura";
+import { getAuthUser } from "@/lib/auth/supabase";
+import { syncUserProfile } from "@/lib/auth/sync-profile";
+import { isDatabaseConfigured } from "@/lib/db";
 import { getPersona } from "@/lib/personas";
 import { listSessionsEnriched } from "@/lib/sessions/service";
 
 export const dynamic = "force-dynamic";
 
 export default async function SessionsPage() {
-  const sessions = await listSessionsEnriched();
+  const authUser = await getAuthUser();
+  let profileId: string | undefined;
+  if (authUser && isDatabaseConfigured()) {
+    profileId = await syncUserProfile(authUser);
+  }
+  const sessions = await listSessionsEnriched(profileId);
 
   return (
     <SakuraPageShell className="space-y-8 py-8">

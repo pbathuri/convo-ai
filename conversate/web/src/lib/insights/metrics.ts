@@ -63,11 +63,16 @@ export function buildScoreTrend(
   }));
 }
 
-export async function getInsightsSnapshot(): Promise<InsightsSnapshot> {
+export async function getInsightsSnapshot(
+  userId?: string,
+): Promise<InsightsSnapshot> {
   if (!isDatabaseConfigured()) return DEMO;
 
   const sessions = await prisma.session.findMany({
-    where: { status: "completed" },
+    where: {
+      status: "completed",
+      ...(userId ? { userId } : {}),
+    },
     orderBy: { createdAt: "desc" },
     take: 30,
     include: {

@@ -6,6 +6,27 @@ Convo AI is a **Streamlit** application for practicing domain-specific conversat
 
 ---
 
+## Production architecture (2026-06)
+
+| Layer | Path | Role |
+|-------|------|------|
+| **Active web app** | `conversate/web/` | Next.js 14 — interview MVP, Sakura UI |
+| **Engine API** | `backend/` | FastAPI — gamification, emotion, memory, voice, skill-tree |
+| **Legacy prototype** | `app/`, `components/` | Streamlit archive — domain IP reference |
+| **Pipelines** | `pipelines/` | KB ingest + scraper (offline) |
+
+```bash
+# Verify everything
+cd conversate/web && npm run verify    # 52+ unit tests, build, smoke
+cd backend && pytest -q                # FastAPI tests
+cd conversate/web && npm run test:e2e  # Playwright golden path
+```
+
+Deploy: see [`docs/runbook/production-deploy.md`](docs/runbook/production-deploy.md).  
+Outstanding keys: [`NEEDS.md`](NEEDS.md). Competitor matrix: [`BENCHMARK.md`](BENCHMARK.md).
+
+---
+
 ## Conversate commercial MVP (active product)
 
 The **interview-practice app** lives under [`conversate/web/`](conversate/web/) on branch **`commercial-v1`**.

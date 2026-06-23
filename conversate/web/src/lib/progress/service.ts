@@ -1,5 +1,9 @@
 import { isDatabaseConfigured, prisma } from "@/lib/db";
 import {
+  estimateStreak,
+  totalXpFromScores,
+} from "@/lib/gamification/xp";
+import {
   clusterWeaknesses,
   recommendNextDrill,
 } from "@/lib/personalization/recommender";
@@ -10,6 +14,8 @@ export type ProgressSnapshot = {
   mode: "live" | "demo";
   sessionsCompleted: number;
   averageScore: number | null;
+  totalXp: number;
+  practiceStreak: number;
   weaknessClusters: { label: string; count: number }[];
   nextDrill: { personaId: PersonaId; drill: string; basedOn?: string };
 };
@@ -18,6 +24,8 @@ const DEMO: ProgressSnapshot = {
   mode: "demo",
   sessionsCompleted: 3,
   averageScore: 68,
+  totalXp: 90,
+  practiceStreak: 2,
   weaknessClusters: [
     { label: "Needs more quantified impact", count: 2 },
     { label: "Structure could be tighter", count: 1 },
@@ -30,11 +38,16 @@ const DEMO: ProgressSnapshot = {
   },
 };
 
-export async function getProgressSnapshot(): Promise<ProgressSnapshot> {
+export async function getProgressSnapshot(
+  userId?: string,
+): Promise<ProgressSnapshot> {
   if (!isDatabaseConfigured()) return DEMO;
 
   const sessions = await prisma.session.findMany({
-    where: { status: "completed" },
+    where: {
+      status: "completed",
+      ...(userId ? { userId } : {}),
+    },
     orderBy: { createdAt: "desc" },
     take: 30,
     include: { scores: { take: 1, orderBy: { createdAt: "desc" } } },
@@ -66,6 +79,10 @@ export async function getProgressSnapshot(): Promise<ProgressSnapshot> {
     mode: "live",
     sessionsCompleted: sessions.length,
     averageScore,
+    totalXp: totalXpFromScores(scores),
+    practiceStreak: estimateStreak(
+      sessions.map((s) => s.createdAt),
+    ),
     weaknessClusters: clusterWeaknesses(allWeaknesses),
     nextDrill: recommendNextDrill({ personaId, weaknesses }),
   };

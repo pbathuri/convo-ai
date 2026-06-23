@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { AuthNav } from "@/components/auth/AuthNav";
 
 const primaryLinks = [
   { href: "/", label: "Home" },
   { href: "/personas", label: "Practice" },
   { href: "/progress", label: "Insights" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/chat", label: "Live room" },
 ];
 
@@ -14,12 +16,13 @@ export function SiteNav() {
         <Link href="/" className="text-sm font-semibold tracking-tight">
           Conversate
         </Link>
-        <nav className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+        <nav className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
           {primaryLinks.map((l) => (
             <Link key={l.href} href={l.href} className="hover:text-foreground">
               {l.label}
             </Link>
           ))}
+          <AuthNav />
         </nav>
       </div>
     </header>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FeedbackReportView } from "@/components/feedback/FeedbackReport";
 import { GenerateScoreButton } from "@/components/session/GenerateScoreButton";
 import { SakuraPageShell } from "@/components/ui/sakura";
+import { emotionFromReadiness } from "@/lib/emotion/schema";
 import { getPersona, personaIdSchema } from "@/lib/personas";
 import { getSession } from "@/lib/sessions/service";
 
@@ -111,6 +112,7 @@ export default async function SessionDetailPage({
           degradedReason={scoringDegraded ? degradedReason : null}
           messageCount={messages.length}
           transcriptWordCount={transcriptWordCount}
+          emotionTraits={emotionFromReadiness(score.overallScore)}
         />
       ) : (
         <div className="space-y-2 rounded-xl border border-[var(--sakura-glass-border)] bg-[var(--sakura-glass-bg)] p-4">

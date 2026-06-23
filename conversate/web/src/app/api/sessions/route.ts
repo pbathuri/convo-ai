@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { resolveAuthUser } from "@/lib/auth/supabase";
+import { syncUserProfile } from "@/lib/auth/sync-profile";
+import { isDatabaseConfigured } from "@/lib/db";
 import {
   difficultySchema,
   interviewModeSchema,
@@ -14,8 +17,9 @@ const createSchema = z.object({
   difficulty: difficultySchema.optional(),
 });
 
-export async function GET() {
-  const sessions = await listSessions();
+export async function GET(req: Request) {
+  const authUser = await resolveAuthUser(req);
+  const sessions = await listSessions(authUser?.id);
   return NextResponse.json({ sessions });
 }
 
@@ -28,6 +32,14 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
-  const session = await createSession(parsed.data);
+  const authUser = await resolveAuthUser(req);
+  let userId = authUser?.id ?? parsed.data.userId;
+  if (authUser && isDatabaseConfigured()) {
+    userId = await syncUserProfile(authUser);
+  }
+  const session = await createSession({
+    ...parsed.data,
+    userId,
+  });
   return NextResponse.json({ session }, { status: 201 });
 }

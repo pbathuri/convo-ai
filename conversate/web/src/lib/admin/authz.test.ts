@@ -7,7 +7,7 @@ describe("requireAdmin", () => {
     vi.unstubAllEnvs();
   });
 
-  it("blocks header auth in production", async () => {
+  it("blocks header auth in production without Supabase session", async () => {
     vi.stubEnv("NODE_ENV", "production");
     vi.stubEnv("ADMIN_EMAILS", "admin@test.com");
     const req = new Request("http://localhost", {
@@ -16,7 +16,7 @@ describe("requireAdmin", () => {
     const result = await requireAdmin(req);
     expect(result).toBeInstanceOf(NextResponse);
     if (result instanceof NextResponse) {
-      expect(result.status).toBe(401);
+      expect(result.status).toBe(403);
     }
   });
 

@@ -1,21 +1,39 @@
 import Link from "next/link";
+import { EmotionRadar } from "@/components/insights/EmotionRadar";
 import { ScoreTrendChart } from "@/components/insights/ScoreTrendChart";
+import { SkillTreeMap } from "@/components/insights/SkillTreeMap";
 import { GlassCard, ScoreBar } from "@/components/ui/interview-room";
 import {
   PremiumCTA,
   SakuraHero,
   SakuraPageShell,
 } from "@/components/ui/sakura";
+import { getAuthUser } from "@/lib/auth/supabase";
+import { syncUserProfile } from "@/lib/auth/sync-profile";
+import { isDatabaseConfigured } from "@/lib/db";
+import { emotionFromReadiness } from "@/lib/emotion/schema";
 import { getInsightsSnapshot } from "@/lib/insights/metrics";
 import { getProgressSnapshot } from "@/lib/progress/service";
+import { getSkillTree } from "@/lib/skill-tree/data";
 
 export const dynamic = "force-dynamic";
 
 export default async function ProgressPage() {
-  const [progress, insights] = await Promise.all([
-    getProgressSnapshot(),
-    getInsightsSnapshot(),
+  const authUser = await getAuthUser();
+  let profileId: string | undefined;
+  if (authUser && isDatabaseConfigured()) {
+    profileId = await syncUserProfile(authUser);
+  }
+
+  const [progress, insights, skillTree] = await Promise.all([
+    getProgressSnapshot(profileId),
+    getInsightsSnapshot(profileId),
+    Promise.resolve(getSkillTree()),
   ]);
+
+  const emotion = emotionFromReadiness(
+    insights.averageReadiness ?? progress.averageScore ?? 65,
+  );
 
   return (
     <SakuraPageShell className="space-y-8 py-8">
@@ -31,7 +49,7 @@ export default async function ProgressPage() {
         </p>
       ) : null}
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <GlassCard>
           <p className="text-xs text-muted-foreground">Sessions completed</p>
           <p className="text-3xl font-semibold text-[var(--sakura-plum)]">
@@ -63,6 +81,18 @@ export default async function ProgressPage() {
             {insights.questionsAnswered}
           </p>
         </GlassCard>
+        <GlassCard>
+          <p className="text-xs text-muted-foreground">Total XP earned</p>
+          <p className="text-3xl font-semibold text-[var(--sakura-plum)]">
+            {progress.totalXp}
+          </p>
+        </GlassCard>
+        <GlassCard>
+          <p className="text-xs text-muted-foreground">Practice streak</p>
+          <p className="text-3xl font-semibold text-[var(--sakura-plum)]">
+            {progress.practiceStreak} day{progress.practiceStreak === 1 ? "" : "s"}
+          </p>
+        </GlassCard>
       </div>
 
       <GlassCard>
@@ -81,6 +111,26 @@ export default async function ProgressPage() {
           </Link>
         ) : null}
       </GlassCard>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <GlassCard>
+          <h3 className="text-sm font-medium text-[var(--sakura-plum)]">
+            Communication radar
+          </h3>
+          <EmotionRadar traits={emotion} className="mt-4" />
+        </GlassCard>
+        <GlassCard>
+          <h3 className="text-sm font-medium text-[var(--sakura-plum)]">
+            Skill curriculum
+          </h3>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Duolingo-style paths — interview + legacy coaching domains.
+          </p>
+          <div className="mt-4 max-h-96 overflow-y-auto">
+            <SkillTreeMap tree={skillTree} />
+          </div>
+        </GlassCard>
+      </div>
 
       {progress.weaknessClusters.length > 0 ? (
         <GlassCard>
