@@ -22,6 +22,7 @@
     "test:unit": "vitest run",
     "verify": "npm run build && npm run test && npm run kb:smoke && npm run demo:checklist",
     "demo:checklist": "tsx scripts/demo-checklist-smoke.ts",
+    "demo:visual-audit": "tsx scripts/visual-demo-audit.ts",
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install chromium"
   },

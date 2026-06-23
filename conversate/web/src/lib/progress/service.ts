@@ -7,6 +7,9 @@ import {
   clusterWeaknesses,
   recommendNextDrill,
 } from "@/lib/personalization/recommender";
+import {
+  buildBanditObservations,
+} from "@/lib/personalization/bandit";
 import type { PersonaId } from "@/lib/personas";
 import { personaIdSchema } from "@/lib/personas";
 
@@ -17,7 +20,7 @@ export type ProgressSnapshot = {
   totalXp: number;
   practiceStreak: number;
   weaknessClusters: { label: string; count: number }[];
-  nextDrill: { personaId: PersonaId; drill: string; basedOn?: string };
+  nextDrill: { personaId: PersonaId; drill: string; basedOn?: string; rlStrategy?: string };
 };
 
 const DEMO: ProgressSnapshot = {
@@ -75,6 +78,17 @@ export async function getProgressSnapshot(
     ? (latest.scores[0].weaknesses as string[])
     : [];
 
+  const banditObservations = buildBanditObservations(
+    sessions
+      .filter((s) => s.scores[0])
+      .map((s) => ({
+        weaknesses: Array.isArray(s.scores[0]?.weaknesses)
+          ? (s.scores[0].weaknesses as string[])
+          : [],
+        score: s.scores[0]?.overallScore ?? 0,
+      })),
+  );
+
   return {
     mode: "live",
     sessionsCompleted: sessions.length,
@@ -84,6 +98,10 @@ export async function getProgressSnapshot(
       sessions.map((s) => s.createdAt),
     ),
     weaknessClusters: clusterWeaknesses(allWeaknesses),
-    nextDrill: recommendNextDrill({ personaId, weaknesses }),
+    nextDrill: recommendNextDrill({
+      personaId,
+      weaknesses,
+      banditObservations,
+    }),
   };
 }

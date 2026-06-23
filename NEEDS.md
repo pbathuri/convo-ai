@@ -30,6 +30,7 @@ Site URL can stay `http://localhost:3000` or set to production.
 | **D-ID allowlist** | Domains verified in Studio; set `NEXT_PUBLIC_DID_CLIENT_KEY=ck_okhHp-...` on Vercel ✓ |
 | **Email confirm (new users)** | Confirm email or disable in Supabase → Providers → Email |
 | **Voice STT** | Deepgram via `/api/voice/transcribe` + browser fallback in chat room |
+| **Local LLM** | Ollama `gemma2:9b` fallback — see `docs/deploy/local-llm.md` |
 | **Stripe** | Skipped |
 
 ## Dev helpers

@@ -1,5 +1,9 @@
 import type { PersonaId } from "@/lib/personas";
 import { getPersona } from "@/lib/personas";
+import {
+  type BanditObservation,
+  banditSelectDrill,
+} from "@/lib/personalization/bandit";
 
 const WEAKNESS_DRILLS: Record<string, string> = {
   metric: "Practice one story with before/after numbers and customer impact.",
@@ -22,10 +26,31 @@ function drillForWeakness(weakness: string, fallback: string): string {
 export function recommendNextDrill(opts: {
   personaId: PersonaId;
   weaknesses: string[];
-}): { personaId: PersonaId; drill: string; basedOn?: string } {
+  banditObservations?: BanditObservation[];
+}): {
+  personaId: PersonaId;
+  drill: string;
+  basedOn?: string;
+  rlStrategy?: string;
+} {
   const p = getPersona(opts.personaId);
   const fallback =
     p?.openingQuestion ?? "Practice your opening story with metrics.";
+
+  if (opts.banditObservations && opts.banditObservations.length > 0) {
+    const pick = banditSelectDrill({
+      weaknesses: opts.weaknesses,
+      observations: opts.banditObservations,
+      fallbackDrill: fallback,
+    });
+    return {
+      personaId: opts.personaId,
+      drill: pick.drill,
+      basedOn: opts.weaknesses[0] ?? pick.armKey ?? undefined,
+      rlStrategy: pick.strategy,
+    };
+  }
+
   const top = opts.weaknesses[0];
   if (!top) {
     return { personaId: opts.personaId, drill: fallback };

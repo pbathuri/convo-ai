@@ -168,6 +168,9 @@ export default async function ProgressPage() {
         {progress.nextDrill.basedOn ? (
           <p className="mt-1 text-xs text-muted-foreground">
             Based on: {progress.nextDrill.basedOn}
+            {progress.nextDrill.rlStrategy
+              ? ` · RL: ${progress.nextDrill.rlStrategy}`
+              : null}
           </p>
         ) : null}
         <div className="mt-4">

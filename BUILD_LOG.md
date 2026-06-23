@@ -45,3 +45,11 @@
 | 2026-06-23 | Gamification | XP awarded on session score via backend `/gamification/xp` |
 | 2026-06-23 | Domains | `/domains` browse page for legacy coaching modules |
 | 2026-06-23 | Domains API | Backend `/domains` + business_communication prompt port |
+| 2026-06-23 | Local LLM | Ollama fallback chain for scoring + emotion (Gemini → Ollama → heuristic) |
+| 2026-06-23 | RL | ε-greedy bandit for next-drill selection on progress page |
+| 2026-06-23 | Vision | `npm run demo:visual-audit` screenshot golden-path workflow |
+| 2026-06-23 | Domains+ | philosophy + sales_conversation modules on backend |
+| 2026-06-23 | Observability | Langfuse trace seam for LLM calls |
+| 2026-06-23 | Domains UI | Practice sandbox + `/api/domains/prompt` proxy |
+| 2026-06-23 | Voice agent | Deepgram WebSocket scaffold + `/api/voice/agent-session` |
+| 2026-06-23 | Handoff | `docs/AGENT_HANDOFF.md` for Mac / multi-device agent continuity |

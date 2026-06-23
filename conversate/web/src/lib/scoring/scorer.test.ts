@@ -1,6 +1,11 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { scoreTranscript } from "./scorer";
 
+vi.mock("@/lib/llm/router", () => ({
+  generateJsonWithFallback: vi.fn().mockResolvedValue(null),
+  probeLlmProviders: vi.fn(),
+}));
+
 describe("scoreTranscript", () => {
   const transcript =
     "I led a project to reduce latency by forty percent using caching and profiling.";

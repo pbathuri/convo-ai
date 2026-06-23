@@ -1,6 +1,7 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { PersonaId } from "@/lib/personas";
 import { getPersona } from "@/lib/personas";
+import { generateJsonWithFallback } from "@/lib/llm/router";
+import { traceLlmCall } from "@/lib/observability/trace";
 import {
   scoreTranscriptHeuristic,
   transcriptHasScorableContent,
@@ -36,10 +37,28 @@ export async function scoreTranscript(opts: {
   }
 
   if (!apiKey) {
+    const llm = await generateJsonWithFallback({
+      prompt: buildScorePrompt(opts, persona, rubric),
+      parse: (raw) => scoreOutputSchema.parse(raw),
+    });
+    if (llm) {
+      void traceLlmCall({
+        name: "score_transcript",
+        metadata: { provider: llm.provider, model: llm.modelName, personaId: opts.personaId },
+        latencyMs: llm.latencyMs,
+      });
+      return {
+        output: llm.data,
+        modelName: llm.modelName,
+        latencyMs: llm.latencyMs,
+        degraded: llm.provider === "ollama",
+        degradedReason: llm.provider === "ollama" ? "api_error" : undefined,
+      };
+    }
     const output = scoreTranscriptHeuristic({
       personaId: opts.personaId,
       transcript: opts.transcript,
-      degradedReason: "Gemini key unavailable",
+      degradedReason: "LLM unavailable",
     });
     return {
       output,
@@ -51,35 +70,23 @@ export async function scoreTranscript(opts: {
   }
 
   try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
-      generationConfig: { responseMimeType: "application/json" },
+    const prompt = buildScorePrompt(opts, persona, rubric);
+    const llm = await generateJsonWithFallback({
+      prompt,
+      parse: (raw) => scoreOutputSchema.parse(raw),
     });
-
-    const contextBlock = opts.kbContext?.length
-      ? wrapRetrievedContext(opts.kbContext)
-      : "";
-
-    const prompt = `You are an interview coach scoring a practice session for ${persona?.companyName} (${persona?.role}).
-
-Rubric dimensions: ${JSON.stringify(rubric.dimensions)}
-
-Transcript:
-${opts.transcript}
-
-${contextBlock}
-
-Return JSON matching: overallScore (0-100), dimensions[{name,score,rationale}], strengths[], weaknesses[], actionItems[3 items], evidence[{quote,dimension}], confidence (0-1), nextDrill (string).`;
-
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-    const parsed = scoreOutputSchema.parse(JSON.parse(text));
+    if (!llm) throw new Error("LLM chain exhausted");
+    void traceLlmCall({
+      name: "score_transcript",
+      metadata: { provider: llm.provider, model: llm.modelName, personaId: opts.personaId },
+      latencyMs: llm.latencyMs,
+    });
     return {
-      output: parsed,
-      modelName: "gemini-2.0-flash",
-      latencyMs: Date.now() - start,
-      degraded: false,
+      output: llm.data,
+      modelName: llm.modelName,
+      latencyMs: llm.latencyMs,
+      degraded: llm.provider === "ollama",
+      degradedReason: llm.provider === "ollama" ? "api_error" : undefined,
     };
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
@@ -100,4 +107,24 @@ Return JSON matching: overallScore (0-100), dimensions[{name,score,rationale}], 
       degradedReason: reason,
     };
   }
+}
+
+function buildScorePrompt(
+  opts: { personaId: PersonaId; transcript: string; kbContext?: string[] },
+  persona: ReturnType<typeof getPersona>,
+  rubric: ReturnType<typeof getRubricForPersona>,
+): string {
+  const contextBlock = opts.kbContext?.length
+    ? wrapRetrievedContext(opts.kbContext)
+    : "";
+  return `You are an interview coach scoring a practice session for ${persona?.companyName} (${persona?.role}).
+
+Rubric dimensions: ${JSON.stringify(rubric.dimensions)}
+
+Transcript:
+${opts.transcript}
+
+${contextBlock}
+
+Return JSON matching: overallScore (0-100), dimensions[{name,score,rationale}], strengths[], weaknesses[], actionItems[3 items], evidence[{quote,dimension}], confidence (0-1), nextDrill (string).`;
 }

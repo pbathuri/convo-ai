@@ -2,12 +2,18 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from app.data.legacy_domains import LEGACY_DOMAINS
-from app.services.domains import business_communication
+from app.services.domains import (
+    business_communication,
+    philosophy,
+    sales_conversation,
+)
 
 router = APIRouter(prefix="/domains", tags=["domains"])
 
 _DOMAIN_MODULES = {
     "business_communication": business_communication,
+    "philosophy": philosophy,
+    "sales_conversation": sales_conversation,
 }
 
 

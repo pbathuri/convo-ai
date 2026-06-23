@@ -9,11 +9,11 @@ Legend: ✅ implemented & verified · 🟡 partial/degraded · ❌ not yet · �
 | Feature | Speak | ELSA | Praktika | Duolingo | Replika | Conversate |
 |---------|-------|------|----------|----------|---------|------------|
 | Real-time voice conversation | ✅ | ✅ | ✅ | — | ✅ | 🟡 D-ID embed + browser STT + Deepgram fallback |
-| Pronunciation / speech scoring | ✅ | ✅ | 🟡 | — | — | 🟡 Gemini + heuristic fallback |
+| Pronunciation / speech scoring | ✅ | ✅ | 🟡 | — | — | 🟡 Gemini + Ollama + heuristic |
 | AI avatar / persona | — | — | ✅ | — | ✅ | ✅ D-ID live (Sarah Chen) |
 | Role-play scenarios | ✅ | 🟡 | ✅ | — | ✅ | ✅ interview personas |
 | Structured feedback report | ✅ | ✅ | ✅ | — | 🟡 | ✅ coaching + emotion radar |
-| Skill progression / curriculum | ✅ | ✅ | ✅ | ✅ | 🟡 | 🟡 skill tree + backend sync |
+| Skill progression / curriculum | ✅ | ✅ | ✅ | ✅ | 🟡 | 🟡 skill tree + RL drill bandit |
 | Gamification (XP/streaks) | ✅ | ✅ | ✅ | ✅ | 🟡 | 🟡 progress + XP on score (backend sync) |
 | Emotional intelligence radar | — | — | — | — | ✅ | ✅ Gemini via backend prompt |
 | Multi-domain practice | 🟡 | — | 🟡 | ✅ | 🟡 | 🟡 `/domains` catalog + interview live |
@@ -31,8 +31,8 @@ Legend: ✅ implemented & verified · 🟡 partial/degraded · ❌ not yet · �
 | Gate | Status |
 |------|--------|
 | `npm run verify` | ✅ |
-| Playwright e2e | ✅ 7 tests |
-| Backend pytest | ✅ 13 tests |
+| Playwright e2e | ✅ 12 tests |
+| Backend pytest | ✅ 14 tests |
 | GitHub Actions CI | ✅ web + e2e + backend |
 | Live URL | ✅ https://web-delta-three-73.vercel.app |
 | Backend API | ✅ https://convo-ai-backend-lwwq.onrender.com/health |

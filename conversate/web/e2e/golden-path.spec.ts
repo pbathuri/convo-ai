@@ -68,4 +68,12 @@ test.describe("golden path smoke", () => {
     const body = await res.json();
     expect(typeof body.configured).toBe("boolean");
   });
+
+  test("llm status reports provider chain", async ({ request }) => {
+    const res = await request.get("/api/llm/status");
+    expect(res.ok()).toBeTruthy();
+    const body = await res.json();
+    expect(body.mode).toBe("v2-scoring");
+    expect(String(body.llmRoute)).toContain("heuristic");
+  });
 });

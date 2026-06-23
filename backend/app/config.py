@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     # LLM
     google_ai_studio_key: str | None = None
     openai_api_key: str | None = None
+    ollama_base_url: str = "http://127.0.0.1:11434"
+    ollama_model: str = "gemma2:9b"
 
     # Voice
     deepgram_api_key: str | None = None

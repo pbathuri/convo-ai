@@ -17,12 +17,13 @@ Convo AI is a **Streamlit** application for practicing domain-specific conversat
 
 ```bash
 # Verify everything
-cd conversate/web && npm run verify    # 52+ unit tests, build, smoke
+cd conversate/web && npm run verify    # 60 unit tests, build, smoke
 cd backend && pytest -q                # FastAPI tests
 cd conversate/web && npm run test:e2e  # Playwright golden path
 ```
 
 Deploy: see [`docs/runbook/production-deploy.md`](docs/runbook/production-deploy.md).  
+**Multi-device / Mac agent:** [`docs/AGENT_HANDOFF.md`](docs/AGENT_HANDOFF.md).  
 Outstanding keys: [`NEEDS.md`](NEEDS.md). Competitor matrix: [`BENCHMARK.md`](BENCHMARK.md).
 
 ---

@@ -1,11 +1,22 @@
 import { NextResponse } from "next/server";
+import { probeLlmProviders } from "@/lib/llm/router";
 
-/** DORMANT — reserved for V2 Gemini / webhook override. V1 uses D-ID Agents only. */
-export function GET() {
+export const dynamic = "force-dynamic";
+
+/** LLM routing status — Gemini cloud + Ollama local inference chain. */
+export async function GET() {
+  const providers = await probeLlmProviders();
+  const chain = [
+    providers.gemini ? "gemini" : null,
+    providers.ollama ? `ollama:${providers.ollamaModel}` : null,
+    "heuristic",
+  ].filter(Boolean);
+
   return NextResponse.json({
-    mode: "v1",
-    llmRoute: "dormant",
+    mode: "v2-scoring",
+    llmRoute: chain.join(" → "),
+    providers,
     detail:
-      "Persona brain runs in D-ID Studio (GPT-4.1). See src/lib/llm.ts for future server-side LLM.",
+      "Post-session scoring and emotion use Gemini → Ollama → heuristic. Live interview brain remains D-ID Studio.",
   });
 }

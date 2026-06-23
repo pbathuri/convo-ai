@@ -100,7 +100,15 @@ def test_domains_api():
     assert r.status_code == 200
     body = r.json()
     assert len(body["domains"]) == 8
-    assert "business_communication" in body["liveModules"]
+    assert len(body["liveModules"]) >= 3
+
+
+def test_llm_status_api():
+    r = client.get("/llm/status")
+    assert r.status_code == 200
+    body = r.json()
+    assert "chain" in body
+    assert "gemini" in body
 
 
 def test_domains_prompt_api():

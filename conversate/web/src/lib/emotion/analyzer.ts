@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { backendPost } from "@/lib/backend/client";
 import { buildEmotionAnalysisPrompt } from "@/lib/emotion/prompt";
 import {
@@ -6,11 +5,14 @@ import {
   emotionFromReadiness,
   emotionTraitsSchema,
 } from "@/lib/emotion/schema";
+import { generateJsonWithFallback } from "@/lib/llm/router";
+import { isOllamaAvailable } from "@/lib/llm/ollama";
+import { traceLlmCall } from "@/lib/observability/trace";
 
 export type EmotionAnalysisResult = {
   traits: EmotionTraits;
   degraded: boolean;
-  source: "gemini" | "heuristic";
+  source: "gemini" | "ollama" | "heuristic";
 };
 
 export function extractLastUserUtterance(transcript: string): string {
@@ -55,19 +57,31 @@ export async function analyzeEmotionTraits(opts: {
   });
 
   const apiKey = process.env.GOOGLE_AI_STUDIO_KEY?.trim();
-  if (!apiKey || !opts.user_input.trim()) return fallback();
+  if (!opts.user_input.trim()) return fallback();
+  if (
+    !apiKey &&
+    !(await isOllamaAvailable())
+  ) {
+    return fallback();
+  }
 
   try {
     const prompt = await resolvePrompt(opts.user_input, opts.goal);
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
-      generationConfig: { responseMimeType: "application/json" },
+    const llm = await generateJsonWithFallback({
+      prompt,
+      parse: (raw) => emotionTraitsSchema.parse(raw),
     });
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-    const parsed = emotionTraitsSchema.parse(JSON.parse(text));
-    return { traits: parsed, degraded: false, source: "gemini" };
+    if (!llm) return fallback();
+    void traceLlmCall({
+      name: "emotion_analyze",
+      metadata: { provider: llm.provider, model: llm.modelName },
+      latencyMs: llm.latencyMs,
+    });
+    return {
+      traits: llm.data,
+      degraded: llm.provider === "ollama",
+      source: llm.provider === "ollama" ? "ollama" : "gemini",
+    };
   } catch {
     return fallback();
   }
