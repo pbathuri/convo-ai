@@ -32,7 +32,7 @@ Legend: ✅ implemented & verified · 🟡 partial/degraded · ❌ not yet · �
 |------|--------|
 | `npm run verify` | ✅ |
 | Playwright e2e | ✅ 7 tests |
-| Backend pytest | ✅ 9 tests |
+| Backend pytest | ✅ 13 tests |
 | GitHub Actions CI | ✅ web + e2e + backend |
 | Live URL | ✅ https://web-delta-three-73.vercel.app |
 | Backend API | ✅ https://convo-ai-backend-lwwq.onrender.com/health |

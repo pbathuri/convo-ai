@@ -29,6 +29,7 @@ Site URL can stay `http://localhost:3000` or set to production.
 | **Backend API** | Deployed on Render — `BACKEND_API_URL` set on Vercel |
 | **D-ID allowlist** | Domains verified in Studio; set `NEXT_PUBLIC_DID_CLIENT_KEY=ck_okhHp-...` on Vercel ✓ |
 | **Email confirm (new users)** | Confirm email or disable in Supabase → Providers → Email |
+| **Voice STT** | Deepgram via `/api/voice/transcribe` + browser fallback in chat room |
 | **Stripe** | Skipped |
 
 ## Dev helpers

@@ -44,3 +44,4 @@
 | 2026-06-23 | Voice | Deepgram STT multipart on backend + `/api/voice/*` proxies |
 | 2026-06-23 | Gamification | XP awarded on session score via backend `/gamification/xp` |
 | 2026-06-23 | Domains | `/domains` browse page for legacy coaching modules |
+| 2026-06-23 | Domains API | Backend `/domains` + business_communication prompt port |

@@ -46,4 +46,26 @@ test.describe("golden path smoke", () => {
     const body = await res.json();
     expect(Object.keys(body.tree).length).toBeGreaterThan(0);
   });
+
+  test("domains page lists curriculum", async ({ page }) => {
+    await page.goto("/domains");
+    await expect(
+      page.getByRole("heading", { name: "Practice domains" }),
+    ).toBeVisible();
+    await expect(page.getByText("Business Communication")).toBeVisible();
+  });
+
+  test("domains API returns eight legacy modules", async ({ request }) => {
+    const res = await request.get("/api/domains");
+    expect(res.ok()).toBeTruthy();
+    const body = await res.json();
+    expect(body.domains?.length).toBe(8);
+  });
+
+  test("voice agent-config API returns agent settings", async ({ request }) => {
+    const res = await request.get("/api/voice/agent-config");
+    expect(res.ok()).toBeTruthy();
+    const body = await res.json();
+    expect(typeof body.configured).toBe("boolean");
+  });
 });

@@ -93,3 +93,26 @@ def test_memory_api():
     )
     assert r.status_code == 200
     assert len(r.json()["memory"]) == 1
+
+
+def test_domains_api():
+    r = client.get("/domains")
+    assert r.status_code == 200
+    body = r.json()
+    assert len(body["domains"]) == 8
+    assert "business_communication" in body["liveModules"]
+
+
+def test_domains_prompt_api():
+    r = client.post(
+        "/domains/prompt",
+        json={
+            "module": "business_communication",
+            "subdomain": "Networking",
+            "user_input": "I met a VP at a conference",
+        },
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert "prompt" in body
+    assert "Networking" in body["prompt"] or "networking" in body["prompt"].lower()
