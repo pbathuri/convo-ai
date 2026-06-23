@@ -35,6 +35,22 @@ git pull origin auto/20260609T121358Z
 | **Backend API** | https://convo-ai-backend-lwwq.onrender.com |
 | **Supabase project** | `vtbkmccoarhfzgosahqa` |
 
+### Remote Windows desktop (Tailscale)
+
+Use when you need **this PC’s** Cursor/Ollama/env, not just the git repo:
+
+| Field | Value |
+|-------|-----|
+| **Tailscale IP** | `100.90.245.113` |
+| **MagicDNS** | `incinatopetraissect.tail190d6d.ts.net` |
+| **RDP** | Port `3389` — enabled; connect via Microsoft Remote Desktop on Mac |
+| **Windows user** | `z4admin` |
+
+Full guide: [`docs/deploy/tailscale-remote-access.md`](deploy/tailscale-remote-access.md)
+
+**One-time (admin):** run `scripts/setup-tailscale-remote.ps1` on Windows to restrict RDP to Tailscale CGNAT.  
+**One-time (browser):** enable [Tailscale Serve](https://login.tailscale.com/f/serve?node=nCZFZ6yYk921CNTRL) to hit `:3000` / `:8000` from Mac without full RDP.
+
 Health checks:
 
 ```bash

@@ -24,6 +24,7 @@ cd conversate/web && npm run test:e2e  # Playwright golden path
 
 Deploy: see [`docs/runbook/production-deploy.md`](docs/runbook/production-deploy.md).  
 **Multi-device / Mac agent:** [`docs/AGENT_HANDOFF.md`](docs/AGENT_HANDOFF.md).  
+**Remote desktop (Tailscale):** [`docs/deploy/tailscale-remote-access.md`](docs/deploy/tailscale-remote-access.md).  
 Outstanding keys: [`NEEDS.md`](NEEDS.md). Competitor matrix: [`BENCHMARK.md`](BENCHMARK.md).
 
 ---
